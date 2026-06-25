@@ -1,0 +1,108 @@
+---
+title: "Ticket arrival routing"
+description: "Use the workflow studio to route incoming tickets to the right tech with triggers, conditions, and actions."
+---
+
+The workflow studio lets you build no-code automation rules that fire on ticket events. Use arrival routing to assign new or updated tickets, set priority, and notify the right people without writing code.
+
+Each rule is made up of three parts:
+
+- A **trigger** — the ticket event that starts the rule.
+- One or more **conditions** — fields on the ticket that must match for the rule to fire.
+- One or more **actions** — what happens when the rule matches.
+
+## Triggers
+
+A trigger is selected from the **Trigger** field picker when you create or edit a rule. A rule has exactly one trigger event and fires at most once per matching event.
+
+| Trigger | Fires when |
+| --- | --- |
+| `ticket_created` | A new ticket is created (any source — portal, email, API). |
+| `ticket_updated` | Any field on a ticket changes. Use this only when no more specific trigger fits. |
+| `ticket_assigned` | A ticket's assignee changes to a real user. Distinct from `ticket_updated` — it does **not** fire when the assignee is cleared or when other fields change. |
+| `ticket_closed` | A ticket is closed. |
+| `note_added` | A note is added to a ticket. The orchestrator emits this as both `note_added` (used by studio rules) and `ticket_note_added` (the orchestrator capability vocabulary). Each rule still fires at most once per note. |
+| `sla_breach` | An SLA target is missed. |
+| `sla_warning` | A ticket reaches 75% of its SLA target. |
+| `client_reply` | The requester replies on a ticket. |
+| `first_response` | The first agent response is recorded. |
+
+## Conditions
+
+Conditions match against fields on the ticket that triggered the event. Combine them in the studio with **AND** / **OR** to narrow what a rule applies to.
+
+| Field | Matches |
+| --- | --- |
+| `company_id` | The company the ticket belongs to. |
+| `priority` | `low`, `medium`, `high`, `urgent`. |
+| `type` | The ticket type (`incident`, `request`, etc.). |
+| `source` | Where the ticket came from (`email`, `portal`, `api`). |
+| `subject` | The ticket title. |
+| `team` | The team the ticket is currently routed to. |
+| `contact` / `contact_name` / `contact_email` | The contact record on the ticket. |
+| `requester` / `requester_name` / `requester_email` | Aliases of the contact fields, for rules that read more naturally as "when the requester is…". |
+| `sender_domain` | The domain of the requester's email address. Useful for routing all mail from a single client. |
+| `sender_is_client` | `true` when the sender matches a known client contact. |
+| `sender_is_contact` | `true` when the sender matches any contact record. |
+
+<Tip>
+  `requester`, `requester_name`, and `requester_email` are aliases of the contact fields — they read against the same data, so you can pick whichever phrasing makes the rule clearer. There's no behavioral difference.
+</Tip>
+
+## Actions
+
+Actions run inside the tenant scope of the ticket that fired the rule. A rule can chain multiple actions; they run in order.
+
+| Action | What it does |
+| --- | --- |
+| `assign_to` | Sets the ticket's assignee to the given user. |
+| `assign_team` | Routes the ticket to the given team. |
+| `set_priority` | Updates the ticket's priority. |
+| `send_notification` | Writes an in-app notification to the **ticket's current assignee**. If the ticket is unassigned, the action is silently skipped — there's no recipient to write to. Team- or queue-wide notification targets are a planned enhancement. |
+| `send_email` | Sends a templated email. Use this to notify the requester or an external address. |
+
+## Worked example: route high-priority arrivals to a specialist
+
+Suppose Alex on the network team owns every high-priority ticket the moment it lands. Build a single arrival-routing rule:
+
+<Steps>
+  <Step title="Pick the trigger">
+    In the workflow studio, create a new rule and set the trigger to **Ticket Created**.
+  </Step>
+  <Step title="Add a condition">
+    Add one condition: `priority` **equals** `high`.
+  </Step>
+  <Step title="Add the actions">
+    Chain two actions:
+
+    1. `assign_to` → Alex's user.
+    2. `send_notification` → message `"High-priority ticket assigned to you"`.
+  </Step>
+  <Step title="Save and test">
+    Save the rule, then create a test ticket with priority `high`. The ticket should land assigned to Alex, and Alex should see a new in-app notification.
+  </Step>
+</Steps>
+
+Because `send_notification` targets the ticket's current assignee, the order matters — put `assign_to` **before** `send_notification` so the assignee is set by the time the notification action runs. If you reverse the order on a previously unassigned ticket, the notification step finds no recipient and is skipped.
+
+## Routing on the requester
+
+To route tickets from a specific customer contact to their account manager, use the requester aliases:
+
+<Steps>
+  <Step title="Trigger">
+    **Ticket Created**.
+  </Step>
+  <Step title="Conditions">
+    `requester_email` **equals** `cto@acme-corp.example`.
+  </Step>
+  <Step title="Actions">
+    `assign_to` → the account manager, then `send_notification` → `"New ticket from Acme CTO"`.
+  </Step>
+</Steps>
+
+For broader routing (every ticket from a customer's domain), swap the condition for `sender_domain` **equals** `acme-corp.example`.
+
+## Tenant isolation
+
+Workflow rules are tenant-scoped. A rule defined in one tenant only evaluates that tenant's tickets and can only act on that tenant's data — assignments, notifications, and emails never cross tenant boundaries.
