@@ -16,6 +16,13 @@
           "index",
           "quickstart"
         ]
+      },
+      {
+        "group": "Helpdesk",
+        "pages": [
+          "helpdesk/ticket-queue",
+          "helpdesk/ticket-peek"
+        ]
       }
     ],
     "global": {
