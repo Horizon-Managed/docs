@@ -83,21 +83,23 @@ The product description from the distributor renders below the pricing table.
   In v1.14.0, descriptions render as **escaped text**. Pax8 returns descriptions with inline HTML markup (`<p>`, `<strong>`, `<ul>`), and those tags currently display as raw text. HTML sanitization is planned for a follow-up release.
 </Note>
 
-### Quick-links rail
+### Hero actions
 
-The right-hand rail surfaces metadata about the product and three quick-link buttons:
+The hero has two action buttons, each appearing exactly once on the page:
 
-- **Open in Pax8**
-- **View raw JSON**
+- **Add to quote** — the primary call to action. Rendered as a disabled button with a "Soon" badge and a roadmap tooltip; activates once quote integration ships.
+- **Open in Pax8** — the secondary action.
+
+### Source Record rail
+
+The right-hand rail shows distributor metadata and a **Source Record** panel with two stacked actions:
+
 - **Re-sync this product**
+- **View raw JSON**
 
 <Warning>
-  In v1.14.0, the quick-link buttons and the NCE license-program pill are **layout-only placeholders**. They are visible but inert; their handlers will ship in a follow-up release.
+  In v1.14.0, the **Open in Pax8**, **Re-sync this product**, and **View raw JSON** buttons are layout-only — they render but their handlers are not wired up yet. The NCE license-program pill is also a layout-only placeholder. The **Add to quote** button is intentionally disabled pending quote integration.
 </Warning>
-
-### Add to quote
-
-The "Add to quote" call to action is rendered as a **disabled button with a "Soon" badge and tooltip**. Quote integration is tracked as a separate workstream and will activate the button when shipped.
 
 ## URLs with colons (M365-style SKUs)
 
