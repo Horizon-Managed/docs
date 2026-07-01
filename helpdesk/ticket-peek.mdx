@@ -1,0 +1,101 @@
+---
+title: "Ticket Peek"
+description: "Concept C two-pane slide-out: a chat-first conversation on the left and a scannable context + action stack on the right."
+---
+
+The ticket Peek is the slide-out you open from a row in the [ticket queue](/helpdesk/ticket-queue). It is a contained, inset, rounded panel that overlays the queue with a click-to-dismiss backdrop scrim — you can dismiss it by clicking the scrim, pressing Escape, or using the close control.
+
+The Peek is the canonical surface for working a single ticket. All lifecycle mutations (status, priority, assign, time, notes, replies) re-render the live Peek in place.
+
+## When to use it
+
+Use the Peek to:
+
+- Reply to a customer or post an internal note without leaving the queue.
+- Change status, priority, or assignee inline.
+- Review SLA, the linked asset, RMM-Sentinel posture, and related tickets in one glance.
+- Launch a recorded remote support session.
+
+## Layout
+
+The Peek uses a two-pane layout (Concept C):
+
+- **Identity header** — ticket number, subject, contact, client, and inline-edit popovers for **status**, **priority**, and **assignee**. The assignee picker sends a real technician id; **Take ownership** resolves to your authenticated user.
+- **Left pane — chat thread** — the conversation, hero-sized.
+- **Right pane — context stack** — SLA, asset, RMM-Sentinel, remote actions, Nexie summary, time + contract, related tickets.
+
+On viewports down to roughly **680px** the panel collapses cleanly to a single stacked column. It tracks the active theme (dark, tinted, parchment) — every surface, status amber, danger red, success green, and customer blue flips with `data-theme`.
+
+## Conversation thread
+
+The thread mixes four message types, each visually distinct:
+
+- **Customer messages** — show a **via agent (mTLS)** encrypted indicator when the message was sourced through the RMM agent rather than email.
+- **Technician replies** — outbound messages sent to the customer.
+- **Internal notes** — amber background; visible to staff only.
+- **System events** — slim, low-emphasis rows for status changes, assignments, SLA events, and similar.
+
+Inbound customer emails threaded onto a ticket are stored as customer-channel messages, so they appear on the customer side of the thread rather than being mislabeled as technician replies.
+
+### Composer
+
+Below the thread, the composer has two modes:
+
+- **Reply** — sends an email to the customer. See [Customer reply mechanics](#customer-reply-mechanics).
+- **Internal note** — posts to the thread only; never leaves the tenant.
+
+Both modes support attachments and a **Nexie AI-assist** affordance that drafts or refines the message. The composer is CSRF-protected.
+
+If the ticket has no contact email, **Reply** is disabled with an inline explanation; you can still post an internal note.
+
+## Context stack (right pane)
+
+The right pane is a scannable stack of cards:
+
+| Card | Contents |
+| --- | --- |
+| **SLA** | Response and resolution targets, time remaining, breach indicators. |
+| **Linked asset** | Asset identity plus live **CPU / RAM / Disk** tiles and compliance pills. |
+| **RMM-Sentinel** | Security posture summary for the linked asset. |
+| **Remote actions** | **Remote desktop**, **Shell**, **Start session**. |
+| **Nexie summary** | AI-generated ticket summary; updates out-of-band. |
+| **Time + contract** | Active timer, logged entries, contract / billing context. |
+| **Related tickets** | Other tickets for the same contact, asset, or thread. |
+
+### Start session
+
+**Start session** kicks off a recorded support session through the existing consent-gated recorder flow. The card shows the live status inline:
+
+- `awaiting_consent` — waiting on the end user to accept.
+- `active` — session is recording.
+- `denied` — end user declined.
+- `expired` — consent request timed out.
+
+The status polls in the background. If you dismiss the Peek mid-consent (including by clicking the backdrop scrim), the polling interval is torn down so it does not orphan a timer.
+
+## Customer reply mechanics
+
+When you send a customer reply, it is **delivered as an email** — not just stored as an internal note.
+
+### How replies are dispatched
+
+- The reply is sent through the **tenant's configured email account**, using the same outbound mailer that workflow automations use.
+- The subject is tagged with `[#<ticket-number>]` so the customer's response threads back to the same ticket.
+- The first reply on a ticket stamps `first_response_at`, producing a real SLA first-response signal.
+- Every send is logged.
+
+### Failure handling
+
+- If dispatch fails, the UI **does not** report success. The composer surfaces the real error and **keeps the draft** so you can fix the cause and retry.
+- If the tenant has **no active email account configured** (for example, a fresh tenant), the Reply call returns an honest **"No email account is configured"** failure rather than a silent no-op. Configure the tenant's billing or outbound email account in admin settings before relying on customer replies.
+- If the ticket has no contact email, **Reply** is disabled before you can submit.
+
+<Warning>
+On fresh tenants, **Send reply** will fail until an outbound email account is configured. Configure the tenant email account before depending on customer replies for SLA first-response.
+</Warning>
+
+## Accessibility and theming
+
+- The Peek is `role="dialog"` with `aria-modal="true"` while open.
+- All colors are theme tokens — dark, tinted, and parchment themes all paint correctly.
+- The layout remains usable down to roughly **680px** viewports.

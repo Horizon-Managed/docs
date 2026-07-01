@@ -1,0 +1,125 @@
+---
+title: "Distributor catalog"
+description: "Browse Pax8 products and pricing across every billing term and commitment"
+---
+
+The distributor catalog is a unified browsing experience for products sourced from your connected distributors (currently Pax8). Use it to look up a vendor SKU, compare partner pricing to MSRP, and see every billing-term and commitment combination for a product in one place.
+
+This feature shipped in **v1.14.0**.
+
+## When to use it
+
+Reach for the catalog when you need to:
+
+- Find a Pax8 product by name, vendor, or manufacturer part number.
+- Compare partner cost against suggested retail price (MSRP) at a glance.
+- See every pricing variant (monthly vs. annual, no-commit vs. 1-year, etc.) for a single product.
+- Confirm the most recent sync time before quoting a customer.
+
+## Browse the catalog grid
+
+Open the catalog at `/distributors/catalog`. The page combines four sections:
+
+- **Stats tiles** — total products, unique vendors, connected distributors, and a count of products that have not synced in the last 7 days.
+- **Search bar** — matches against product name, vendor, and manufacturer part number.
+- **Filter drawer** — vendor typeahead with product counts, distributor and category selects, and billing-term checkboxes. Active filters appear as dismissible chips with per-filter and "Clear all" links.
+- **Results** — every card links through to the product detail page.
+
+### Density toggle
+
+A three-way toggle in the header switches the results layout:
+
+| Density | Layout |
+| --- | --- |
+| List | Single-column rows with full vendor and pricing context. |
+| Grid | Multi-column card grid. |
+| Compact | Dense grid optimized for scanning many SKUs at once. |
+
+The default is **Compact**, and your selection is persisted to `localStorage` so the catalog opens in the same density on your next visit.
+
+### Card footer pricing
+
+Every card shows a dual-price footer:
+
+- **Partner price** — your cost from the distributor.
+- **MSRP** — suggested retail price, sourced from the new `suggested_retail` column on `distributor_pricing`.
+
+Cards also use the product `image_url` when the distributor provides one, and fall back to a vendor wordmark when it is empty.
+
+### Sorting
+
+Sort results by name, partner price, or recently synced.
+
+## Product detail page
+
+Click any catalog card to land on `/distributors/catalog/{mfg_part_number}`. The detail page is organized into a hero, a pricing table, a description, and a quick-links rail.
+
+### Hero
+
+The hero shows the vendor branding image when one is supplied by the distributor and a vendor wordmark when it is not. The title row includes the product name, vendor, and primary identifiers.
+
+### Pricing variants table
+
+The pricing variants table lists **every** billing-term × commitment combination available for the product, with these columns:
+
+- Billing term (for example, Monthly, Annual)
+- Commitment (for example, No commitment, 1-year, 3-year)
+- Partner price
+- MSRP
+- Margin (computed from partner price and MSRP)
+
+Two badges call out the most useful rows:
+
+- **Default** — the variant marked as default by the distributor.
+- **Best** — the variant with the highest margin.
+
+When the default variant and the best-margin variant are the same row, only one badge is shown.
+
+### Description
+
+The product description from the distributor renders below the pricing table.
+
+<Note>
+  In v1.14.0, descriptions render as **escaped text**. Pax8 returns descriptions with inline HTML markup (`<p>`, `<strong>`, `<ul>`), and those tags currently display as raw text. HTML sanitization is planned for a follow-up release.
+</Note>
+
+### Hero actions
+
+The hero has two action buttons, each appearing exactly once on the page:
+
+- **Add to quote** — the primary call to action. Rendered as a disabled button with a "Soon" badge and a roadmap tooltip; activates once quote integration ships.
+- **Open in Pax8** — the secondary action.
+
+### Source Record rail
+
+The right-hand rail shows distributor metadata and a **Source Record** panel with two stacked actions:
+
+- **Re-sync this product**
+- **View raw JSON**
+
+<Warning>
+  In v1.14.0, the **Open in Pax8**, **Re-sync this product**, and **View raw JSON** buttons are layout-only — they render but their handlers are not wired up yet. The NCE license-program pill is also a layout-only placeholder. The **Add to quote** button is intentionally disabled pending quote integration.
+</Warning>
+
+## URLs with colons (M365-style SKUs)
+
+Some Microsoft 365 SKUs from Pax8 include a colon in the manufacturer part number (for example, `CFQ7TTC0LCHC:0002`). These are supported in URLs without manual encoding:
+
+```text
+/distributors/catalog/CFQ7TTC0LCHC:0002
+```
+
+Requests for a manufacturer part number that does not exist return a 404.
+
+## Known limitations in v1.14.0
+
+| Area | Status |
+| --- | --- |
+| Description rendering | Escaped text — inline HTML displays as raw tags. |
+| "Add to quote" button | Disabled placeholder with "Soon" tooltip. |
+| "Open in Pax8" button | Layout-only, no handler. |
+| "View raw JSON" button | Layout-only, no handler. |
+| "Re-sync this product" button | Layout-only, no handler. |
+| NCE license-program pill | Layout-only placeholder. |
+
+These items are tracked for follow-up releases and do not affect catalog browsing, filtering, or pricing data.

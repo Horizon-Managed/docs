@@ -1,0 +1,105 @@
+---
+title: "Deploy the RMM agent"
+description: "Install the NexusRMM agent on Windows, macOS, and Linux endpoints, and understand which features ship per platform."
+---
+
+The **Deploy RMM Agent** page in NexusOS (**RMM Agents → Deploy Agent**) is where you mint and download installers for new endpoints. This page explains what the deploy page actually installs, which features work on which OS, and how to update agents already in the field.
+
+## What gets installed
+
+The install scripts, share links, and platform zips on the deploy page all deploy the **NexusRMM Go agent** — the current, shipping agent for every supported platform.
+
+<Info>
+  There is no separate .NET agent. Older in-product copy referred to a "new .NET agent (v1.1+)" with cross-platform auto-update; that agent does not exist. The Go agent in `nexusrmm-agent` is the only agent NexusOS ships today. If you see install guides or runbooks pointing at a `.NET` build or per-platform `v1.1` zips, treat them as out of date.
+</Info>
+
+## Supported platforms and feature matrix
+
+The agent runs on Windows, macOS, and Linux, but a few capabilities are Windows-only today. Confirm the column you need before rolling the agent out to a fleet.
+
+| Capability | Windows | macOS | Linux |
+| --- | :---: | :---: | :---: |
+| Agent install / enrollment | ✅ | ✅ | ✅ |
+| Heartbeat, inventory, scripts, patching | ✅ | ✅ | ✅ |
+| Remote desktop (JPEG path) | ✅ | ✅ | ✅ |
+| Auditable session recording | ✅ | ⛔ Stub | ⛔ Stub |
+| Field auto-update | ✅ | ⛔ | ⛔ |
+
+- **Remote desktop** uses the cross-platform JPEG capture path, so live remote control works the same way on every OS.
+- **Auditable session recording** is implemented only on Windows. The macOS and Linux recorder capture paths are stubs — starting a recording on those platforms will not produce a reviewable artifact.
+- **Field auto-update** (`agent.update`) is Windows-only. On macOS and Linux the command returns `agent.update only supported on Windows`. To pick up a new agent build on those platforms, re-run the installer (see [Updating macOS and Linux endpoints](#updating-macos-and-linux-endpoints)).
+
+## Deploy a new endpoint
+
+Prerequisites:
+
+- A NexusOS operator account with access to **RMM Agents → Deploy Agent**.
+- The client company exists in CRM (each company gets a stable enrollment token automatically).
+- Administrator / `sudo` access on the target endpoint.
+
+<Steps>
+  <Step title="Open the deploy page">
+    In NexusOS, go to **RMM Agents → Deploy Agent**. Each company in CRM is listed with its reusable enrollment token.
+  </Step>
+  <Step title="Reveal the enrollment token">
+    Click the eye icon next to the target company to reveal the token. Install commands are gated behind this reveal because they embed the token.
+  </Step>
+  <Step title="Pick the target OS">
+    Switch between **Windows**, **macOS**, and **Linux** tabs. Each tab exposes three equivalent install paths:
+
+    - **Download installer** — a pre-baked installer with the server URL, company, and token already set.
+    - **Share the agent link** — a URL you can send to the end user; opening it serves the same installer.
+    - **Use the install command** — a one-liner you run in an elevated PowerShell (Windows) or `sudo`-capable terminal (macOS / Linux).
+  </Step>
+  <Step title="Run the installer on the endpoint">
+    Run the installer or one-liner on the endpoint as administrator. The installer generates a unique RSA-2048 keypair locally, submits a CSR with the enrollment token, and the server signs the certificate and auto-assigns the agent to the company. The agent then connects over mTLS on port `8443`.
+  </Step>
+</Steps>
+
+## Updating macOS and Linux endpoints
+
+Because `agent.update` is Windows-only, the in-product "update agent" action is a no-op on macOS and Linux. To roll a new agent build to those endpoints, re-deploy from the same page:
+
+<Steps>
+  <Step title="Re-open Deploy Agent">
+    Go to **RMM Agents → Deploy Agent** and reveal the company token.
+  </Step>
+  <Step title="Re-run the installer or one-liner">
+    Use the same install command or installer for the platform. The installer is idempotent — re-running it on an already-enrolled endpoint updates the binary in place and keeps the existing certificate and identity.
+
+    ```bash macOS / Linux
+    # Re-run the same one-liner from the Deploy Agent page.
+    # The installer detects an existing enrollment and only swaps the binary.
+    curl -fsSL https://<your-server>/rmm/install.sh | sudo bash -s -- --token <enrollment-token>
+    ```
+  </Step>
+  <Step title="Confirm the new version">
+    On the **RMM Agents** list, verify the endpoint's reported agent version updates on its next heartbeat (30s for servers, 60s for workstations).
+  </Step>
+</Steps>
+
+<Tip>
+  Windows endpoints update themselves in the field — you do not need to re-run the installer. The agent verifies the new build against the SHA-256 published on the deploy page before swapping.
+</Tip>
+
+## Verifying a release before you deploy
+
+The **Download Agent** card on the deploy page lists the current release for each platform with its SHA-256. The installer and the Windows field auto-update both verify downloads against this hash. If you are scripting deployment outside the UI, copy the hash from the **Copy hash** button and pin to it.
+
+## Enrollment and configuration at a glance
+
+Enrollment is zero-trust and certificate-based:
+
+1. The installer generates a unique RSA-2048 keypair on the endpoint. The private key never leaves the device.
+2. A Certificate Signing Request (CSR) is sent to the server with the company enrollment token.
+3. The server validates the token, signs the CSR with the NexusOS CA, and auto-assigns the agent to the company.
+4. The agent connects via mutual TLS (mTLS) on port `8443`. Each agent has its own certificate so it can be revoked individually.
+
+Default configuration values surfaced on the deploy page:
+
+| Setting | Value |
+| --- | --- |
+| RMM server (mTLS) | `<your-server>:8443` |
+| Enrollment API | `<your-server>/api/rmm/enroll` |
+| Heartbeat interval | 30s (servers) / 60s (workstations) |
+| Certificate validity | 1 year, auto-renewed on heartbeat |

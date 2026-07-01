@@ -1,0 +1,67 @@
+---
+title: "Ticket queue"
+description: "Triage helpdesk tickets from a sticky command region with filter chips, action-bar shortcuts, and optimistic lifecycle updates."
+---
+
+The ticket queue at `/helpdesk/tickets` is the triage surface for incoming work. The SLA stat tiles and toolbar stay pinned beneath the chrome header while only the ticket rows scroll, so triage stats, filters, and lifecycle actions are always reachable.
+
+## When to use it
+
+Use the queue to:
+
+- Scan SLA health at a glance via the sticky stat tiles.
+- Filter to the tickets you own, the unassigned backlog, or anything breaching SLA.
+- Reply, assign, or resolve tickets without leaving the list.
+- Open a ticket Peek for the full conversation and context. See [Ticket Peek](/helpdesk/ticket-peek).
+
+## Sticky command region
+
+When you scroll, the following stays frozen at the top of the viewport:
+
+- **SLA stat tiles** — open, breaching, breached, resolved-today counts.
+- **Toolbar** — view tabs, **Filters**, **Columns**, **Density**, search, and **New ticket**.
+- **Action bar** — appears when one or more rows are selected.
+
+Only the ticket rows scroll beneath. The queue fits at 1280px and 1440px viewports with the sidebar expanded or collapsed; if columns ever cannot fit, the horizontal scroll is contained to the table card rather than the whole page.
+
+## Filter chips
+
+Switch the visible set of tickets with the view tabs:
+
+| Chip | Shows |
+| --- | --- |
+| **All** | Every ticket the current view exposes. |
+| **Mine** | Tickets assigned to you. |
+| **Unassigned** | Tickets with no technician assigned. |
+| **Critical** | Tickets at priority `critical` or breaching SLA. |
+| **Following** | Tickets you have explicitly followed. |
+
+Combine a chip with **Filters** for finer-grained queries (status, contract, asset, tags, date). The Filters button shows a count badge when one or more filters are active.
+
+## Toggles
+
+- **Filters** — open the filter drawer. The badge reflects how many filters are applied.
+- **Columns** — show or hide columns (Subject, Client, Technician, Priority, SLA, Updated, and so on).
+- **Density** — switch between Comfortable and Compact row heights.
+- **Search** — full-text search across subject, body, and contact.
+
+Subject, Client, and Technician cells truncate with an ellipsis so the queue can stay within the viewport at any column configuration.
+
+## Action-bar keyboard shortcuts
+
+Select one or more rows, then use the action bar at the bottom of the queue. Each action has a single-key shortcut:
+
+| Key | Action | Notes |
+| --- | --- | --- |
+| `R` | Reply | Opens the customer-facing reply composer in the Peek. |
+| `I` | Internal note | Opens the internal-note composer in the Peek. |
+| `A` | Assign | Opens the assignee picker. Sends the real technician id; **Take ownership** resolves to your authenticated user. |
+| `Ctrl+Enter` | Resolve | Marks the ticket(s) resolved with an optimistic UI update and an **Undo** toast. |
+
+Resolve is optimistic — the row updates immediately and reverts if the server rejects the change. The undo toast stays visible for a few seconds so you can roll back an accidental resolve.
+
+All lifecycle calls attach the CSRF double-submit header automatically. You do not need to refresh after a mutation; the live ticket Peek re-renders in place when its underlying ticket changes.
+
+## Themes and small viewports
+
+The queue tracks the active theme — **dark**, **tinted**, and **parchment** all paint correctly with no hardcoded colors. The layout remains usable down to roughly **680px** viewports, collapsing the toolbar to wrap and stacking the action bar.
