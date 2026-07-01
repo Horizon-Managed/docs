@@ -1,0 +1,33 @@
+---
+title: "Week of July 1, 2026"
+description: "Platform reference goes live: helpdesk, workflow studio, RMM, and distributors."
+---
+
+This week we shipped the first wave of NEXOS CORE platform capabilities in **v1.14.x**. Here's what's new.
+
+## New features
+
+### Ticket queue
+
+Triage helpdesk tickets from a sticky command region with SLA stat tiles, filter chips, and an action bar that appears the moment you select a row. Reply, assign, or resolve without leaving the list. See [Ticket queue](/helpdesk/ticket-queue).
+
+### Ticket Peek
+
+A two-pane slide-out for working a single ticket. Chat-first conversation on the left; a scannable context stack — SLA, asset, RMM-Sentinel posture, remote actions, Nexie summary, time, and related tickets — on the right. All status, priority, and assignee changes re-render live in place. See [Ticket Peek](/helpdesk/ticket-peek).
+
+### Workflow studio: ticket arrival routing
+
+Build no-code automation rules that fire on ticket events. Pick a trigger (`ticket_created`, `sla_breach`, `first_response`, and seven more), add conditions, and chain actions to route, prioritize, and notify without writing code. See [Ticket arrival routing](/workflow-studio/ticket-arrival-routing).
+
+### NexusRMM Go agent
+
+Deploy the NexusRMM agent to Windows, macOS, and Linux endpoints from a single **Deploy Agent** page. Heartbeat, inventory, scripts, patching, and remote desktop (JPEG path) work on every OS; auditable session recording and field auto-update are Windows-only today. See [Deploy the RMM agent](/rmm/deploy-agent) for the full feature matrix.
+
+### Distributor catalog (Pax8)
+
+A unified catalog for products sourced from Pax8. Search by name, vendor, or manufacturer part number; compare partner cost against MSRP; and see every billing-term and commitment combination on a single product page. Includes stat tiles, a filter drawer, and a three-way density toggle. See [Distributor catalog](/distributors/catalog).
+
+## Known limitations
+
+- **Distributor catalog** — Pax8 descriptions currently render as escaped text (inline HTML tags show as raw text). **Open in Pax8**, **Re-sync this product**, **View raw JSON**, and the NCE license-program pill are layout-only in v1.14.0. **Add to quote** is disabled pending quote integration.
+- **RMM agent** — auditable session recording on macOS and Linux is a stub and will not produce a reviewable artifact. Field auto-update (`agent.update`) is Windows-only; re-run the installer to update macOS and Linux endpoints.
