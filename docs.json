@@ -35,9 +35,34 @@
         "tab": "Platform reference",
         "groups": [
           {
-            "group": "Platform reference",
+            "group": "Overview",
             "pages": [
               "platform/index"
+            ]
+          },
+          {
+            "group": "Helpdesk",
+            "pages": [
+              "helpdesk/ticket-queue",
+              "helpdesk/ticket-peek"
+            ]
+          },
+          {
+            "group": "Workflow studio",
+            "pages": [
+              "workflow-studio/ticket-arrival-routing"
+            ]
+          },
+          {
+            "group": "RMM",
+            "pages": [
+              "rmm/deploy-agent"
+            ]
+          },
+          {
+            "group": "Distributors",
+            "pages": [
+              "distributors/catalog"
             ]
           }
         ]
