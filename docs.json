@@ -7,6 +7,9 @@
     "light": "#18d0c8",
     "dark": "#10aaac"
   },
+  "appearance": {
+    "default": "dark"
+  },
   "favicon": "/favicon.png",
   "fonts": {
     "heading": {
