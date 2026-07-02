@@ -55,6 +55,13 @@
             ]
           },
           {
+            "group": "CRM & sales",
+            "pages": [
+              "crm/index",
+              "assessment/index"
+            ]
+          },
+          {
             "group": "RMM",
             "pages": [
               "rmm/deploy-agent"
