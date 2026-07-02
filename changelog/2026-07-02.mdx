@@ -1,14 +1,28 @@
 ---
 title: "Week of June 29, 2026"
-description: "No new product changes since v1.14.x on July 1."
+description: "Service desk expands: Knowledge base, Dispatch board, and Mobile app join the platform."
 ---
 
-Nothing new shipped between the [v1.14.x release on July 1](/changelog/2026-07-01) and today. The following remain the current release:
+Three new Service desk areas shipped this week, extending the [v1.14.x platform](/changelog/2026-07-01) with knowledge management, technician scheduling, and a field-tech mobile experience.
 
-- [Ticket queue](/helpdesk/ticket-queue)
-- [Ticket Peek](/helpdesk/ticket-peek)
-- [Workflow studio — ticket arrival routing](/workflow-studio/ticket-arrival-routing)
-- [NexusRMM Go agent](/rmm/deploy-agent)
-- [Distributor catalog](/distributors/catalog)
+## New features
 
-The [known limitations](/changelog/2026-07-01#known-limitations) called out on July 1 still apply.
+### Knowledge base
+
+A searchable article library for SOPs, how-tos, and troubleshooting steps — organized by category and tag, scoped to your tenant, and full-text searchable with relevance ranking and highlighted snippets. Draft a first pass with AI from a plain-language prompt, then review and publish. Relevant published articles surface automatically inside a helpdesk ticket. See [Knowledge base](/kb/index).
+
+### Dispatch board
+
+Assign technicians to helpdesk tickets and work orders from a single dispatchable queue. Choose from **Calendar**, **Kanban**, **List**, **Map**, or a full-screen **TV mode** for ops-room displays; each assignment becomes a dispatch slot that moves through Scheduled → Dispatched → En route → On site → Complete. **AI Suggest** recommends the best tech for a job based on skills, proficiency, and current load, and one-way **Microsoft 365 calendar sync** pushes assignments to the assigned tech's Outlook calendar. See [Dispatch board](/dispatch/index).
+
+### Mobile app
+
+A field-tech Progressive Web App at `/m/` — install it from your phone's browser with **Add to Home Screen**. A unified task feed buckets your work into **Urgent / Today / This week**, work timers are server-side and shared with the desktop, and the weekly timesheet can be reviewed and submitted from the phone. See [Mobile app](/mobile/index).
+
+## Known limitations
+
+- **Knowledge base** — no article version history or scheduled publishing yet; edits overwrite in place. View counts are best-effort. AI article drafting requires a tenant Claude API key.
+- **Dispatch board** — Microsoft 365 calendar sync is **one-way** (NEXOS CORE → Outlook); changes made in Outlook aren't read back. Map view groups jobs by **city and state**, not precise coordinates. AI Suggest requires a tenant Claude API key.
+- **Mobile app** — security-ops actions, project detail, and purchase orders aren't available on mobile yet. Use the desktop app for those.
+
+Earlier [known limitations from v1.14.x](/changelog/2026-07-01#known-limitations) remain unchanged.
