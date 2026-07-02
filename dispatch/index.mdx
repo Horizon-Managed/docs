@@ -1,0 +1,77 @@
+---
+title: "Dispatch board"
+description: "Schedule and assign technicians to tickets and work orders, with calendar sync and AI-assisted assignment"
+---
+
+The dispatch board is where you assign technicians to field and service work. It
+pulls **helpdesk tickets** and **work orders** into one dispatchable queue, then
+lets you place each item into a scheduled slot for a specific tech on a specific
+day — optionally syncing that assignment to the tech's Microsoft 365 calendar.
+
+Open it at `/dispatch`.
+
+## When to use it
+
+- Assign an unassigned ticket or work order to a technician for a given day.
+- Balance a team's daily workload against each tech's capacity.
+- Plan a technician's week at a glance.
+- Group same-area jobs to plan routing.
+- Run a wall-mounted "today's dispatch" board in an ops room.
+
+## Views
+
+Switch views from the board header:
+
+| View | What it shows |
+|---|---|
+| **Calendar** | A Monday-based 7-day week grid with each tech's scheduled slots; filter by tech or work type. |
+| **Kanban** | One column per technician for a chosen date, with a load count against that tech's daily capacity, plus the unassigned queue. |
+| **List** | A flat, filterable list over a date range (tech, type, status). |
+| **Map** | Active jobs grouped by location. |
+| **TV mode** | A full-screen board (`/dispatch/tv`) for wall displays. |
+
+<Note>
+  The map view groups jobs by **city and state**, not by precise coordinates —
+  it's a location grouping, not a routing map. Work-order slots pick up their
+  site address automatically; ticket slots use whatever location you enter.
+</Note>
+
+## Assigning work
+
+Each assignment is a **dispatch slot** — one tech, one source item (a ticket or
+work order), on a date, with optional start/end time, priority, site location,
+and notes. A slot moves through statuses as the job progresses: **Scheduled →
+Dispatched → En route → On site → Complete** (plus Cancelled and No-show).
+
+Capacity is per technician per weekday (default 4 slots/day); the kanban and
+load views color-code how full each tech's day is.
+
+## AI-assisted assignment
+
+Not sure who to send? **Suggest** asks Nexie to recommend the best technician
+for a job based on each tech's skills, proficiency, and current load. It returns
+a recommendation with reasoning and a confidence score, and a one-click Assign.
+
+<Note>
+  AI Suggest needs your tenant's Claude API key configured in settings; without
+  it the suggestion is unavailable.
+</Note>
+
+## Microsoft 365 calendar sync
+
+When you create, update, or delete a slot, NexusOS pushes the change to the
+**assigned tech's** Microsoft 365 calendar — creating, updating, or removing the
+matching event. Sync is:
+
+- **One-way** (NexusOS → Microsoft 365). Changes made directly in Outlook are
+  not read back.
+- **Best-effort** — a sync failure is logged but never blocks the assignment.
+
+It reuses the same Microsoft 365 connection configured for email security, so no
+separate calendar setup is needed.
+
+## Good to know
+
+- "Technicians" are your active users; there's no separate dispatch-only role.
+- One-way sync means Outlook is a view of NexusOS assignments, not a two-way
+  source of truth.

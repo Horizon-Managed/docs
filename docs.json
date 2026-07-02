@@ -44,16 +44,14 @@
             ]
           },
           {
-            "group": "Helpdesk",
+            "group": "Service desk",
             "pages": [
               "helpdesk/ticket-queue",
-              "helpdesk/ticket-peek"
-            ]
-          },
-          {
-            "group": "Workflow studio",
-            "pages": [
-              "workflow-studio/ticket-arrival-routing"
+              "helpdesk/ticket-peek",
+              "workflow-studio/ticket-arrival-routing",
+              "kb/index",
+              "dispatch/index",
+              "mobile/index"
             ]
           },
           {
