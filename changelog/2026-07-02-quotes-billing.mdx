@@ -1,0 +1,75 @@
+---
+title: "Quotes, billing & contracts"
+description: "Quoting with online e-sign approval, invoicing and AR, a full contract signing flow, purchase orders with Pax8 procurement, and the product catalog land in NEXOS CORE."
+---
+
+Mid-week ship, extending the [v1.14.x platform](/changelog/2026-07-01). Four new
+product areas cover the deal-to-cash path: quote, sign, provision, and bill.
+
+## New features
+
+### Quotes & invoices
+
+Build sectioned, versioned price quotes with discounts, tax, validity dates, and
+optional or quantity-adjustable line items — then send them for **online client
+approval with a captured e-signature** (name, title, IP, timestamp, full audit
+trail). Convert an approved quote to an invoice in one click; only accepted
+lines and client-selected quantities carry over. Record payments (check, ACH,
+wire, credit card, cash), issue credit memos, and review outstanding balances by
+age bucket on the AR aging report. Nexie can also draft a quote from a pasted
+sales-call transcript. See [Quotes & invoices](/billing).
+
+### Contracts & e-sign
+
+Turn a client agreement into a fully executed document package. From one
+contract record NEXOS CORE auto-generates the **Service Order**, **MSA**, and
+**Contract Summary** from your DOCX templates, walks the client through an
+ordered signing flow (with an optional ACH authorization step), stamps each
+signature into the document, and assembles a printable **Executed Contract
+Package**. Completing the final signature flips the contract to **Active**,
+promotes the company from prospect to customer, and applies escalation and SLA
+policies. See [Contracts & e-sign](/legal/contracts).
+
+### Purchase orders & procurement
+
+Route purchases through an approval workflow — auto-approve small POs under a
+configured dollar threshold, gate the rest on a permissioned approver with
+optional signature capture, and push approved POs to QuickBooks. For distributor
+SaaS, dispatch an approved PO to **Pax8** to provision the subscription and
+activate the linked contract line. Failed dispatches open a **remediation**
+queue with Retry (as-is or edit-and-retry) and Abandon, plus a per-PO audit
+timeline. See [Purchase orders & procurement](/po).
+
+### Product catalog
+
+The master list of everything you sell — services, hardware, and managed
+offerings — with monthly/yearly/unit pricing, automatic margin, **MRR / ORR /
+NRR / product-sales** revenue classification, SKU, MPN, QuickBooks account
+mappings, and product images. Attach legal documents (MSA, SLA, DPA, BAA) that
+must be signed when an item is sold. Nexie can auto-fill description, category,
+revenue type, billing type, and cost/price from just a product name. See
+[Product catalog](/product).
+
+## Updates
+
+- The **Distributor catalog (Pax8)** now lives under the Quotes, billing &
+  contracts group alongside the new product catalog. See [Distributor
+  catalog](/distributors/catalog).
+
+## Known limitations
+
+- **Contracts** — there's **no automatic email** on send yet. Sending generates
+  the secure signing link; share it with the client manually from the contract's
+  detail page. The Executed Contract Package is HTML you print to PDF, not a
+  pre-rendered PDF.
+- **Procurement** — approving a PO does **not** auto-provision; dispatch is a
+  deliberate action from the procurement queue. Distributor provisioning is
+  **Pax8-only** today — other distributors return a "not provisionable" result.
+  Procurement also requires the platform encryption key to be configured.
+- **Quotes** — the transcript-to-quote drafter and product-catalog AI
+  auto-classification both require a tenant Claude API key (Settings →
+  Integrations).
+
+Earlier [known limitations from v1.14.x](/changelog/2026-07-01#known-limitations)
+and the [week of June 29](/changelog/2026-07-02#known-limitations) remain
+unchanged.
