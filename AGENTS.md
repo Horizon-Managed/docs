@@ -18,18 +18,40 @@ built on [Mintlify](https://mintlify.com) and deployed to
 Mintlify's per-PR preview deploys are **capped on our current plan** and often
 skip, so **local preview is the reliable "verify before it's public" step.**
 
-The Mintlify CLI needs an LTS Node (≤ 24). Our machines run Node 26 by default,
-so use the keg-only **`node@22`** (install once with `brew install node@22` — it
-does *not* change your default `node` or affect GitNexus):
+The Mintlify CLI needs an **LTS Node (≤ 24)** — the block is Node 25+. You only
+need this on a machine where you want to preview/validate locally; editing and
+pushing branches need nothing.
+
+### macOS — use `make`
+
+If your default `node` is 26 (e.g. GitNexus machines), install the keg-only
+`node@22` once — it does **not** change your default `node` or affect GitNexus:
 
 ```bash
-# from the repo root, on your branch:
-PATH="/opt/homebrew/opt/node@22/bin:$PATH" npx mint@latest dev           # live preview at localhost:3000
-PATH="/opt/homebrew/opt/node@22/bin:$PATH" npx mint@latest broken-links  # build + link validation (must be clean)
+brew install node@22   # only if `node --version` is 25+ or missing
+make preview           # live preview at http://localhost:3000
+make check             # build + broken-link validation — run before every PR
+```
+
+`make` auto-detects `node@22` (Apple Silicon or Intel) and falls back to your
+PATH `node` if it's already ≤ 24. `make node-info` shows which it picked.
+
+### Windows — no `make`, run `npx` directly
+
+Install Node **LTS** (not "Current"), then run the CLI directly in PowerShell —
+no PATH prefix, because LTS is your default:
+
+```powershell
+winget install OpenJS.NodeJS.LTS   # once
+npx mint@latest dev                # live preview at http://localhost:3000
+npx mint@latest broken-links       # build + link validation — run before every PR
 ```
 
 `broken-links` compiles every page, so a clean run confirms all MDX renders and
-all internal links resolve. Run it before opening any PR.
+all internal links resolve. Run it (via `make check` or `npx`) before any PR.
+
+> This local tooling is **dev-only** and does not affect GitHub PR checks — the
+> only PR check is Mintlify's cloud preview build, which is unrelated to `make`.
 
 ## Deploy model — `main` is production
 
