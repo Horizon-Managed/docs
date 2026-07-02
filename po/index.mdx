@@ -1,0 +1,70 @@
+---
+title: "Purchase orders & procurement"
+description: "Route purchases through an approval workflow, then provision distributor SaaS from an approved PO"
+---
+
+NEXOS CORE splits purchasing into two cooperating parts:
+
+- **Purchase orders** — the order lifecycle: create a PO against a company,
+  ticket, or project, route it through approval, and receive goods.
+- **Procurement** — the provisioning engine that takes an *approved* PO and
+  dispatches it to a distributor (Pax8 today) to actually provision SaaS
+  subscriptions, tracking a fine-grained dispatch status, an audit timeline, and
+  a remediation queue for failures.
+
+Purchase orders live at `/purchase-orders`; the procurement queue at `/procurement`.
+
+## When to use it
+
+- Request hardware or services from a vendor with an approval gate before spend.
+- Attach procurement cost to a ticket, project, or company.
+- Auto-approve small POs under a configured dollar threshold.
+- Provision distributor (Pax8) SaaS subscriptions from an approved PO.
+- Triage and retry failed distributor dispatches.
+
+## Purchase order lifecycle
+
+<Steps>
+  <Step title="Create">
+    Create a PO (auto-numbered `PO-YYYY-NNN`) with line items, against a company,
+    ticket, or project.
+  </Step>
+  <Step title="Approve">
+    POs under your configured auto-approve limit approve automatically; the rest
+    require an approver (permission-gated, with optional signature capture).
+    Reject with a reason if needed. Approved POs can push to QuickBooks as a QBO
+    purchase order.
+  </Step>
+  <Step title="Receive">
+    Mark goods received per line — full or partial.
+  </Step>
+</Steps>
+
+## Procurement (provisioning)
+
+For distributor SaaS, an approved PO is **dispatched** to the distributor to
+provision the subscription. Each dispatch is idempotent; success provisions the
+subscription and activates the linked contract line, while a failure opens a
+**remediation** entry you can Retry (as-is or edit-and-retry) or Abandon. A
+per-PO audit timeline records every step.
+
+<Note>
+  **Approval does not auto-provision.** Dispatch is a deliberate action —
+  approving a PO doesn't send it to the distributor automatically; you dispatch
+  it (or retry) from the procurement queue.
+</Note>
+
+<Note>
+  **Provisioning currently supports Pax8.** Other distributors aren't
+  provisionable yet (dispatching one returns a "not provisionable" result).
+  Procurement also requires the platform's encryption key to be configured — if
+  it isn't, the procurement queue is unavailable.
+</Note>
+
+## The flow at a glance
+
+```
+Create PO → approve (auto under threshold, else approver) → [QBO push]
+   → dispatch to distributor (manual) → provisioned (activates contract line)
+                                      ↘ failed → remediation → retry / abandon
+```

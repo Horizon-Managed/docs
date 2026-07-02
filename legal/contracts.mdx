@@ -1,0 +1,84 @@
+---
+title: "Contracts & e-sign"
+description: "Auto-generate contract paperwork, collect stamped client e-signatures, and assemble one executed contract package"
+---
+
+The Contracts module turns a client agreement into a fully executed, signed
+document package. From a single contract record, NEXOS CORE auto-generates the
+paperwork, sends the client a signing link, collects their e-signatures, stamps
+those signatures into the documents, and assembles one printable **Executed
+Contract Package**. Completing the final required signature automatically
+activates the contract, promotes the client to a customer, and applies their
+service policies.
+
+Contracts live at `/contracts`; document templates at `/settings/legal`.
+
+## When to use it
+
+- Onboard a client who needs an MSA plus a service order signed.
+- Formalize managed-services, block-hours, retainer, T&M, or fixed-price work.
+- Any agreement needing an auditable, IP- and timestamp-logged e-signature.
+- Collect ACH bank authorization securely alongside the signature.
+
+## The documents
+
+Three documents are auto-generated when you create or modify a contract (or
+convert a quote to one):
+
+- **Service Order** — the order acknowledgement
+- **MSA** — Master Service Agreement
+- **Contract Summary** — the document the final contract signature signs
+
+Each is built from your uploaded DOCX template (from the document library),
+populated with the contract's data — falling back to a generated document if no
+template is set.
+
+## The signing flow
+
+<Steps>
+  <Step title="Send the contract">
+    Sending generates a secure signing link and computes how many signatures are
+    required. **There is no automatic email yet — share the signing link with the
+    client manually** (it's shown on the contract's detail page).
+  </Step>
+  <Step title="Client signs each step">
+    The client opens the link and works an ordered list: each signable document,
+    an ACH authorization step (if they pay by ACH), then the final Contract
+    Agreement. Each signature captures name, title, email, the drawn signature,
+    consent text, IP, and timestamp.
+  </Step>
+  <Step title="Signatures are stamped in">
+    Each signature PNG is embedded directly into the document file, with an audit
+    entry per signature.
+  </Step>
+  <Step title="Contract activates">
+    When all required signatures are collected, the contract flips to **Active**,
+    the client is promoted from prospect to **customer**, escalation and SLA
+    policies are applied, and the Executed Contract Package is assembled.
+  </Step>
+</Steps>
+
+<Note>
+  Required signatures = **1** (the contract) **+ 1 per attached document** that
+  needs signing **+ 1** if the company pays by ACH.
+</Note>
+
+## Executed contract package
+
+Once fully signed, NEXOS CORE composes one styled deliverable — a cover page,
+each document with its embedded signature stamp, the execution signature, and a
+masked (encrypted) ACH-on-file section — with a print/save-as-PDF button.
+
+## Billing
+
+Activation applies the contract's billing configuration (block hours, retainer,
+milestones, work-type coverage, role-rate overrides). **Invoicing is a separate,
+explicit step** — use **Generate invoice** on the contract to create a draft
+recurring invoice (monthly or yearly) with the contract's line items, linked back
+to the contract. See [quotes & invoices](/billing).
+
+## Good to know
+
+- **No automatic email** — sending generates the link; you share it manually.
+- The executed package is **HTML you print to PDF**, not a pre-rendered PDF; it's
+  regenerated each time the contract is fully signed.

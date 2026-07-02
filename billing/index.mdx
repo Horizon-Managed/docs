@@ -1,0 +1,79 @@
+---
+title: "Quotes & invoices"
+description: "Build price quotes with online e-signature approval, convert them to invoices, and track payments, credit memos, and AR aging"
+---
+
+Billing is NEXOS CORE's quoting and invoicing system. Build a price proposal,
+send it for online client approval with a captured e-signature and full audit
+trail, then convert the approved quote into an invoice — and track payments,
+credit memos, and outstanding balances from there.
+
+Quotes live at `/quotes`, invoices at `/invoices`.
+
+## When to use it
+
+- Propose priced work and get documented client sign-off.
+- Let clients approve online — adjusting quantities and opting into optional
+  line items themselves.
+- Bill approved work and track paid vs. outstanding.
+- Issue refunds or adjustments via credit memos.
+- Review who owes what, by age bucket.
+
+## Quotes
+
+Build quotes with sectioned line items, percentage or fixed discounts, tax,
+optional and quantity-adjustable lines, validity dates, and a PO-required flag.
+Quotes are **versioned** — revise and revert to an earlier revision, or duplicate
+an existing quote.
+
+### Online approval + e-signature
+
+Send a quote and the client opens a secure, tokenized approval page where they
+select any optional or adjustable lines, then sign:
+
+<Steps>
+  <Step title="Client reviews and selects">
+    On the approval page the client picks optional lines and adjusts quantities
+    where allowed.
+  </Step>
+  <Step title="Client signs">
+    They enter name, title, and email and draw a signature. The signature,
+    consent text, IP address, and timestamp are captured for the audit trail.
+  </Step>
+  <Step title="Quote is approved">
+    The quote flips to **Approved**, the line selections persist, and audit
+    entries are written. Staff can also manually approve when needed.
+  </Step>
+</Steps>
+
+You can also generate a contract directly from an approved quote (see
+[contracts](/legal/contracts)).
+
+## Invoices
+
+Generate an invoice from an approved quote — it copies **only the accepted
+lines** (honoring client quantities, skipping unselected optional lines),
+recomputes totals, and sets the due date from the payment terms. Invoices move
+through draft → sent → viewed → partial → paid, and can be voided, duplicated,
+or printed.
+
+### Payments and credit memos
+
+Record payments (check, ACH, wire, credit card, cash) — the balance due and
+status update automatically. Issue credit memos against an invoice to apply a
+refund or adjustment.
+
+### AR aging
+
+The aging report (`/invoices/aging`) buckets outstanding balances by due date —
+Current, 31–60, 61–90, and 90+ days — per company.
+
+## Draft a quote from a call transcript
+
+Paste or upload a `.txt`/`.md` sales-call transcript and Nexie drafts a quote
+with line items against your product catalog.
+
+<Note>
+  The transcript-to-quote feature needs your tenant's Claude API key
+  (Settings → Integrations).
+</Note>

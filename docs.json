@@ -62,15 +62,19 @@
             ]
           },
           {
-            "group": "RMM",
+            "group": "Quotes, billing & contracts",
             "pages": [
-              "rmm/deploy-agent"
+              "billing/index",
+              "legal/contracts",
+              "po/index",
+              "product/index",
+              "distributors/catalog"
             ]
           },
           {
-            "group": "Distributors",
+            "group": "RMM",
             "pages": [
-              "distributors/catalog"
+              "rmm/deploy-agent"
             ]
           }
         ]

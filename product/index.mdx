@@ -1,0 +1,76 @@
+---
+title: "Product catalog"
+description: "Your master list of sellable services, hardware, and managed offerings — with pricing, revenue classification, distributor cost, and required legal docs"
+---
+
+The product catalog is where you maintain the master list of everything you sell
+— software services, hardware, and managed offerings. Each item carries pricing,
+revenue classification, vendor and category, product identifiers, QuickBooks
+account mappings, and optional legal documents that must be signed when it's
+sold. Catalog items feed straight into quotes and invoices as line items.
+
+Open it at `/products`.
+
+## When to use it
+
+- Build your sellable-services list before quoting or invoicing.
+- Standardize pricing, margin, and revenue classification across the team.
+- Track distributor sourcing and cost for resold hardware and software.
+- Attach legal documents (MSA, SLA, DPA, BAA, etc.) that must be signed when a
+  product is sold.
+- Record which products a client has been assigned, and in what quantity.
+
+## Catalog items
+
+Each item supports full create/edit/delete with:
+
+- **Pricing** — monthly, yearly, and unit cost, with automatic dollar and percent
+  **margin** (price − cost).
+- **Revenue classification** — MRR / ORR / NRR / product sales, so revenue rolls
+  up correctly across the business.
+- **Identifiers & accounting** — SKU, manufacturer part number, default supplier,
+  vendor, category, and QuickBooks income/expense account mappings.
+- **Image** — upload a product image (PNG/JPG/SVG/WebP/GIF, up to 5 MB).
+
+### AI auto-classification
+
+When you create an item and leave key fields blank, Nexie can auto-fill the
+description, category, revenue type, billing type, and estimated cost/price from
+just the product name.
+
+<Note>
+  AI classification needs your tenant's Claude API key (Settings → Integrations);
+  without it the analyze action is unavailable.
+</Note>
+
+## Distributor coverage and cost
+
+The catalog list shows, per item, how many connected distributors carry it and
+the best (lowest) unit cost — matched on manufacturer part number against your
+synced distributor catalogs.
+
+<Note>
+  Coverage and cost show **0 / $0** until a distributor sync has run or there's a
+  matching manufacturer part number. See the [distributor catalog](/distributors/catalog).
+</Note>
+
+## Client assignments
+
+Link a product to a client company with a quantity and status, so you can see
+what each client has been assigned.
+
+## Legal document associations
+
+Attach the legal documents that must be signed when a product is sold — each with
+a signature type (initial or full signature). Categories cover MSA, NDA, SLA,
+SOW, T&C, DPA, BAA, and Order documents, which flow into the [contracts](/legal/contracts)
+signing process.
+
+## How it connects
+
+- **Quotes & invoices** — products populate line-item pickers (name, vendor,
+  price, unit cost, billing type) so you build quotes fast.
+- **Distributors** — coverage/cost is a read-only view of your synced distributor
+  data; the catalog doesn't write distributor records.
+- **Accounting** — each item's revenue type and QuickBooks accounts travel with
+  it for downstream billing.
