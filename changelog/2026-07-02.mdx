@@ -1,11 +1,19 @@
 ---
 title: "Week of June 29, 2026"
-description: "Service desk expands: Knowledge base, Dispatch board, and Mobile app join the platform."
+description: "Service desk expands and CRM & sales lands: Knowledge base, Dispatch board, Mobile app, CRM, and Discovery blueprint."
 ---
 
-Three new Service desk areas shipped this week, extending the [v1.14.x platform](/changelog/2026-07-01) with knowledge management, technician scheduling, and a field-tech mobile experience.
+Five new areas shipped this week, extending the [v1.14.x platform](/changelog/2026-07-01) with knowledge management, technician scheduling, a field-tech mobile experience, and the first CRM & sales surfaces.
 
 ## New features
+
+### CRM
+
+The system of record for the companies and people you sell to and support. Each client opens to a 360° account view — contacts, tickets, quotes, invoices, RMM agents, contracts, and compliance in one place. Includes a customizable deal pipeline with weighted forecasting (deal value × win-probability), an activity log for calls, meetings, and follow-ups, and email campaigns with open, click, and bounce stats. **AI lead capture** turns a raw sales-call transcript into ready-to-save contact, activity, and deal records — nothing writes until you confirm. See [CRM](/crm/index).
+
+### Discovery blueprint
+
+The bridge from a sales deal to a billable quote. Upload a prospect's discovery materials and Nexie reads them alongside the client's industry profile and your product catalog to produce a **Client Operations Blueprint** — an executive summary, risk score, recommended product/hardware/software/security stack, compliance frameworks, and a suggested contract design. Review, approve, and convert to a **draft quote** in one click. Blueprints are versioned, and each analysis records its estimated AI cost against your usage log. See [Discovery blueprint](/assessment/index).
 
 ### Knowledge base
 
@@ -21,6 +29,8 @@ A field-tech Progressive Web App at `/m/` — install it from your phone's brows
 
 ## Known limitations
 
+- **CRM** — campaign **send** records the send and its stats, but outbound email delivery integration is limited today; treat campaigns as planning and tracking until delivery is fully wired. AI lead capture is preview-only, accepts only `.txt`/`.md` uploads (up to 10 MB), and requires a tenant Claude API key.
+- **Discovery blueprint** — analysis needs at least one successfully processed document; image-only or unsupported files may extract poorly. Malformed analyses revert the assessment to **Draft** for a re-run. After converting to a quote, review pricing — items the AI couldn't price fall back to your catalog price or zero. Requires a tenant Claude API key.
 - **Knowledge base** — no article version history or scheduled publishing yet; edits overwrite in place. View counts are best-effort. AI article drafting requires a tenant Claude API key.
 - **Dispatch board** — Microsoft 365 calendar sync is **one-way** (NEXOS CORE → Outlook); changes made in Outlook aren't read back. Map view groups jobs by **city and state**, not precise coordinates. AI Suggest requires a tenant Claude API key.
 - **Mobile app** — security-ops actions, project detail, and purchase orders aren't available on mobile yet. Use the desktop app for those.
