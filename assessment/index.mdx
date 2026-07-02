@@ -1,0 +1,78 @@
+---
+title: "Discovery blueprint"
+description: "Turn a prospect's discovery materials into an AI-built Client Operations Blueprint, then a draft quote"
+---
+
+The Discovery Blueprint is NEXOS CORE's AI-driven discovery tool — the bridge
+from a sales deal to a billable quote. You upload a prospect's discovery
+materials, and Nexie reads them alongside the client's industry profile and your
+product catalog to produce a **Client Operations Blueprint**: a structured
+recommendation you review, approve, and convert into a draft quote in one click.
+
+Open it at `/assessments`.
+
+## When to use it
+
+- Turn discovery notes from a sales deal into a costed proposal.
+- Standardize recommendations against a client's industry compliance and tech
+  requirements.
+- Produce hardware standards and a security stack per client role.
+- Generate a managed-services quote without hand-building line items.
+
+## The flow
+
+<Steps>
+  <Step title="Create an assessment">
+    Start a new assessment from `/assessments/new` — optionally linked to a CRM
+    deal so the eventual quote ties back to it.
+  </Step>
+  <Step title="Upload discovery materials">
+    Add the prospect's documents (and spreadsheets, images, or audio). Text is
+    extracted in the background.
+  </Step>
+  <Step title="Analyze">
+    Run **Analyze**. Nexie reads the extracted content plus the client's industry
+    profile and your product catalog, and produces the Client Operations
+    Blueprint. The assessment moves to **Reviewed**.
+  </Step>
+  <Step title="Review and edit">
+    Review the blueprint and adjust the recommended stack. Nothing is final until
+    you approve it.
+  </Step>
+  <Step title="Approve">
+    Approve the blueprint. Scheduled operations are created from it at this step.
+  </Step>
+  <Step title="Convert to a quote">
+    Convert the blueprint into a **draft quote** — line items are grouped by
+    category and the quote is linked back to the assessment and deal. You land in
+    the quote editor to finish it.
+  </Step>
+</Steps>
+
+## What the blueprint covers
+
+- Executive summary and a risk assessment (an overall 0–100 score plus security,
+  infrastructure, compliance, and business-continuity sub-scores)
+- Recommended product stack, hardware standards by role, software stack, and
+  security stack
+- Applicable compliance frameworks
+- A management plan and service tier, scheduled operations, and a suggested
+  contract design (term, SLAs, payment terms, escalation, exclusions)
+
+Blueprints are versioned — re-running the analysis keeps the history.
+
+## AI and cost
+
+Analysis uses Claude and requires your tenant's API key (Settings → Integrations).
+The estimated cost of each analysis is recorded on the assessment and in your AI
+usage log, so spend is always attributable.
+
+## Good to know
+
+- **Analysis needs at least one successfully processed document.** Unsupported or
+  image-only files may extract poorly — text-based documents give the best
+  results.
+- If an analysis returns a malformed result, the assessment reverts to **Draft**
+  so you can re-run it.
+- Review the recommended pricing after converting — items the AI couldn't price
+  fall back to your catalog price (or zero), so confirm line items before sending.

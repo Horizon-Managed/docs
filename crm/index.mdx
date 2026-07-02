@@ -1,0 +1,75 @@
+---
+title: "CRM"
+description: "The system of record for the companies and people you sell to and support — accounts, contacts, pipeline, activities, and AI lead capture"
+---
+
+The CRM is where NEXOS CORE tracks the companies and people you sell to and
+support. Each client gets a 360° account view — contacts, tickets, quotes,
+invoices, RMM agents, contracts, and compliance in one place — plus a
+customizable deal pipeline, an activity log of every touchpoint, email
+campaigns, and AI that turns a sales-call transcript into ready-to-save records.
+
+## When to use it
+
+- Manage client and prospect records with full account context.
+- Track and forecast sales opportunities through a weighted pipeline.
+- Log and filter customer touchpoints (calls, meetings, follow-ups, QBRs).
+- Capture a new lead from a call transcript without manual data entry.
+
+## Accounts and contacts
+
+Open clients at `/crm/clients` and contacts at `/crm/contacts`. Client lists
+filter by search, lifecycle, industry, tag, and type; each client opens to a 360°
+dashboard. Contacts support types (primary, billing, technical, decision-maker,
+c-suite), channel preferences, and opt-outs.
+
+## Deal pipeline
+
+The pipeline (`/crm/pipeline`) groups deals by **stage**. Stages are yours to
+define — sort order, color, win-probability %, and won/lost flags. Each deal
+carries value, recurring value, owner, expected close date, source, and an
+optional linked quote. The board shows each stage's total **and a weighted value**
+(deal value × win-probability). Moving a deal into a won or lost stage
+auto-stamps the close date.
+
+## Activity log
+
+Log calls, meetings, emails, follow-ups, and more (`/crm/activities`), with
+dynamic filtering and complete/follow-up tracking — so every client interaction
+is on the record.
+
+## Email campaigns
+
+Draft, schedule, and track campaigns to your contacts (`/crm/campaigns`) with
+open, click, and bounce stats.
+
+<Note>
+  Campaign **send** currently records the send and its stats; outbound email
+  delivery integration is limited today — treat campaigns as planning and
+  tracking until delivery is fully wired.
+</Note>
+
+## AI lead capture
+
+From a raw sales-call transcript, NEXOS CORE extracts ready-to-save records:
+
+<Steps>
+  <Step title="Paste or upload the transcript">
+    Paste text or upload a `.txt`/`.md` file (up to 10 MB) — surfaced as "New
+    lead from transcript" in the NexusIQ Sales Workspace.
+  </Step>
+  <Step title="AI extracts the details">
+    Claude returns contact details, the interaction summary and outcome, key pain
+    points, suggested next steps with a follow-up date, and sales opportunities.
+  </Step>
+  <Step title="Review, then save">
+    Nothing is written until you confirm — on save it creates the contact, logs
+    the activity, and optionally opens a deal.
+  </Step>
+</Steps>
+
+<Note>
+  Lead analysis is **preview-only** (nothing persists until you confirm) and
+  needs your tenant's Claude API key in Settings → Integrations. Only `.txt`/`.md`
+  uploads are accepted.
+</Note>
