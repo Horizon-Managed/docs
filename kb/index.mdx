@@ -1,0 +1,82 @@
+---
+title: "Knowledge base"
+description: "Write, publish, and search IT articles — with AI-drafted first passes and in-ticket suggestions"
+---
+
+The knowledge base is your team's article library — SOPs, how-to guides, and
+troubleshooting steps — organized into categories, tagged, and full-text
+searchable. Articles can be drafted by AI from a plain-language prompt, and
+relevant ones surface automatically while you work a helpdesk ticket.
+
+Open it at `/kb`.
+
+## When to use it
+
+- Document standard operating procedures, how-tos, and fixes your techs reuse.
+- Publish customer-facing self-service articles (keep others internal-only).
+- Surface relevant articles automatically inside a helpdesk ticket.
+- Draft a first pass with AI, then edit and publish it.
+- See which articles get viewed and marked helpful most.
+
+## Writing and publishing
+
+Each article has a **status** — Draft, Published, or Archived — and an
+auto-generated slug from its title. Organize articles with:
+
+- **Categories** — hierarchical (a category can have a parent) with per-category
+  article counts.
+- **Tags** — comma-separated, for cross-cutting topics.
+- **Internal vs. public** — mark an article internal to keep it staff-only.
+
+Only **Published** articles appear in search; drafts and archived articles stay
+out of results.
+
+## Search
+
+Search from `/kb/search`. It uses PostgreSQL full-text search over the article's
+indexed content and returns results **ranked by relevance** with a highlighted
+snippet showing your terms in context. Multi-word queries match articles
+containing *all* the words. Results are scoped to your tenant and limited to the
+top matches.
+
+## AI article generation
+
+You can have AI draft an article from a short prompt:
+
+<Steps>
+  <Step title="Describe the article">
+    Give a plain-language prompt (e.g. "How to reset a user's MFA in Entra").
+  </Step>
+  <Step title="AI drafts it">
+    Claude writes as an MSP technical writer and returns a title, markdown
+    content, and suggested tags.
+  </Step>
+  <Step title="Review, edit, publish">
+    The draft opens in the editor — it is **not** auto-saved. Edit it, then
+    publish when you're happy.
+  </Step>
+</Steps>
+
+<Note>
+  AI generation requires your tenant's Claude API key to be configured in
+  settings. Without it, generation returns "not implemented" rather than a
+  draft.
+</Note>
+
+## In-ticket suggestions
+
+When working a helpdesk ticket, the knowledge base surfaces the most relevant
+published articles so a fix is one click away.
+
+<Note>
+  These suggestions are **search-based**, not AI: they run the same full-text
+  search against the ticket context and return the top matches. AI is used only
+  for *drafting* articles, not for suggesting them.
+</Note>
+
+## Good to know
+
+- No article version history or scheduled publishing yet — edits overwrite in
+  place.
+- View counts are best-effort (recorded in the background), so treat them as
+  approximate.
