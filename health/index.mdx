@@ -1,0 +1,60 @@
+---
+title: "Host & service health"
+description: "A real-time operations view of the NEXOS CORE host and its dependencies — metrics, probes, and service control"
+---
+
+The Health dashboard is a real-time operations view of the **NEXOS CORE platform
+host itself** — the server running your instance. It reports live host metrics
+(CPU, memory, disk, network, uptime), lets you define and probe the dependencies
+your instance relies on, and lets an operator restart core system services from
+the UI.
+
+Open it at `/settings/health`.
+
+<Note>
+  This monitors the **NEXOS CORE host**, not your clients' infrastructure. For
+  monitoring client endpoints, see [RMM](/rmm/deploy-agent). This is an
+  operator/admin tool.
+</Note>
+
+## When to use it
+
+- Confirm the host is healthy — CPU/RAM/disk pressure, load average, uptime.
+- Check whether key dependencies are reachable (web front end, database, others).
+- Diagnose a slowdown — inspect PostgreSQL cache-hit ratio, connections, and slow
+  queries.
+- Restart a core system service without SSH.
+
+## Host metrics
+
+Live CPU usage and load averages, memory and swap, disk usage, per-interface
+network info and aggregate I/O, plus OS, kernel, and uptime.
+
+## Component probes
+
+Define "ecosystem components" and probe them concurrently, each returning a
+status and latency. Four check types:
+
+- **HTTP** — a GET with a short timeout (2xx/3xx healthy; auth-style 401/403/405
+  still count as "up").
+- **TCP** — a port connect.
+- **PostgreSQL** — a version check.
+- **Process** — `systemctl is-active` (falling back to a process match).
+
+Click a component for extended metrics — for PostgreSQL: database sizes,
+connections, cache-hit ratio, and top slow queries (when `pg_stat_statements` is
+available); for HTTP: average latency, status, and headers.
+
+## Service management
+
+View and restart a fixed whitelist of core services (e.g. `nexusos-psa`,
+`postgresql`, `nginx`, `docker`) directly from the dashboard. Restarts are
+audit-logged.
+
+## Good to know
+
+- **Most host metrics are Linux-only** (they read `/proc` and `/etc/os-release`);
+  disk also works on macOS.
+- Service restart requires systemd with passwordless sudo, and only the
+  whitelisted service names are permitted.
+- The PostgreSQL probe checks the NEXOS CORE application database.

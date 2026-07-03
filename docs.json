@@ -89,9 +89,13 @@
             ]
           },
           {
-            "group": "RMM",
+            "group": "RMM & infrastructure",
             "pages": [
-              "rmm/deploy-agent"
+              "rmm/deploy-agent",
+              "rmm/remote-sessions",
+              "devices/index",
+              "infra/index",
+              "health/index"
             ]
           }
         ]

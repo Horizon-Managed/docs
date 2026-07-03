@@ -1,0 +1,66 @@
+---
+title: "Remote sessions & recording"
+description: "Remote terminal, desktop, and tunnels to a managed endpoint — with auditable, replayable session recording"
+---
+
+Once an [agent](/rmm/deploy-agent) is deployed, a technician can remotely operate
+the endpoint from the browser — an interactive shell, a live remote desktop, and
+network tunnels to services behind the machine — all over the agent's persistent
+outbound connection, with **no inbound firewall ports** on the customer machine.
+Support sessions can be recorded and replayed later, and every access to a
+recording is written to the security audit log.
+
+## When to use it
+
+- Hands-on troubleshooting on a customer endpoint (run commands, see the desktop).
+- Guide an end user while they watch — an on-screen toast names the technician
+  and your organization.
+- Reach a service behind the endpoint (a LAN device, internal web UI) via tunnel.
+- Capture an auditable, replayable record of a support session for compliance/QA.
+
+## Remote terminal
+
+An interactive shell in the browser (xterm.js) relayed to a PTY on the endpoint
+over a secure WebSocket. Open it from an agent at `/rmm/agents/{id}/terminal`.
+
+## Remote desktop
+
+Live screen with input control, at `/rmm/agents/{id}/desktop`. The default
+transport is **WebRTC** (with a legacy JPEG-over-WebSocket fallback).
+
+<Note>
+  Cross-network remote desktop (technician and customer on different networks)
+  needs a TURN server configured (`RMM_TURN_*`). With STUN only, it falls back to
+  same-LAN connections.
+</Note>
+
+## Tunnels
+
+Open a SOCKS tunnel through the agent to reach a service behind the endpoint,
+authorized by a short-lived signed capability token.
+
+## Session recording
+
+Recorded sessions are captured as short WebM segments the agent uploads over
+one-shot, expiring upload tokens; each segment is checksummed and stored
+server-side. A consent prompt can gate capture, and finalizing a recording posts
+a note linking it to the originating ticket.
+
+**Playback** is available from the Recordings dashboard (`/rmm/recordings`) or
+the ticket's Recordings panel, which seals the segments into a single playable
+file.
+
+### Audit of access
+
+Every recording list, detail, stream, and playback request writes a security
+audit-log entry (who, what, IP, user agent), and cross-tenant access is blocked
+by row-level security. So access to support recordings is itself fully auditable.
+
+## Good to know
+
+- **Session recording is Windows-only today** — the macOS/Linux capture paths are
+  stubs (see the platform matrix on [Deploy the RMM agent](/rmm/deploy-agent)).
+- Concurrency limits are fixed: **3 sessions per agent, 50 total, 30-minute idle
+  timeout.**
+- All transport is encrypted — mTLS between agent and server, WSS between browser
+  and server.
