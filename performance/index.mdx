@@ -1,0 +1,56 @@
+---
+title: "NexusPulse (SMART Numbers)"
+description: "TruMethods-aligned MSP KPI engine — auto-collected inputs, dozens of graded KPIs, enterprise value, and a monthly scorecard"
+---
+
+NexusPulse is the MSP KPI engine, implementing the TruMethods **SMART Numbers**
+methodology. Each month it collects raw input metrics about your MSP — seats,
+agreements, tickets, revenue, expenses, sales activity — and computes dozens of
+derived KPIs (margins, leverage ratios, profit, business-health scores, and
+enterprise value), grades them against industry targets, and surfaces actionable
+findings in the SMART Numbers Command Center.
+
+Open it at `/performance`.
+
+## When to use it
+
+- Monthly business review — read net profit %, MRR margin, Rule of 40, and AISP
+  against TruMethods benchmarks.
+- Diagnose operational efficiency (RHEM, reactive tickets per seat, close %).
+- Track sales-motion health (dials per appointment, close rate, net MRR gain).
+- Estimate what the business is worth (Enterprise Value from trailing net profit).
+- Generate a saved monthly performance report to track over time.
+
+## Where the numbers come from
+
+- **Auto-collected** from NEXOS CORE: seats (product assignments), agreements and
+  MRR changes (contracts), staff/roles (users), reactive tickets and time
+  (helpdesk), and sales activity (CRM, quotes).
+- **From QuickBooks** — revenue and all expense categories come from the QBO
+  Profit & Loss, summed by your account mappings.
+- **Manual overrides** — any input you edit is respected on the next collection.
+
+The monthly run collects inputs, applies your overrides, computes the KPIs, and
+saves the snapshot; a background job finalizes the prior month automatically.
+
+## Scorecard and analysis
+
+Each KPI is graded **green / yellow / red** against TruMethods target bands, and
+the analyzer emits prioritized findings with a plain-English diagnosis, dollar
+impact, and a recommended action that deep-links into the relevant tool.
+**Enterprise Value** rolls monthly snapshots into quarters and applies a
+net-profit-based multiplier.
+
+## Good to know
+
+<Warning>
+  **Connect and map QuickBooks for accurate margins.** Without QBO connected and
+  accounts mapped, all expense categories fall back to **0** — so every margin,
+  profit, and expense KPI is unreliable until then. Revenue still derives from
+  contracts and invoices.
+</Warning>
+
+- The monthly **executive summary is rule-based, not AI-generated** today.
+- Year-over-year metrics need a prior-year snapshot before they populate.
+- Grading bands and a few unit-economics assumptions are fixed to TruMethods
+  defaults, not tenant-tunable.

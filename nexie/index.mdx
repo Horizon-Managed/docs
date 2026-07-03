@@ -1,0 +1,52 @@
+---
+title: "Nexie assistant"
+description: "Ask plain-English questions about your data — Nexie answers from your live database, read-only and scoped to your tenant"
+---
+
+Nexie is the built-in conversational AI assistant. Ask it a plain-English
+question about your data — tickets, projects, invoices, clients, purchase orders,
+security — and it answers using your **live** database. Nexie writes a
+**read-only** query, runs it against **your tenant's** data, and turns the results
+into a concise answer. Each answer reports its AI cost.
+
+It's available as a chat surface throughout the app (no separate page).
+
+## When to use it
+
+- Quick data lookups without building a report ("How many invoices are
+  outstanding, and for how much?").
+- Cross-module questions ("Which clients have open critical tickets?").
+- On-the-spot counts, sums, and averages.
+- Context-aware questions while viewing a record — Nexie uses the current
+  module/entity for tighter answers.
+- Follow-up questions — recent turns are carried as conversation history.
+
+## How it works
+
+<Steps>
+  <Step title="Ask">
+    Type a question. Nexie builds context from your current module and a summary
+    of your data.
+  </Step>
+  <Step title="Nexie queries your data">
+    It generates a **read-only** query, scoped to your tenant, and runs it.
+  </Step>
+  <Step title="You get a formatted answer">
+    Results come back as a concise answer (often a table), with the AI cost shown.
+  </Step>
+</Steps>
+
+## Safe by design
+
+- **Read-only** — Nexie only runs `SELECT`-style queries; write/DDL statements are
+  rejected.
+- **Your data only** — queries are scoped to your tenant, and row-level security
+  is the backstop.
+- **Bounded** — results are row-limited and time-boxed, and each answer reports
+  its cost.
+
+## Good to know
+
+- Answers are generated from live queries against your data — for
+  decisions that matter, spot-check the underlying numbers.
+- Nexie requires your tenant's Claude API key (Settings → Integrations).
