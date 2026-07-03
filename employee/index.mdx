@@ -1,0 +1,48 @@
+---
+title: "Team & employees"
+description: "Lightweight HR records — profiles, skills, certifications, pay and role rates, availability, and time off — that feed dispatch, timesheets, and job costing"
+---
+
+The Team module is NEXOS CORE's lightweight HR record. It extends each internal
+user with an employee profile and the operational data the rest of the platform
+needs: skills and certifications, pay rates, role/cost rates, a weekly
+availability template, and time-off requests. It's a system of record — no
+payroll processing or PTO accrual math.
+
+Open it at `/employees`.
+
+## When to use it
+
+- Onboard a staff member by linking their user to an employee profile.
+- Record skills and certifications so dispatch can match techs to work.
+- Set pay and role/cost rates that feed timers, work orders, and job costing.
+- Define a weekly availability template for dispatch load-balancing.
+- Log and approve time-off requests.
+
+## What it tracks
+
+- **Profiles** — job title, department, employment type, hire/termination dates,
+  status (active, on leave, suspended, terminated), contact and emergency details.
+- **Skills & certifications** — trade, IT category, or certification, with a
+  proficiency level, a certified flag, and expiry date.
+- **Pay rates** — hourly, salary, per-diem, or flat, with base and overtime
+  rates and effective dates (history retained).
+- **Role rates** — a bill rate (from the billing role) plus an employee-specific
+  cost rate, with a computed margin.
+- **Availability** — a 7-day template with per-day hours and a max job-slots
+  count.
+- **Time off** — start/end/reason with an approve action.
+
+## How it feeds the rest of the platform
+
+- **[Dispatch](/dispatch)** reads skills for AI tech-matching and availability for
+  per-day load balancing.
+- **[Time tracking](/time)** and **[work orders](/workorder)** use role and cost
+  rates to compute billable and cost amounts.
+- **[Projects](/project)** job-costing uses member cost rates.
+
+## Good to know
+
+- **No payroll or PTO accrual** — time off is a request list with an approve
+  flag; there's no hours math, accrual, or balance tracking.
+- Departments, trades, and role lists are fixed (not tenant-configurable) today.

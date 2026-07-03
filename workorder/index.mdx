@@ -1,0 +1,55 @@
+---
+title: "Work orders"
+description: "Field-execution records for construction and trades — crew, daily logs, punch lists, and job costing from mobilization to closeout"
+---
+
+Work orders are NEXOS CORE's field-execution record for construction and trades
+work — the trades equivalent of a helpdesk ticket. Each work order tracks a job
+at a physical site from mobilization through closeout: who's on the crew, what
+got done each day, what's left to fix, and the running labor hours and cost. Work
+orders can link to a company, project, bid, and site survey, and are typed by
+trade (cabling, access control, fire alarm, CCTV, electrical, HVAC, and more).
+
+Open them at `/work-orders`.
+
+## When to use it
+
+- Dispatch field crews for install, service, warranty, inspection, maintenance,
+  emergency, retrofit, or upgrade work.
+- Track a trades job through its construction phases.
+- Capture daily field reports (weather, work performed, materials, delays, safety).
+- Manage crew check-in/out with automatic hours-and-cost capture.
+- Run a punch list of deficiencies before closeout.
+
+## Lifecycle
+
+Work orders are auto-numbered (e.g. `WO-0001`) and advance through phases:
+**mobilize → rough-in → trim-out → termination → testing → punch list →
+closeout → complete**. Status tracks alongside (scheduled, in progress, on hold,
+pending inspection, complete, and so on).
+
+## Crew and job costing
+
+Assign technicians with roles (lead, installer, apprentice, helper, inspector,
+PM). When a tech **checks in**, their time starts; on **check-out**, actual hours
+are computed and written as a billable time entry using their role's bill/cost
+rates — and the work order's actual hours and cost roll up automatically. So
+field labor flows straight into [time tracking](/time) and job costing.
+
+## Daily logs
+
+Record one daily log per work order per day — weather, site conditions, work
+performed, materials and equipment, crew count and hours, delays, safety
+incidents, change orders, and tomorrow's plan. Saving a log recomputes the work
+order's hours.
+
+## Punch list
+
+Track deficiencies with a severity (critical, major, minor, cosmetic), location,
+and assignee, and resolve them before closeout.
+
+## Good to know
+
+- **Client e-sign-off on work orders isn't available yet** — closeout is done by
+  advancing the phase; a signed client acceptance step is planned.
+- Punch-item photo attachments aren't wired yet.

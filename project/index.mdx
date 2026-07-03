@@ -1,0 +1,63 @@
+---
+title: "Projects"
+description: "PMP-aligned project management — WBS tasks, job costing, earned value, and client-signed change orders"
+---
+
+Projects is NEXOS CORE's project-management module for delivering scoped client
+engagements (implementations, migrations, buildouts) rather than break-fix
+tickets. Work is organized into a WBS task hierarchy, tracked across the PMP
+process groups, and measured with job costing and earned value management. Each
+project ties to a company (and optionally a contract and site), a project
+manager, a team with cost and billing rates, budgets, milestones, risks, and
+client-signable change orders.
+
+Open projects at `/projects`, or the kanban board at `/projects/board`.
+
+## When to use it
+
+- Deliver scoped client engagements with a plan and a budget.
+- Track budget-vs-actual job costing across labor, materials, subcontractor,
+  travel, and overhead.
+- Watch schedule and cost performance (EVM: SPI/CPI, EAC forecasting).
+- Run formal change control with client e-signature on change orders.
+- Bill projects as Time & Materials, Fixed Price, or Milestone-based.
+
+## Structure
+
+- **Tasks & WBS** — a hierarchy of tasks with WBS codes, estimated/actual hours
+  and cost, percent complete, and PMI-style dependencies (finish-to-start and the
+  other three) with lag.
+- **Milestones** — including billing milestones with an amount.
+- **Team** — members with cost rate, billing-rate override, and allocation.
+- **Budget, expenses, and POs** — budget by category, with expense
+  approve/reject and PO approve/receive.
+- **Risk register** — probability × impact scoring with response strategy.
+- **Stakeholders, notes, lessons learned**, plus Gantt and profitability views.
+
+## Job costing and earned value
+
+The **job-costing** view rolls up labor (time entries × member cost rate),
+expenses by category, received-PO cost, and overhead into total cost, gross
+margin, and budget variance.
+
+**Earned value** produces a snapshot on demand: BAC (budget), PV (planned value),
+EV (earned value), and AC (actual cost), plus the derived metrics — SV/CV, SPI,
+CPI, EAC, ETC, VAC, and percent complete.
+
+<Note>
+  EVM snapshots are generated **on demand**, not on a schedule — trigger a
+  snapshot to capture the current numbers.
+</Note>
+
+## Change control
+
+Raise a change request; if it's over your internal-approval threshold it routes
+for approval, then the client signs it on a secure page (name, email, signature,
+IP captured). A change order can optionally create a PO automatically.
+
+## Good to know
+
+- **Invoicing from a project isn't built yet** — billing modes are stored and
+  selectable, but the project doesn't itself produce invoices (the invoice action
+  currently returns "not yet implemented"). Bill through the
+  [billing](/billing) module or a [contract](/legal/contracts) for now.
