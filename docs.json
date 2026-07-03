@@ -131,6 +131,14 @@
               "portal/index",
               "onboarding/index"
             ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/quickbooks",
+              "integrations/microsoft-365",
+              "integrations/hudu"
+            ]
           }
         ]
       },

@@ -1,0 +1,51 @@
+---
+title: "QuickBooks Online"
+description: "Connect QBO as your financial source of truth — sync products, customers, invoices, and payments in; push estimates, invoices, POs, and timesheets out"
+---
+
+NEXOS CORE connects to your QuickBooks Online company so QuickBooks stays the
+single source of truth for financial data. After a one-time OAuth connection,
+NEXOS CORE periodically **pulls** your products, customers, employees, invoices,
+and payments into a local mirror (for fast in-app display) and **pushes**
+estimates, invoices, purchase orders, and approved timesheets out to QuickBooks.
+Each data type flows in one direction.
+
+## When to use it
+
+- Bill from NEXOS CORE while keeping QuickBooks authoritative for accounting.
+- Push approved quotes to QBO as estimates, and quotes/time/contracts as invoices.
+- Auto-invoice recurring service contracts on schedule.
+- Push approved timesheets to QBO as time activities.
+- View synced invoices, payments, and products in NEXOS CORE without hitting the
+  QBO API on every page.
+
+## Connecting
+
+Connect under **Settings → QuickBooks** — a standard OAuth authorization to Intuit
+(per-tenant client credentials, with a sandbox toggle for testing). Tokens
+refresh automatically; a revoked token marks the connection inactive.
+
+## What syncs which way
+
+**In (QuickBooks → NEXOS CORE):** company info, products/services, customers (to
+companies), employees, invoices with line items, and payments — upserted into the
+local mirror. Invoices and payments pull incrementally after the first full sync.
+
+**Out (NEXOS CORE → QuickBooks):** estimates from quotes; invoices from time
+entries, tickets, quotes, and contracts; purchase orders; and time activities from
+approved timesheets.
+
+**Cadence:** a full sync runs every ~15 minutes and recurring billing scans hourly,
+plus a manual **Sync Now**.
+
+## Good to know
+
+- **It's one-way per data type, not a live two-way sync.** An invoice you create
+  pushes out and is mirrored back on the next sync, but later edits in NEXOS CORE
+  don't automatically re-push.
+- Invoice sync **skips** any QuickBooks invoice whose customer isn't yet mapped to
+  a NEXOS CORE company.
+- Product sync brings in Service and Non-Inventory items (not Inventory/Group or
+  QBO system items).
+- Timesheet push needs each user mapped to a QuickBooks employee first (in
+  Settings) — unmapped users are skipped.

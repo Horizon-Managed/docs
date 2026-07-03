@@ -1,0 +1,47 @@
+---
+title: "Hudu"
+description: "Two-way documentation sync with Hudu — push companies and devices, pull assets and passwords, and surface Hudu KB inside tickets"
+---
+
+The Hudu integration connects NEXOS CORE to your Hudu IT-documentation platform
+via Hudu's REST API. It pushes your companies and RMM devices **into** Hudu as
+companies and assets, pulls Hudu assets and passwords **back into** NEXOS CORE as
+infrastructure devices, and surfaces matching Hudu knowledge-base articles inside
+the helpdesk ticket view. It's configured per tenant.
+
+## When to use it
+
+- You run Hudu as your documentation system of record and want NEXOS CORE
+  company/device data reflected there.
+- You want the [Infrastructure](/infra/index) module populated from existing Hudu
+  assets and passwords.
+- You want techs to see relevant Hudu KB articles while working a ticket.
+
+## Setup
+
+Configure Hudu per tenant — the Hudu URL, an API key, and enable it (the provider
+must be set to Hudu). **Test connection** validates the key.
+
+## What it does
+
+- **Company sync (push)** — sends active companies (name, phone, website, address)
+  to Hudu, matching an existing Hudu company by name or creating a new one.
+- **Asset sync (push)** — sends active RMM agents as Hudu assets (hostname, OS, IP,
+  MAC), for companies that have already been company-synced.
+- **Infrastructure pull** — [Infrastructure verification](/infra/index) can import
+  Hudu assets as devices (source: Hudu), mapping Hudu asset layouts to device
+  types and best-effort linking a Hudu password to each.
+- **Ticket KB (Peek)** — the ticket Peek surfaces relevant Hudu articles in its
+  knowledge rail.
+
+A sync-status view tracks per-entity counts and last-synced times.
+
+## Good to know
+
+- **Company matching is by name (case-insensitive)** — duplicate or renamed
+  companies in Hudu can mis-match or create duplicates; keep names consistent.
+- **Push and pull are separate actions**, not a single two-way sync — you push
+  companies/assets to Hudu and separately pull assets into Infrastructure.
+- Asset push relies on your target Hudu asset layout accepting the fields NEXOS
+  CORE sends.
+- Password linking on the pull side is a best-effort match — verify links.
