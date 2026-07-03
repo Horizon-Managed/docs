@@ -1,0 +1,72 @@
+---
+title: "Construction & bid"
+description: "The Bid engine, Drawings, and Field survey ship — AI-assisted takeoff, versioned site drawings with 3D floor-plan analysis, and iPad pre-bid walkthroughs that convert straight to a bid."
+---
+
+End-of-week ship, extending the [v1.14.x platform](/changelog/2026-07-01).
+Three new product areas cover pre-bid site work, drawing management, and
+construction / low-voltage bidding.
+
+## New features
+
+### Bid engine
+
+Construction, low-voltage, and electrical bidding — replaces an Excel cost
+workbook with a deterministic server-side cost engine and AI-assisted takeoff.
+Upload spec documents and drawings and NEXOS CORE reads the drawings with
+Claude Vision to count devices, generates trade-grouped line items, applies
+issued addendums via a reviewable diff, writes a scope-of-work narrative, and
+runs a red/yellow/green pre-submission audit that blocks submit on red
+findings. Cost math is deterministic — material + tax + subs + equipment +
+labor + burden roll up to hard cost, then overhead, profit, contingency,
+commission, sales tax, permits, and bond to grand total, with profit
+per man-day, margin %, and an optional manual bid-price override. See
+[Bid engine](/bidengine/index).
+
+### Drawings
+
+System of record for a client site's technical drawings — floor plans, network
+and riser diagrams, cable paths, rack elevations, conduit layouts, and
+as-builts. Uploads support 11 drawing types up to 64 MB with full revision
+history, scoped to a company, survey, bid, or project. Run **Analyze floor
+plan** on an image drawing and Claude Vision extracts rooms, doors, corridors,
+and safety features to render a server-side **isometric 3D view** — no
+plugins, just SVG. For drawings attached to a bid, an AI takeoff counts
+low-voltage devices and cable runs and feeds the [bid engine](/bidengine/index)'s
+reconciliation, gated to the trades that bid actually covers. See
+[Drawings](/drawing/index).
+
+### Field survey
+
+iPad pre-bid site assessment for low-voltage and IT infrastructure work. A
+tech walks a prospective job site and captures a room-by-room inventory —
+**GPS-tagged photos** grouped by area and floor, **voice notes** that Claude
+transcribes and extracts into structured survey items and area attributes
+(ceiling type, height, square footage), and **AI equipment detection** that
+reads nameplates from photos for manufacturer, model, serial, plus a
+photo-quality score and code-violation flags (NEC, NFPA 72, TIA-568, UL 294).
+A completed survey converts one-tap into a draft [bid](/bidengine/index) —
+each area becomes a section and each item needing work becomes a line item,
+with pricing added downstream. See [Field survey](/survey/index).
+
+## Known limitations
+
+- **Bid engine** — AI takeoff, reconcile, addendum diff, and scope summary
+  require your tenant's Claude API key and carry a per-drawing cost.
+  Confidence scores on generated line items are AI estimates — verify before
+  submit. The **Dedupe by tag** heuristic on Vision Findings can drop a
+  legitimate sheet; review before applying.
+- **Drawings** — AI features are **image-only** (PNG/JPG/WebP). PDF, DWG, and
+  SVG files are stored but can't be analyzed. **Drawing annotations (pins,
+  notes, measurements) aren't available yet.**
+- **Field survey** — **voice capture is transcript-only** (no audio file is
+  stored) and depends on the browser's speech recognition, so non-Chrome/Safari
+  browsers won't capture. GPS coordinates come from the device and aren't
+  server-validated. AI detection is on-demand and needs your tenant's Claude
+  API key. Conversion to a bid requires the survey to be marked **completed**.
+
+Earlier [known limitations from v1.14.x](/changelog/2026-07-01#known-limitations),
+[week of June 29](/changelog/2026-07-02#known-limitations), the
+[Quotes, billing & contracts ship](/changelog/2026-07-02-quotes-billing#known-limitations),
+and the [Projects & field ship](/changelog/2026-07-03-projects-field#known-limitations)
+remain unchanged.
