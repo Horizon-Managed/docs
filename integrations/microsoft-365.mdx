@@ -1,0 +1,51 @@
+---
+title: "Microsoft 365"
+description: "How NEXOS CORE uses Microsoft Graph — calendar sync, email-security mailbox tap, outbound email, and Microsoft SSO"
+---
+
+NEXOS CORE connects to Microsoft 365 through the Microsoft Graph API. There's no
+single "M365 module" — Graph powers a handful of features, which share **one
+per-tenant app registration** using app-only (client-credentials) auth.
+
+## Setup
+
+Configure a Microsoft 365 connection under **Settings → Integrations** (an email
+account with provider Microsoft 365): your **tenant ID, client ID, and client
+secret** from an Entra app registration. NEXOS CORE fetches and caches app-only
+tokens automatically.
+
+The app registration needs these **application** permissions (admin-consented):
+`Calendars.ReadWrite`, `Mail.Read` + `Mail.ReadWrite`, and `Mail.Send`.
+
+## What it powers
+
+- **Calendar sync** — [Dispatch](/dispatch) creates, updates, and deletes events
+  on a technician's M365 calendar when you assign, change, or remove a dispatch
+  slot (one-way, NEXOS CORE → M365).
+- **Email-security mailbox tap** — [Email security](/emailsec/index) reads recent
+  messages (with full headers) for phishing analysis and moves flagged mail to
+  Junk.
+- **Outbound email** — quote and invoice delivery can send through Graph
+  (`sendMail`).
+- **Microsoft SSO** — staff can sign in with "Microsoft" via OIDC (a separate
+  login flow from the app-only credentials above).
+
+## What is *not* integrated
+
+To set expectations clearly, NEXOS CORE's Graph usage is limited to calendar,
+mail, and sign-in. There is **no** integration for:
+
+- Microsoft Teams / chat
+- SharePoint or OneDrive
+- Intune / device management
+- Entra user or group sync / provisioning
+- Defender / Secure Score pull (email security uses the headers already stamped by
+  Defender/Inky, not a security API)
+
+## Good to know
+
+- **One shared app registration** serves calendar sync, the mailbox tap, and
+  outbound send — a single client secret spans all three.
+- Permissions are **application-scoped (org-wide)**, not per-user delegated.
+- The email-security tap monitors **one mailbox per tenant** (the first configured
+  Microsoft 365 account).
