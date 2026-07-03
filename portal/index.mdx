@@ -1,0 +1,56 @@
+---
+title: "Client portal"
+description: "The self-service portal your clients log into — tickets, invoices, quotes, contracts, KB, risk-acceptance signing, and an AI concierge"
+---
+
+The Client Portal is the self-service web app that **your clients** log into — not
+the MSP staff app. Portal users are *contacts* (not MSP users) and authenticate
+through a completely separate stack; every session is bound to a single
+tenant/company/contact and can't reach anything outside that scope. It surfaces
+the client's own tickets, invoices, quotes, contracts, and knowledge-base
+articles, plus risk-acceptance signing and an embedded Nexie AI concierge.
+
+Clients log in at `/portal/login`.
+
+## When to use it
+
+- A client wants to view or create support tickets and reply to them.
+- A client needs to see invoices, balances, quotes, or contracts.
+- A client must review and countersign a risk acceptance.
+- A client wants self-service KB and an AI assistant for account questions.
+- A tech wants to preview the portal as a specific contact.
+
+## Logging in
+
+The portal uses **passwordless magic links**: the client enters their email and
+receives a one-time link (valid ~30 minutes). Consuming it creates a
+server-side session (a secure, HttpOnly cookie). The login response is identical
+for known and unknown emails and is rate-limited, so it can't be used to probe
+who has an account.
+
+## What clients can do
+
+- **Tickets** — list, filter, view (with public notes), create, and add notes.
+- **Invoices** — list and filter (open/paid/overdue), view line items and
+  payments, and use a QuickBooks pay-link when present.
+- **Quotes & contracts** — view non-draft quotes and contracts.
+- **Knowledge base** — search and read articles marked customer- or public-visible.
+- **Risk acceptances** — review and e-sign pending acceptances.
+- **Profile** — edit phone, mobile, and title (name/email changes need MSP approval).
+- **Nexie concierge** — an embedded AI assistant that answers account questions
+  using a fixed, role-filtered, read-mostly tool set (it can create a ticket, but
+  can't pay invoices or sign contracts on the client's behalf).
+
+## Portal administration (MSP side)
+
+From the staff app you invite/enable/disable portal users, manage **roles and
+permissions** (every page and action is permission-gated), set a default role,
+and **impersonate** a contact to preview exactly what they see (audited, time-limited).
+Permissions reload on every request, so role changes take effect immediately.
+
+## Good to know
+
+- **Login is magic-link only today** — TOTP MFA and password login aren't
+  available yet.
+- Magic-link delivery requires a configured mailer/email account; the Nexie
+  concierge requires your tenant's Claude API key.
