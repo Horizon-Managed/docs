@@ -1,0 +1,62 @@
+---
+title: "AI & analytics"
+description: "The Nexie conversational assistant, NexusPulse SMART Numbers KPI engine, and consent-gated Employee Productivity Analytics round out the v1.14.x platform."
+---
+
+End-of-week ship, extending the [v1.14.x platform](/changelog/2026-07-01). Three
+new areas cover conversational data access, MSP business KPIs, and per-employee
+productivity analytics.
+
+## New features
+
+### Nexie assistant
+
+The built-in conversational AI assistant, available as a chat surface throughout
+NEXOS CORE. Ask plain-English questions about your tickets, projects, invoices,
+clients, purchase orders, or security posture and Nexie answers from your
+**live** database. Queries are **read-only**, scoped to your tenant, and
+row-limited; follow-up questions carry recent turns as conversation history, and
+each answer reports its AI cost. See [Nexie assistant](/nexie/index).
+
+### NexusPulse (SMART Numbers)
+
+A TruMethods-aligned MSP KPI engine. Each month NexusPulse auto-collects raw
+inputs — seats, agreements, tickets, revenue, expenses, sales activity — and
+computes dozens of derived KPIs including net profit %, MRR margin, Rule of 40,
+AISP, RHEM, reactive tickets per seat, close rates, and **Enterprise Value**.
+Each KPI is graded **green / yellow / red** against TruMethods benchmarks, and
+the analyzer emits prioritized findings with a plain-English diagnosis, dollar
+impact, and a recommended action that deep-links into the relevant tool. Inputs
+pull from contracts, helpdesk, CRM, and QuickBooks P&L, with manual overrides
+respected on the next run. See [NexusPulse](/performance/index).
+
+### Employee productivity analytics
+
+Per-employee focus and app-usage analytics driven by NexusRMM agent telemetry.
+The agent reports 15-minute windows of foreground-app usage; EPA classifies each
+app (productive, communication, meeting, distraction, neutral), computes a 0–100
+**focus score** per window, and rolls the data up into per-client dashboards,
+per-person drilldowns, rolling-average alerts, and AI coaching briefs for
+manager 1:1s. Collection is gated by a **tenant-admin consent acknowledgement**
+plus a **per-person opt-in**, and access is role-gated (Admin, Manager, C-Level;
+HR opt-in only). See [Employee productivity analytics](/epa/index).
+
+## Known limitations
+
+- **Nexie** — read-only by design; write/DDL statements are rejected. Answers are
+  generated from live queries, so spot-check numbers for high-stakes decisions.
+  Requires a tenant Claude API key.
+- **NexusPulse** — margin, profit, and expense KPIs require **QuickBooks
+  connected and accounts mapped**; without it, expense categories fall back to
+  **0** and those KPIs are unreliable. The monthly executive summary is
+  **rule-based**, not AI-generated. Year-over-year metrics need a prior-year
+  snapshot. Grading bands are fixed to TruMethods defaults, not tenant-tunable.
+- **EPA** — app classification uses a fixed built-in list (substring matching);
+  unknown apps are treated as neutral. Consent is a **tenant-admin
+  acknowledgement plus MSP-toggled per-contact opt-in**, not a self-service
+  employee consent — confirm your monitoring has the appropriate legal basis and
+  employee notice for your jurisdiction. AI insights require a tenant Claude
+  API key.
+
+Earlier [known limitations from v1.14.x](/changelog/2026-07-01#known-limitations)
+remain unchanged.
