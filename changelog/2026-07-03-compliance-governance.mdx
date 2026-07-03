@@ -1,0 +1,101 @@
+---
+title: "Compliance & governance"
+description: "One engine for 15 compliance frameworks, a dedicated CMMC L2 workspace, NCSR intake for state cybersecurity reviews, a cross-module risk acceptance registry, and a Live Review Engine for signed, host-driven client attestations."
+---
+
+End-of-week ship, extending the [v1.14.x platform](/changelog/2026-07-01). Five
+new areas cover the compliance and governance stack — framework tracking, the
+CMMC L2 assessor workflow, NCSR ingestion, formal risk acceptance, and live
+client review sessions.
+
+## New features
+
+### Compliance Composer
+
+One engine for every compliance framework — enroll a client, track controls,
+and let NEXOS CORE do the heavy lifting. Composer supports **15 frameworks**
+(CMMC L2, HIPAA, PCI DSS v4.0, SOC 2 Type II, NIST CSF 2.0, NIST 800-53 Rev 5,
+NIST 800-171 Rev 2, ISO 27001:2022, HITRUST CSF v11, FedRAMP Moderate, CJIS,
+CIS Controls v8, FFIEC, StateRAMP, ISO 27701), **auto-collects evidence** from
+RBAC, SIEM, RMM, vulnerability scans, and helpdesk, and runs **Nexie gap
+analysis** that scores each control met / partial / gap and auto-opens POA&M
+items with severity, milestone, cost, and owner. Nexie can also draft policy
+documents to close gaps. See [Compliance Composer](/composer/index).
+
+### CMMC Level 2 workspace
+
+A per-client workspace for **CMMC Level 2 / NIST SP 800-171** across all 110
+requirements and 14 control families. Track control status, auto-collect
+evidence, manage a POA&M, map the **CUI boundary** (inside / on the boundary /
+outside), and generate a **System Security Plan** plus a branded policy binder
+for an assessor. **One-Click Connect** wires a client's devices into the
+compliance picture in a single guided flow — kicking off RMM and SIEM setup,
+scan scheduling, CUI population, and evidence collection. See [CMMC](/cmmc/index).
+
+### NCSR intake
+
+Ingest a client's completed **CIS NCSR Offline Survey** workbook and the
+state-issued **Enhanced Cybersecurity Recommendations PDF**, score their
+**NIST CSF 2.0** maturity by function, and let Nexie turn each improvement area
+into 1–3 concrete, module-mapped actions with estimated hours. Actions land
+as tracked POA&M items, and the plan can be walked through with the client in
+a signed [live review](/review/index) that writes decisions back onto the
+records. See [NCSR intake](/composer/ncsr/index).
+
+### Risk acceptance registry
+
+The single, authoritative record of every risk your organization has formally
+decided to accept rather than remediate. Any compliance or security module —
+NCSR action plans, CMMC POA&Ms, Composer, vulnerability scans, helpdesk
+exceptions — routes its accept decisions into one shared register. Each entry
+carries a written justification, residual-risk note, compensating controls, a
+**client countersignature** (in-person iPad or client portal e-sign, with
+signer identity, IP, and consent captured), and a review/expiry date. Lifecycle
+actions — Renew, Revoke, Resolve — write to an append-only audit trail, and a
+branded, printable Risk Acceptance binder is available for audit. See
+[Risk acceptance registry](/risk/index).
+
+### Live Review Engine
+
+Host-driven, participant-attested review sessions in real time. A staff host
+drives a queued list of items from the console; one or more participants follow
+on their own device (typically an iPad reached via a **QR code**) and record
+decisions (acknowledge / modified / decline), notes, and a **drawn signature**
+per item. Multi-reviewer sessions can scope queues to different SMEs, each
+with their own signature block, and the host sees a live matrix of per-reviewer
+progress. Every transition writes to a tamper-evident audit trail; the completed
+session prints to a **signed binder** and completion hooks write decisions back
+to the source records. See [Live Review Engine](/review/index).
+
+## Known limitations
+
+- **Composer** — cross-framework evidence sharing is **planned, not shipped**;
+  evidence is currently scoped per framework. Evidence-to-control matching is a
+  coarse automatic match — treat it as a starting point, not a curated mapping.
+  Live review is fully wired for NCSR / NIST CSF today; other framework seeders
+  are being added. AI features require your tenant's Claude API key.
+- **CMMC** — the **SSP is templated with your live numbers filled in**, not
+  AI-written. A control counts as "met" when it has current evidence — that's
+  presumptive evidence for an assessor, not independent proof. Some
+  One-Click Connect steps queue work for other modules rather than running it
+  themselves.
+- **NCSR intake** — PDF parsing is tuned to the current (2025) state template;
+  a substantially reformatted future template may need review. After a review,
+  status reflects the client's decisions, but the **maturity score itself
+  isn't recomputed yet** — it shows the surveyed state.
+- **Risk register** — there's **no automatic "expired" state**; the register
+  surfaces due-soon items and reviewing them is a deliberate action.
+- **Live Review Engine** — compliance reviews are the fully wired use today
+  (HR, training, onboarding, post-mortems, and vendor attestations exist as
+  session types but aren't built out with domain content yet). The binder is
+  printed to PDF from the browser, not a pre-rendered file. Participant links
+  expire 24 hours after issue and immediately when the host ends the session.
+
+Earlier [known limitations from v1.14.x](/changelog/2026-07-01#known-limitations),
+[week of June 29](/changelog/2026-07-02#known-limitations), the
+[Quotes, billing & contracts ship](/changelog/2026-07-02-quotes-billing#known-limitations),
+the [Projects & field ship](/changelog/2026-07-03-projects-field#known-limitations),
+the [Construction & bid ship](/changelog/2026-07-03-construction-bid#known-limitations),
+the [RMM & infrastructure ship](/changelog/2026-07-03-rmm-infrastructure#known-limitations),
+and the [Security & SIEM ship](/changelog/2026-07-03-security-siem#known-limitations)
+remain unchanged.
