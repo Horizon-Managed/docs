@@ -1,0 +1,52 @@
+---
+title: "Risk acceptance registry"
+description: "One authoritative register of every formally accepted risk across all modules — with client countersignature and lifecycle tracking"
+---
+
+The Risk Acceptance registry is the single, authoritative record of every risk
+your organization has formally decided to accept rather than remediate. Any
+compliance or security module — NCSR action plans, CMMC POA&Ms, Composer,
+vulnerability scans, helpdesk exceptions — routes its "we're accepting this"
+decisions into one shared register. Each entry carries a written justification,
+residual-risk note, compensating controls, a client countersignature, and a
+review/expiry date.
+
+Open the cross-client register at `/risk/register` (or `/risk/{company}/register`
+per client).
+
+## When to use it
+
+- A finding won't be fixed and the client formally accepts the residual exposure.
+- You need a client-countersigned record of that decision for audit evidence.
+- You want a branded, printable Risk Acceptance binder for an audit or review.
+- You need to track when accepted risks come due for re-review, renewal, or revoke.
+- You want to see accepted risk for one client or across all clients from HQ.
+
+## Creating and countersigning
+
+From a source record (a POA&M, a scan finding, an NCSR action), open the **Mark as
+Risk Accepted** modal, which pre-fills the source and a default review date.
+Justification is required. Then the client countersigns one of two ways:
+
+- **In person** — capture initials and a signature on an iPad at create time; the
+  record is accepted immediately.
+- **Client portal** — the client logs in, reviews the request (logged as a
+  "viewed" event), and e-signs.
+
+Either way the signer identity, IP, consent, and signature are recorded, and the
+source module's status flips to reflect the accepted risk.
+
+## Lifecycle
+
+Records move through pending → accepted → under review, with **Renew** (bumps the
+review date), **Revoke**, and **Resolve** actions — each writing to an
+append-only audit trail. The register lists active items with due-soon counts and
+filters by module, status, and review window.
+
+## Good to know
+
+- Accepted risks carry a review-due date; the register surfaces **due-soon** items
+  so nothing lapses silently. (There's no automatic "expired" state — reviewing
+  due items is a deliberate action.)
+- The printable Risk Acceptance form is a branded, invoice-style binder using the
+  client's brand color.

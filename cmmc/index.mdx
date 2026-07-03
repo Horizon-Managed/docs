@@ -1,0 +1,58 @@
+---
+title: "CMMC"
+description: "A per-client CMMC Level 2 / NIST 800-171 workspace — control tracking, auto-evidence, POA&M, CUI scope, SSP, and AI gap analysis"
+---
+
+The CMMC module is a per-client workspace for managing **CMMC Level 2 /
+NIST SP 800-171** compliance across all 110 requirements (14 control families).
+For each enrolled company it tracks control status, auto-collects evidence from
+other NEXOS CORE modules, manages a POA&M, maps the CUI boundary, and generates a
+System Security Plan plus branded policy and risk-acceptance documents — with
+Nexie assisting on gap analysis and policy generation.
+
+Open it at `/cmmc`.
+
+## When to use it
+
+- Onboard a defense-contractor client that must meet CMMC L2 / NIST 800-171.
+- Track which of the 110 controls are met vs. open, per client.
+- Build and maintain a POA&M for unmet controls with owners and deadlines.
+- Produce an SSP, CUI scope map, or branded policy binder for an assessor.
+- Record risk-acceptance decisions into the cross-module [risk register](/risk/index).
+
+## Dashboard and controls
+
+A per-client dashboard shows overall / Level 1 / Level 2 scores and per-domain
+scores, with counts for evidence, POA&M, CUI, and generated policies. Drill into
+any of the 110 controls for its evidence, module mappings, and POA&M items.
+
+## Auto-evidence, POA&M, and CUI scope
+
+- **Auto-evidence** pulls from RBAC, SIEM, RMM, vuln scanning, helpdesk, and the
+  orchestrator into the control set.
+- **POA&M board** tracks weaknesses with severity, status, and assignees.
+- **CUI scope** maps assets as inside / on the boundary / outside.
+
+## Gap analysis and SSP
+
+**Gap analysis** (Nexie) scores each control (met / partial / gap) against your
+environment and auto-opens POA&M items for the gaps. **SSP generation** assembles
+a System Security Plan from your live scores, scope, and POA&M — you can override
+any section.
+
+## One-Click Connect
+
+A guided activation that wires a client's devices into the compliance picture —
+kicking off RMM and SIEM setup, scan scheduling, CUI population, and evidence
+collection.
+
+## Good to know
+
+- **The SSP is assembled from templates with your live numbers filled in — it is
+  not AI-written.** (The AI writes *policy documents* via the fill-gaps feature,
+  which is separate.)
+- **A control counts as "met" when it has current evidence** — that's presumptive
+  evidence for an assessor to review, not independent proof.
+- Some One-Click Connect steps queue work for other modules rather than running
+  the scan themselves.
+- Gap analysis and policy generation require your tenant's Claude API key.
