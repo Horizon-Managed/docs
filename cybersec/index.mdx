@@ -1,0 +1,40 @@
+---
+title: "Security posture dashboard"
+description: "A single-pane security overview that rolls up compliance, vulnerability, and endpoint scores into one posture view"
+---
+
+The Security Posture Dashboard is a single-pane security overview for a client.
+It rolls up scores from three sources — compliance frameworks, vulnerability
+scanning, and RMM endpoint-agent health — into one **Overall Security Score
+(0–100)**, with per-category breakdowns, endpoint stats, and a recent-alerts
+feed. It's a **read-only** view: it presents scores and alerts already produced
+by the other modules; it doesn't run scans or compute the underlying scores
+itself.
+
+Open it at `/security/dashboard`.
+
+## When to use it
+
+- Get an at-a-glance security posture for a client without opening the compliance,
+  vuln-scan, and RMM tools separately.
+- Track the single Overall Security Score as a headline health metric.
+- Spot which category — compliance, vulnerability, endpoint, or identity — is
+  dragging the score down.
+- Check how many monitored endpoints are online and their policy-adherence rate.
+- Triage the most recent security alerts and update their status.
+
+## What it shows
+
+- **Overall Security Score** — a rollup across all contributing sources.
+- **Category scores** — compliance, vulnerability, endpoint, and identity.
+- **Endpoint stats** — total vs. online agents and the resulting compliance rate.
+- **Recent alerts** — the latest alerts by severity, source, and status; you can
+  update an alert's status inline.
+
+## Good to know
+
+- It's a **read-only aggregation** — the scores come from the
+  compliance, vulnerability-scanning, and [RMM](/rmm/deploy-agent)
+  modules. Fix a low score at its source, not here.
+- The Overall Score is a pooled ratio across sources, so a source with a large
+  maximum weighs more heavily — read it alongside the category breakdown.

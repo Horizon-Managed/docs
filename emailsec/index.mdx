@@ -1,0 +1,65 @@
+---
+title: "Email security"
+description: "Automated phishing triage for Microsoft 365 — header analysis, risk scoring, AI second-opinion, and auto-ticketing"
+---
+
+Email Security is an automated phishing-triage pipeline for Microsoft 365
+tenants. It connects to a client's mailbox through Microsoft Graph, reads
+incoming messages, parses their authentication headers (SPF/DKIM/DMARC plus
+Defender and Inky signals), and scores each message for risk against a per-client
+trust profile. Borderline messages are escalated to a Claude-powered analyst for
+a second opinion, and based on the final score the pipeline allows, logs,
+escalates, or quarantines the message — automatically opening a helpdesk ticket
+for anything that needs a human.
+
+## When to use it
+
+- You manage M365 mailboxes and want automated phishing/spoofing triage on top of
+  Defender.
+- You want lookalike-domain and vendor-impersonation detection tuned to each
+  client's known-good senders.
+- You want suspicious mail to auto-create helpdesk tickets instead of waiting for
+  user reports.
+- You want AI judgment on borderline emails where header signals are inconclusive.
+
+## How it works
+
+<Steps>
+  <Step title="Poll the mailbox">
+    Every ~5 minutes NEXOS CORE pulls recent messages (with full headers) from
+    each enabled client's M365 mailbox via Graph, skipping already-processed mail.
+  </Step>
+  <Step title="Parse and score">
+    It parses authentication results and sender details, then scores 0–100 using
+    auth failures, header mismatches, Defender/Inky flags, lookalike detection
+    (typosquats and homoglyphs), and the client's approved/blocked/trusted-sender
+    lists.
+  </Step>
+  <Step title="AI second opinion">
+    Borderline ("caution-band") messages go to Claude for a structured verdict
+    (safe / suspicious / malicious, with indicators), which adjusts the score. An
+    AI failure is non-fatal — the original score stands.
+  </Step>
+  <Step title="Act">
+    Allow/log low-risk mail; **escalate** opens a high-priority security ticket;
+    **block** quarantines the message (moves it to Junk) and opens a critical
+    ticket. Every decision is recorded as a reviewable event.
+  </Step>
+</Steps>
+
+## Setup
+
+Each client needs an active **Microsoft 365** connection (`email_accounts` with
+app credentials) and **email security enabled**. Auth uses the Graph
+client-credentials flow, and the app registration needs mailbox read and move
+permissions. Scoring quality depends on populated trusted-sender / vendor /
+approved-domain lists per client.
+
+## Good to know
+
+- **Quarantine moves the message to Junk Email** — it's not a full Defender
+  quarantine.
+- It's **polling, not real-time** (~5-minute interval), so very high-volume
+  mailboxes could see a short delay.
+- Company matching is by the **sender** domain — mail from an unrecognized
+  external sender lands in the caution band and gets an AI review.

@@ -1,0 +1,65 @@
+---
+title: "Vulnerability scanning & Red Team"
+description: "Authorized Metasploit-driven vulnerability scans, agent-tunneled internal scanning, and the Nexie Red Team profile wizard"
+---
+
+NEXOS CORE drives a Metasploit Framework instance to run **authorized** security
+scans against client networks. Pick a target range and a scan profile (or an
+AI-recommended one), and NEXOS CORE launches the relevant Metasploit auxiliary
+scanner modules, polls them to completion, and records discovered hosts, open
+services, and vulnerabilities as findings linked to the client. Scans can run
+from the Metasploit host directly, or be tunneled through an on-site agent so
+they originate from inside the client's own network.
+
+Scans live at `/security/scans`; RPC connection settings at `/settings/metasploit`.
+
+<Warning>
+  Only scan networks you are **explicitly authorized** to test. Record the
+  client's penetration-test authorization (scope and sign-off) before you run a
+  scan — NEXOS CORE tracks authorization fields, but you are responsible for
+  ensuring authorization is in place.
+</Warning>
+
+## When to use it
+
+- Monthly asset inventory and open-port discovery (Basic profile).
+- Recurring vulnerability assessment covering critical CVEs and default creds
+  (Standard profile).
+- Quarterly deep review / compliance reporting (Comprehensive profile).
+- On-demand "Scan Now" of a company's managed IP ranges from its Security tab.
+- Scanning from *inside* a segmented/NATed client network — route through an
+  installed agent.
+
+## Setup
+
+Configure your Metasploit RPC connection (URL, credentials) under
+`/settings/metasploit`; **Test** verifies it. Everything depends on a reachable,
+enabled `msfrpcd` — without it, scans fail immediately with "Metasploit not
+configured."
+
+## Scan profiles and templates
+
+Three built-in profiles — **Basic**, **Standard**, **Comprehensive** — plus a
+library of ~50 categorized scan templates (discovery, network, Windows, web,
+credential, compliance). Each profile expands to a set of modules that run
+sequentially.
+
+## Agent-tunneled scans
+
+Launch a scan "via agent" and NEXOS CORE opens a short-lived, CIDR-scoped SOCKS
+tunnel through the on-site agent, so the scan originates from inside the client
+LAN. Targets must be IPv4 addresses or CIDR ranges.
+
+## Nexie Red Team wizard
+
+The wizard loads the client's context — industry, compliance frameworks, asset
+inventory, agent OS mix, and prior findings — and asks Claude to **recommend** a
+tailored scan profile. It recommends; you review and launch.
+
+## Good to know
+
+- Discovered hosts, services, and vulnerabilities become findings and can feed
+  the Sentinel discovered-devices view and the [posture dashboard](/cybersec/index).
+- Agent-routed scans require the SOCKS bind address to be configured correctly
+  for your deployment (msfrpcd typically runs on a separate host).
+- The Red Team wizard requires your tenant's Claude API key.
