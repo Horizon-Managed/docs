@@ -1,0 +1,56 @@
+---
+title: "Sign-in & MFA"
+description: "Staff authentication — email/password, authenticator-app MFA, session management, and Microsoft/Google SSO"
+---
+
+The staff sign-in system authenticates NEXOS CORE employees. You sign in with
+email and password on a single login page (NEXOS CORE resolves your tenant from
+your account), and get a signed session that carries your identity, role, and
+permissions across the app. Accounts can be protected with an authenticator-app
+second factor, and tenants can enable "Sign in with Microsoft/Google" SSO.
+
+## When to use it
+
+- Daily staff sign-in on the desktop app or mobile PWA.
+- Sign in with a one-time authenticator code when MFA is enabled.
+- Set up MFA (scan a QR code, save backup codes) from Settings.
+- Sign in via your company identity provider when the tenant admin has configured
+  SSO.
+- Review and revoke your own active sessions, and view login history.
+
+## Password sign-in
+
+Email + password (passwords are bcrypt-hashed). Sessions use RSA-signed tokens
+carrying your tenant, role, and permissions — an access token (8-hour lifetime)
+plus a rotating refresh token (7 days). SSO-only accounts can't use the password
+path.
+
+## Multi-factor authentication (TOTP)
+
+Enable MFA from Settings: scan the QR code into an authenticator app and save your
+one-time backup codes. At login you'll enter a 6-digit code (or a backup code).
+If a tenant *requires* MFA and you haven't set it up yet, you're routed to setup
+on your next sign-in.
+
+<Note>
+  You can't disable your own MFA — if you lose your authenticator and backup
+  codes, an admin resets it for you.
+</Note>
+
+## Sessions
+
+View your active sessions, revoke any of them, and review login history (each
+attempt is logged with IP, device, and outcome).
+
+## Single sign-on (SSO)
+
+Tenants can configure **Microsoft 365 / Entra, Google Workspace, or a generic
+OIDC** provider (OAuth 2.0 with PKCE). Optionally, SSO can auto-provision a new
+user with a default role on first sign-in.
+
+## Good to know
+
+- The login response is the same whether or not an email exists, and attempts are
+  logged — sign-in can't be used to probe for accounts.
+- Access is enforced by role permissions throughout the app (see
+  [Roles & permissions](/admin/roles-permissions)).

@@ -1,0 +1,52 @@
+---
+title: "Roles & permissions"
+description: "Role-based access control — per-tenant roles carry resource:action permissions that gate what each staff user can see and do"
+---
+
+NEXOS CORE controls what each staff user can see and do through **roles**. Every
+role is scoped to a single tenant and carries a set of **permission strings** in
+`resource:action` form (e.g. `tickets:read`, `agents:deploy`). Each user is
+assigned one role; that role's permissions are loaded at login and travel inside
+their session token, so access is checked on every request.
+
+## When to use it
+
+- Onboard a technician or manager with the right level of access.
+- Create a custom role when the built-ins don't fit (e.g. a billing-only or
+  read-only auditor role).
+- Restrict sensitive surfaces (e.g. viewing all users' timesheets).
+- Change someone's access by reassigning their role.
+
+## The permission model
+
+Permissions are `resource:action` strings, with wildcards:
+
+- `*` — full access to everything.
+- `resource:*` — all actions on one resource (e.g. `tickets:*`).
+- `resource:action` — a single capability (e.g. `timesheets:approve`).
+
+## Built-in and custom roles
+
+There are four built-in roles ranging from **admin** (full access) down to a
+read-only **viewer**, plus **manager** and **technician**. Admins can create
+custom roles and manage their permissions. Built-in (system) roles can't be
+renamed or deleted, and a role that still has users assigned can't be deleted.
+
+## Assigning roles
+
+Each user has exactly one role, set when you create, edit, or invite them from
+**Settings → Users**. Role and permission changes take effect at the user's next
+sign-in (permissions are baked into the session at login).
+
+## Enforcement
+
+Protected actions check the user's permissions and return **403 Forbidden** when
+a required permission is missing.
+
+## Good to know
+
+- Role management is done from the **Users** settings screen and the roles API —
+  there isn't a separate dedicated staff-role editor page yet.
+- A few newer areas define permissions that **aren't enforced yet** — access there
+  currently relies on being an authenticated tenant user. Treat fine-grained
+  gating as still rolling out.
