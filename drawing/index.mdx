@@ -1,0 +1,50 @@
+---
+title: "Drawings"
+description: "Versioned site drawings with AI floor-plan analysis, isometric 3D views, and low-voltage takeoff"
+---
+
+The Drawings module is the system of record for a client site's technical
+drawings — floor plans, network and riser diagrams, cable paths, rack
+elevations, conduit layouts, and as-builts. Each drawing is scoped to a company
+(and optionally a survey, bid, or project), holds the uploaded file with full
+revision history, and can be read by Claude Vision into structured room data — to
+render a 3D isometric view and to count low-voltage devices for bid takeoff.
+
+Open it at `/drawings`.
+
+## When to use it
+
+- Store and version-track client site drawings.
+- Associate a drawing with a company, survey, bid, or project for traceability.
+- Turn a floor-plan image into a 3D isometric view of rooms, doors, and features.
+- Auto-count low-voltage devices and cable runs for bid takeoff.
+
+## Upload and versioning
+
+Upload files up to 64 MB across 11 drawing types (floor plan, network diagram,
+riser, cable path, as-built, site plan, rack elevation, conduit layout, and
+more), with metadata like building, floor, area, scale, sheet number, and
+revision. Each upload becomes a numbered version — the latest shows on the
+detail page, and you can remove individual versions.
+
+## AI floor-plan analysis and 3D
+
+Run **Analyze floor plan** on an image drawing and Claude Vision extracts rooms,
+doors, corridors, and safety features. From that, NEXOS CORE renders a
+server-side **isometric 3D view** (`/drawings/{id}/3d`) — no plugins, just SVG.
+
+## Quantity takeoff
+
+For drawings attached to a bid, an AI takeoff counts low-voltage devices and
+cable runs and feeds the [bid engine](/bidengine)'s reconciliation. When the
+drawing is scoped to a bid, the takeoff is gated to only the trades that bid
+actually covers.
+
+## Good to know
+
+- **AI features are image-only** — PNG/JPG/WebP work; PDF, DWG, and SVG files are
+  stored but can't be analyzed.
+- AI output is the model's best estimate — treat extracted dimensions, positions,
+  and quantities as a starting point to verify, not gospel.
+- The 3D view is empty until you run Analyze.
+- **Drawing annotations (pins, notes, measurements) aren't available yet.**
