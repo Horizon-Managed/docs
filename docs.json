@@ -97,6 +97,15 @@
               "infra/index",
               "health/index"
             ]
+          },
+          {
+            "group": "Security & SIEM",
+            "pages": [
+              "siem/index",
+              "emailsec/index",
+              "metasploit/index",
+              "cybersec/index"
+            ]
           }
         ]
       },

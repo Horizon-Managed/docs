@@ -1,0 +1,55 @@
+---
+title: "SIEM"
+description: "Syslog collection, PCAP analysis, and Nexie AI threat detection — with remediation plans and posture comparison"
+---
+
+NEXOS CORE SIEM is the built-in Security Information and Event Management module.
+It receives syslog from client firewalls, switches, and servers (FortiGate,
+pfSense/OPNsense, UniFi, and generic RFC 3164 devices), stores and searches those
+events, ingests uploaded PCAP files for network-traffic analysis, and runs Nexie
+AI to score risk, surface findings, generate remediation plans, and compare
+before/after posture — all from one dashboard.
+
+Open it at `/security/siem`.
+
+## When to use it
+
+- Centralize firewall/syslog collection for one or more client sites.
+- Run a time-boxed capture window against a client, then hand the events to Nexie
+  for a threat readout.
+- Upload a PCAP from an incident for AI traffic analysis.
+- Triage security alerts (critical/high events auto-promote to alerts).
+- Generate and track AI remediation plans and a posture-improvement comparison.
+
+## Syslog ingestion
+
+A listener auto-detects **TLS or plain** syslog on port **6514** (and a per-tenant
+port, default 5514). It auto-parses FortiGate key=value and BSD/RFC 3164 syslog
+into structured events. Define **sources** (each with event counts and last-seen),
+and run **capture sessions** — time-boxed collection windows, optionally scoped to
+specific source IPs and tagged per client. Critical and high-severity events
+auto-promote to the alerts feed.
+
+## PCAP analysis
+
+Upload a packet capture and NEXOS CORE parses it (via tshark) into conversations,
+DNS, HTTP, and TLS SNI, pre-flagging suspicious signals (known C2 ports, oversized
+DNS that may indicate exfiltration).
+
+## Nexie AI threat analysis
+
+Run analysis on a capture or session and Nexie returns a **risk score (0–100)**,
+findings (with MITRE ATT&CK IDs where applicable), and a traffic profile. From
+there you can generate **remediation** plans (single or batch, which become Nexie
+security tasks) and run a **posture comparison** of before/after snapshots. Log
+retention is driven automatically by the risk score.
+
+## Good to know
+
+- **PCAP analysis requires `tshark` installed on the host** — without it, a
+  capture is marked failed.
+- **Encrypted session export needs `SIEM_ENCRYPTION_KEY`** (a 32-byte hex key) —
+  if it's unset, exports fall back to plaintext.
+- The syslog TLS listener is pinned to **TLS 1.2** (a deliberate FortiOS
+  workaround) with no client-certificate auth.
+- AI analysis requires your tenant's Claude API key.
