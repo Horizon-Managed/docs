@@ -1,0 +1,86 @@
+---
+title: "RMM & infrastructure"
+description: "Remote sessions with auditable recording, an encrypted device vault with FortiGate automation, per-client infrastructure verification, and a host health dashboard round out the v1.14.x platform."
+---
+
+End-of-week ship, extending the [v1.14.x platform](/changelog/2026-07-01).
+Four new areas cover in-browser remote support, network-device automation,
+client-asset verification, and platform host operations.
+
+## New features
+
+### Remote sessions & recording
+
+Once an [agent](/rmm/deploy-agent) is deployed, technicians can operate the
+endpoint from the browser — an **interactive terminal**, a **live remote
+desktop** (WebRTC by default, JPEG fallback), and **SOCKS tunnels** to services
+behind the machine — all over the agent's outbound connection with no inbound
+firewall ports open on the customer. Sessions can be **recorded and replayed**
+as short WebM segments the agent uploads over expiring, one-shot tokens; the
+Recordings dashboard and each ticket's Recordings panel seal segments into a
+single playable file. Every list, stream, and playback request writes a
+security-audit entry (who, when, IP, user agent), and cross-tenant access is
+blocked at the row level. See [Remote sessions & recording](/rmm/remote-sessions).
+
+### Device vault & FortiGate automation
+
+Encrypted storage for network-device credentials plus AI-driven **FortiGate**
+firewall automation. API keys, usernames, and passwords are AES-256-GCM
+encrypted on save; list responses never return secrets. Supported actions
+include **block IP** (address object + deny policy, optionally bidirectional),
+create address / deny policy, **enable IPS** signatures, configure **TLS
+syslog** to the SIEM, and upload the tenant CA. Actions are created as Nexie
+security tasks in `pending_approval` — a technician approves (optionally a
+subset), NEXOS CORE executes against the live firewall, and a posture snapshot
+and audit rows are written. See [Device vault & firewall control](/devices/index).
+
+### Infrastructure verification
+
+A per-client asset registry — firewalls, servers, switches, access points,
+domain controllers, VPNs, backups, printers, cloud services, and workstations —
+built by hand, from a **runbook CSV**, or synced from **Hudu**. Run
+**verification sweeps** to confirm reachability by HTTP/HTTPS, SSH, LDAP, or a
+generic TCP port; results are cached on each device and appended to an
+append-only audit trail, bucketed as verified, unreachable, timeout, protocol
+error, or pending, with average latency. Feeds compliance, SIEM, and RMM. See
+[Infrastructure verification](/infra/index).
+
+### Host & service health
+
+A real-time operations view of the **NEXOS CORE platform host itself** — live
+CPU, memory, disk, network, load averages, and uptime, plus concurrent probes
+of ecosystem components (HTTP, TCP, PostgreSQL, systemd process). Click a
+component for extended metrics — for PostgreSQL, database sizes, connections,
+cache-hit ratio, and top slow queries when `pg_stat_statements` is available.
+Operators can **restart core services** (`nexusos-psa`, `postgresql`, `nginx`,
+`docker`) directly from the dashboard, with every restart audit-logged. See
+[Host & service health](/health/index).
+
+## Known limitations
+
+- **Remote sessions** — **session recording is Windows-only**; macOS and Linux
+  capture paths are stubs. Cross-network remote desktop needs a TURN server —
+  with STUN only it falls back to same-LAN. Concurrency is fixed at 3 sessions
+  per agent, 50 total, with a 30-minute idle timeout.
+- **Device vault** — **FortiGate is the only supported vendor today**. The
+  platform encryption key (`SIEM_ENCRYPTION_KEY`) must be set in production —
+  without it, credentials fall back to plaintext storage. TLS verification on
+  the FortiGate client is off by default; enable `verify_tls` on the credential
+  for strict checking.
+- **Infrastructure verification** — sweeps check **reachability, not
+  authentication** — a "verified" result means the port answered, not that
+  credentials work. Sweeps target **public** management endpoints only; an SSRF
+  guard blocks private/LAN, loopback, and cloud-metadata addresses, so LAN-only
+  gear will fail HTTP verification by design. SNMP and RMM-agent device types
+  always report **pending** — they aren't actively probed here.
+- **Health dashboard** — most host metrics are **Linux-only** (they read
+  `/proc` and `/etc/os-release`; disk also works on macOS). Service restart
+  requires systemd with passwordless sudo and is limited to a fixed whitelist.
+  The PostgreSQL probe checks the NEXOS CORE application database only.
+
+Earlier [known limitations from v1.14.x](/changelog/2026-07-01#known-limitations),
+[week of June 29](/changelog/2026-07-02#known-limitations), the
+[Quotes, billing & contracts ship](/changelog/2026-07-02-quotes-billing#known-limitations),
+the [Projects & field ship](/changelog/2026-07-03-projects-field#known-limitations),
+and the [Construction & bid ship](/changelog/2026-07-03-construction-bid#known-limitations)
+remain unchanged.
