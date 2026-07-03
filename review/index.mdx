@@ -1,0 +1,68 @@
+---
+title: "Live Review Engine"
+description: "Host-driven, participant-attested review sessions in real time — with QR kiosk sign-in, per-item signatures, and a signed binder"
+---
+
+The Live Review Engine runs **host-driven, participant-attested** review sessions
+in real time. A staff host drives a queued list of items from their screen; one
+or more participants follow along on their own device (typically an iPad reached
+via a QR code) and record decisions, notes, and a signed attestation as each item
+is reviewed. Every action is written to a tamper-evident audit trail, and the
+completed session prints to a signed binder. It's a generic engine — its first
+and most built-out use is **compliance reviews**.
+
+Open it at `/reviews`.
+
+## When to use it
+
+- Walk a client or employee through compliance findings live, capturing
+  accept/modify/decline decisions with signatures.
+- Any session that needs a signed, per-item attestation with a legal audit trail.
+- Multi-reviewer sessions where different SMEs own different domains, each with a
+  scoped queue.
+
+## How a session works
+
+<Steps>
+  <Step title="Host opens the console and shows a QR">
+    The host console (`/reviews/{id}/host`) displays a QR code; the participant
+    scans it to load their kiosk view at `/r/{token}`.
+  </Step>
+  <Step title="Host drives the queue">
+    Start the session and it goes live. The host controls Start / Pause / Resume
+    / Goto — participants can only advance while the host is live.
+  </Step>
+  <Step title="Participant attests each item">
+    For each item the participant records a decision (acknowledge / modified /
+    decline), optional notes, and a drawn signature.
+  </Step>
+  <Step title="Sign and close">
+    At the end the participant signs the session and the host signs; the host ends
+    it, the participant's access is revoked, and completion hooks write the
+    decisions back to the source records.
+  </Step>
+</Steps>
+
+Host and participant views stay in sync in real time (server-sent events), and
+every transition is recorded in the audit trail.
+
+## Multi-reviewer sessions
+
+Assign subject-matter experts to specific domains — each gets a scoped queue and
+their own signature block, and the host sees a live matrix of per-reviewer
+progress.
+
+## Signed binder
+
+A completed session prints to a binder summarizing every item, decision,
+signature, and duration.
+
+## Good to know
+
+- **Compliance reviews are the fully wired use today.** The engine also supports
+  HR reviews, training, onboarding, post-mortems, and vendor attestations as
+  session types, but those aren't built out with domain content yet.
+- The binder is **printed to PDF from the browser** (Print → Save as PDF), not a
+  pre-rendered file.
+- Real-time coordination is single-process; participant links expire after 24
+  hours (and immediately when the host ends the session).

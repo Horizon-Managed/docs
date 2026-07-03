@@ -1,0 +1,58 @@
+---
+title: "NCSR intake"
+description: "Ingest a CIS NCSR survey and enhancement PDF, score NIST CSF maturity, and turn gaps into an AI-built, client-reviewed action plan"
+---
+
+NCSR (Nationwide Cybersecurity Review) intake ingests a client's completed CIS
+NCSR Offline Survey workbook and the state-issued Enhanced Cybersecurity
+Recommendations PDF, scores their **NIST CSF 2.0** maturity by function, and uses
+Nexie to turn each improvement area into a concrete, MSP-deliverable action plan.
+Each action becomes a tracked POA&M item, and the plan can be walked through with
+the client in a live review that records their decisions back onto the records.
+
+It lives inside [Compliance Composer](/composer/index) and activates for the
+NIST CSF framework — open it at `/composer/{company}/nist_csf/ncsr`.
+
+## When to use it
+
+- After a client completes the annual CIS NCSR Offline Survey and you have the
+  `.xlsx`/`.xlsm` workbook.
+- When you also have the state-issued Enhanced Cybersecurity Recommendations PDF.
+- To convert survey gaps into a prioritized, module-mapped remediation plan.
+- To run a formal, signed review with the client and capture risk decisions.
+
+## The flow
+
+<Steps>
+  <Step title="Upload the survey workbook">
+    NEXOS CORE parses the NCSR Offline Survey sheet, extracts per-subcategory
+    maturity, and computes gaps against the target maturity level.
+  </Step>
+  <Step title="Upload the recommendations PDF">
+    It extracts each "Area of Improvement" (with its Do-Now/Do-Next/Do-Later phase
+    and recommended products).
+  </Step>
+  <Step title="Generate the action plan">
+    Nexie produces 1–3 concrete actions per improvement area, each mapped to a
+    NEXOS CORE module with estimated hours — inserted as POA&M items. This runs as
+    a background job with progress, cancel, and resume.
+  </Step>
+  <Step title="Review with the client">
+    Start a [live review](/review/index): the client works open risks, attests to
+    improvement areas, acknowledges the top priority actions, and signs.
+  </Step>
+  <Step title="Write back">
+    The session's decisions are applied back to the actions, improvement areas,
+    and POA&M — and accepted/deferred risks create entries in the
+    [risk register](/risk/index) pending client countersignature.
+  </Step>
+</Steps>
+
+## Good to know
+
+- **PDF parsing is tuned to the current (2025) state template** — a substantially
+  reformatted future template may parse imperfectly and need review.
+- After a review, the status reflects the client's decisions, but the **maturity
+  score itself isn't recomputed yet** (a planned enhancement) — the score shows
+  the surveyed state.
+- Action-plan generation requires your tenant's Claude API key.

@@ -106,6 +106,16 @@
               "metasploit/index",
               "cybersec/index"
             ]
+          },
+          {
+            "group": "Compliance & governance",
+            "pages": [
+              "composer/index",
+              "cmmc/index",
+              "composer/ncsr/index",
+              "risk/index",
+              "review/index"
+            ]
           }
         ]
       },
