@@ -116,6 +116,7 @@
             "group": "Changelog",
             "pages": [
               "changelog/2026-07-08",
+              "changelog/2026-07-03-security-siem",
               "changelog/2026-07-03-rmm-infrastructure",
               "changelog/2026-07-03-construction-bid",
               "changelog/2026-07-03-projects-field",
