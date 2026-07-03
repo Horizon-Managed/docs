@@ -1,0 +1,59 @@
+---
+title: "Client onboarding"
+description: "A 9-phase, 30-day onboarding pipeline that automates the repeatable setup and tracks the rest on a checklist"
+---
+
+The Client Onboarding module is a **9-phase, 30-day** pipeline for bringing a new
+managed-services client online. Once an MSA is signed, it creates an onboarding
+record, seeds a per-phase checklist, and fires the repeatable automation — the
+welcome email, an RMM enrollment token, kickoff report tickets, and compliance
+framework assignment. Technicians work the checklist and advance phases manually;
+everything is logged to an immutable audit trail.
+
+Open it at `/onboarding`.
+
+## When to use it
+
+- A new client's MSA is executed and you're starting their 30-day onboarding.
+- You want the welcome email, RMM token, and kickoff tickets generated for you.
+- You have a Nexie [Discovery Blueprint](/assessment/index) to turn into concrete
+  onboarding sub-tasks.
+- You need a tracked, auditable checklist across security, network, hardware, and
+  compliance setup.
+
+## The nine phases
+
+**0 MSA & Setup → 1 Welcome & Access → 2 RMM Deployment → 3 Network Discovery →
+4 Security Assessment → 5 Tool Deployment → 6 30-Day Program → 7 Hardware Audit →
+8 Compliance.** Phase 0 starts when the MSA is signed (target date = signed +
+30 days); you advance through the rest manually. Each advance seeds that phase's
+checklist, injects any blueprint items, auto-completes system items, and runs the
+phase's automation. Blocking checklist items prevent advancing until they're done.
+
+## What's automated vs. tracked
+
+**Automated actions:**
+- Create the RMM enrollment token.
+- Send the branded welcome email (or open a ticket if there's no contact email).
+- Auto-assign compliance frameworks (from the blueprint, or inferred from the
+  client's industry).
+- Create recurring scheduled operations from the blueprint.
+
+**Tracked as report + ticket + checklist** (a tech does the work): the Network
+Discovery, Security Assessment, and Hardware Audit phases **summarize existing RMM
+agent data** into report tickets — they don't run live scans. RMM Deployment hands
+the enrollment token to a technician via a ticket rather than pushing an installer.
+Tool Deployment and the 30-Day Program are pure checklists.
+
+## Blueprint injection
+
+If the client has a Discovery Blueprint, its recommendations are injected as
+concrete sub-tasks into the security-stack, software, hardware, and compliance
+phases at start.
+
+## Good to know
+
+- **Phase advancement is manual** — there's no timer that auto-advances toward
+  Day 30; the "30-day" is a target date and labels, not a scheduler.
+- Compliance-framework inference is keyword-based on the client's industry and
+  defaults to SOC 2 when nothing matches.

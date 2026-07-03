@@ -124,6 +124,13 @@
               "performance/index",
               "epa/index"
             ]
+          },
+          {
+            "group": "Client portal",
+            "pages": [
+              "portal/index",
+              "onboarding/index"
+            ]
           }
         ]
       },
