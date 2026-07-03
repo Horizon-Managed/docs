@@ -1,0 +1,44 @@
+---
+title: "Notifications"
+description: "Browser push notifications (Web Push) so you get native alerts from NEXOS CORE even when the tab isn't focused"
+---
+
+NEXOS CORE can send **browser push notifications** using Web Push (VAPID), so you
+get native desktop/mobile alerts even when the NEXOS CORE tab isn't focused.
+Subscriptions are stored per user (per browser), and signing keys are held per
+tenant.
+
+## When to use it
+
+- Get notified of things that need attention — like a purchase-order approval
+  request — without watching the app.
+- Opt a browser in to push notifications.
+- Opt a browser back out (unsubscribe) on a shared or retired device.
+
+## How it works
+
+<Steps>
+  <Step title="Subscribe your browser">
+    Your browser fetches the tenant's public VAPID key and registers a push
+    subscription; NEXOS CORE stores the endpoint and keys against your user.
+  </Step>
+  <Step title="NEXOS CORE delivers">
+    When an event fires (e.g. a PO approval), NEXOS CORE pushes to all of your
+    subscribed browsers. Notifications arrive even with the tab in the background.
+  </Step>
+  <Step title="Cleanup is automatic">
+    Subscriptions a browser has revoked are detected and removed automatically.
+  </Step>
+</Steps>
+
+The tenant's VAPID keypair is generated automatically the first time it's needed.
+
+## Good to know
+
+- **Push is opt-in per browser** — you won't receive notifications until you
+  subscribe, and you subscribe separately on each device/browser.
+- Requires a browser that supports the Web Push API and service workers
+  (Chrome/Edge/Firefox; Safari requires a recent macOS/iOS with the app installed
+  as a PWA).
+- Delivery is best-effort — a failed push is logged and retried on the next event,
+  not surfaced as an error.

@@ -1,0 +1,55 @@
+---
+title: "Tenant settings"
+description: "The admin console for a tenant — org config, integrations, users and roles, security policy, and connecting distributor accounts"
+---
+
+Tenant Settings is the admin console for a single NEXOS CORE tenant. From here an
+org admin manages tenant-level configuration, connects third-party integrations,
+manages users and roles, sets security policy, and registers vendor MCP servers —
+including a browser OAuth flow to attach a distributor account so the platform can
+sync that distributor's catalog.
+
+Open it at `/settings/tenant`.
+
+## When to use it
+
+- First-run setup of org identity and integrations.
+- Manage users, roles/permissions, and invitations.
+- Tighten security (require MFA, session auto-logout).
+- Connect a vendor and authorize a distributor account.
+- Trigger an on-demand distributor catalog sync.
+
+## General
+
+Org name and slug, RMM agent poll intervals, staleness/offline thresholds, timer
+warning thresholds, session-timeout, and a **require-MFA** flag.
+
+## Integrations
+
+A single page to configure and check: **RMM** (protocol/host/port), the **AI
+provider** (key masked + model), **[QuickBooks](/integrations/quickbooks)**
+connection, the **documentation provider** ([Hudu](/integrations/hudu)), an
+**email account** (SMTP or [Microsoft 365](/integrations/microsoft-365)), and
+**Metasploit** RPC.
+
+## Users, roles, and appearance
+
+Manage users, [roles and permissions](/admin/roles-permissions), and invitations;
+set up your own MFA; view sessions; and pick a **theme** (dark, tinted, or
+parchment — stored per user).
+
+## Connecting a distributor (MCP + OAuth)
+
+Register a vendor MCP server, then **Connect** to authorize it via OAuth 2.0 with
+PKCE — NEXOS CORE redirects you to the provider, exchanges the code, and stores
+encrypted tokens so it can sync silently thereafter. A **Refresh** action runs an
+on-demand catalog sync.
+
+## Good to know
+
+- **Distributor sync currently supports Pax8** — other distributors appear as
+  labels but aren't functional yet.
+- OAuth and distributor sync require the platform encryption key to be configured.
+- Theme is the only visual customization here — there's no logo/branding or
+  SIEM-port setting on this screen (SIEM ports are set via environment config).
+- The **API keys** and **Audit** settings pages are placeholders today.

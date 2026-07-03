@@ -139,6 +139,15 @@
               "integrations/microsoft-365",
               "integrations/hudu"
             ]
+          },
+          {
+            "group": "Administration",
+            "pages": [
+              "admin/sign-in-mfa",
+              "admin/roles-permissions",
+              "admin/tenant-settings",
+              "admin/notifications"
+            ]
           }
         ]
       },
