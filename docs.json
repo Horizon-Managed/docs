@@ -72,6 +72,15 @@
             ]
           },
           {
+            "group": "Projects & field",
+            "pages": [
+              "project/index",
+              "workorder/index",
+              "time/index",
+              "employee/index"
+            ]
+          },
+          {
             "group": "RMM",
             "pages": [
               "rmm/deploy-agent"

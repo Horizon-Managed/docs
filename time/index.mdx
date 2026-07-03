@@ -1,0 +1,64 @@
+---
+title: "Time tracking"
+description: "Live multi-timers that capture billable time, and weekly timesheets with approval, QuickBooks push, and CSV export"
+---
+
+Time tracking has two connected layers. **Live timers** are running stopwatches
+you start against a ticket, project task, or site survey — several can run at
+once, with one "focused" in the header and the rest ticking in the background.
+Stopping a timer captures the billing details and writes a time entry.
+**Timesheets** are the weekly rollup of those entries: review the week, submit it,
+a manager approves, and approved sheets push to QuickBooks or export to CSV.
+
+Timesheets live at `/timesheets`; timers run from the app header and ticket/task
+pages.
+
+## When to use it
+
+- Track live hours against a ticket, project task, or survey while you work.
+- Run several jobs at once and switch which is focused.
+- Capture billable time with a work type, billing role, contract, and product.
+- Review, submit, and approve a week of time.
+- Push approved time to QuickBooks or export it for payroll.
+
+## From timer to bill
+
+<Steps>
+  <Step title="Start a timer">
+    Start against a ticket, task, or survey. Starting a new timer unfocuses the
+    others; starting one on a ticket that already has an active timer resumes it
+    rather than duplicating.
+  </Step>
+  <Step title="Stop and capture billing context">
+    On stop, you confirm the work type, billing role, contract, and product (or
+    enter a manual minute override). Time under contract block-hours/retainer
+    coverage is drawn down automatically, and a linked project task's actual
+    hours are updated.
+  </Step>
+  <Step title="It becomes a time entry">
+    The stop writes a unified time entry (with hours, billable amount, and cost)
+    — and a ticket time entry too, when the timer was on a ticket.
+  </Step>
+  <Step title="Roll up, submit, approve">
+    Entries aggregate into your Monday–Sunday timesheet. Submit it; an approver
+    approves or rejects (with a reason).
+  </Step>
+  <Step title="Push or export">
+    Approved timesheets push to QuickBooks Online and can be exported to CSV for
+    payroll.
+  </Step>
+</Steps>
+
+## Timesheets
+
+Your timesheet (`/timesheets`) is the weekly view; approvers work a queue at
+`/timesheets/approvals`, and an HR view with CSV export is available to users
+with the right permission.
+
+## Good to know
+
+- **QuickBooks push is optional and best-effort** — if it isn't configured or a
+  push fails, the timesheet stays **Approved** (not Pushed) and never blocks
+  approval; the error is recorded for retry.
+- Captured time is floored to a small minimum (a fraction of an hour), so very
+  short timers still record.
