@@ -1,0 +1,78 @@
+---
+title: "Projects & field"
+description: "Projects with earned-value job costing and client-signed change orders, work orders for field crews, time tracking with QuickBooks push, and the Team & employees record all land in NEXOS CORE."
+---
+
+End-of-week ship, extending the [v1.14.x platform](/changelog/2026-07-01). Four
+new product areas cover scoped project delivery, field execution, live time
+capture, and the people running it all.
+
+## New features
+
+### Projects
+
+PMP-aligned project management for scoped client engagements
+(implementations, migrations, buildouts). Organize work into a WBS task
+hierarchy with dependencies and milestones, assign a team with cost and billing
+rates, and track budget-vs-actual **job costing** across labor, materials,
+subcontractor, travel, and overhead. **Earned value** produces on-demand
+snapshots — BAC, PV, EV, AC, SPI, CPI, EAC, and VAC — for schedule and cost
+performance. Run formal **change control** with client e-signature on change
+orders (name, email, signature, IP captured), with an optional auto-PO on
+approval. Includes Gantt, kanban, risk register, stakeholders, notes, lessons
+learned, and profitability views. See [Projects](/project/index).
+
+### Work orders
+
+Field-execution records for construction and trades — the trades equivalent of a
+helpdesk ticket. Each work order tracks a job at a physical site from
+mobilization through closeout across trade-specific phases (**mobilize →
+rough-in → trim-out → termination → testing → punch list → closeout →
+complete**). Assign a crew with roles; when a tech **checks in**, their time
+starts, and check-out writes a billable time entry using role bill/cost rates
+and rolls hours and cost up to the work order automatically. Capture **daily
+logs** (weather, work performed, materials, delays, safety), run a **punch
+list** of deficiencies, and link work orders to a company, project, bid, and
+site survey. See [Work orders](/workorder/index).
+
+### Time tracking
+
+Live multi-timers and weekly timesheets. Start a **timer** against a ticket,
+project task, or site survey — several can run at once, with one focused in the
+header and the rest ticking in the background. Stopping captures work type,
+billing role, contract, and product, draws down contract block-hours or
+retainer coverage automatically, and writes a unified time entry. Entries roll
+into a **Monday–Sunday timesheet** for submit, approve, and reject with reason;
+approved sheets push to **QuickBooks Online** or export to CSV for payroll. See
+[Time tracking](/time/index).
+
+### Team & employees
+
+A lightweight HR record that extends each internal user with the operational
+data the rest of the platform needs — job title, department, employment type,
+**skills and certifications** (with proficiency and expiry), **pay rates**
+(hourly, salary, per-diem, or flat, with base and overtime and history), **role
+rates** (bill rate plus employee cost rate with computed margin), a 7-day
+**availability template**, and **time-off** requests. Feeds [Dispatch](/dispatch/index)
+(skills for AI tech-matching, availability for load balancing),
+[Time tracking](/time/index), and [work orders](/workorder/index) (role and cost
+rates for job costing). See [Team & employees](/employee/index).
+
+## Known limitations
+
+- **Projects** — invoicing directly from a project isn't built yet; billing
+  modes (T&M, Fixed Price, Milestone) are stored, but generate the invoice from
+  [Quotes & invoices](/billing/index) or the contract. EVM snapshots are
+  generated on demand, not on a schedule.
+- **Work orders** — client e-sign-off on closeout isn't available yet; advance
+  the phase to complete instead. Punch-item photo attachments aren't wired yet.
+- **Time tracking** — QuickBooks push is optional and best-effort; if it isn't
+  configured or a push fails, the timesheet stays **Approved** (not Pushed) and
+  the error is recorded for retry — approval is never blocked.
+- **Team & employees** — this is a system of record only; no payroll processing
+  or PTO accrual math.
+
+Earlier [known limitations from v1.14.x](/changelog/2026-07-01#known-limitations),
+[week of June 29](/changelog/2026-07-02#known-limitations), and the
+[Quotes, billing & contracts ship](/changelog/2026-07-02-quotes-billing#known-limitations)
+remain unchanged.
