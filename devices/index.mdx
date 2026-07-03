@@ -1,0 +1,51 @@
+---
+title: "Device vault & firewall control"
+description: "Encrypted network-device credentials and FortiGate firewall automation, driven by Nexie security tasks"
+---
+
+Devices stores encrypted credentials for network devices and lets NEXOS CORE
+drive a **FortiGate** firewall's REST API on the customer's behalf. It backs the
+Nexie security-automation workflow: a security finding becomes a proposed
+firewall action (block an IP, add a deny policy, tune IPS, ship logs to the
+SIEM), a technician approves it, and NEXOS CORE executes it against the live
+firewall — every action audited.
+
+These are JSON APIs surfaced inside the security/Nexie workflows (there's no
+standalone page).
+
+## When to use it
+
+- Store a FortiGate's API token securely, scoped to a tenant/company.
+- Test connectivity to a firewall before or after saving credentials.
+- Auto-configure a FortiGate to forward logs to the [SIEM](/siem) over TLS.
+- Approve or reject AI-proposed remediations (block IPs, deny policies, IPS).
+- Keep an audit trail of every automated firewall change.
+
+## Encrypted credential vault
+
+On save, the API key, username, and password are AES-256-GCM encrypted before
+storage — only the encrypted blob is kept, and list responses never return
+secrets. Credentials are decrypted only when building a client to call the
+firewall.
+
+## FortiGate automation
+
+Supported actions include: **block IP** (address object + deny policy, optionally
+both directions), create address object / deny policy, **enable IPS** signatures,
+configure **TLS syslog** forwarding to the SIEM, and upload the tenant CA.
+
+## Nexie security tasks
+
+Actions are created as tasks in `pending_approval`, then a technician approves
+(optionally selecting a subset of actions) and NEXOS CORE executes them in the
+background — writing a posture snapshot and audit rows. Task types cover TLS
+syslog setup and firewall remediation plans (block IP, address/deny objects, IPS
+signatures).
+
+## Good to know
+
+- **FortiGate is the only supported vendor today** despite the generic name.
+- **Set the platform encryption key (`SIEM_ENCRYPTION_KEY`) in production** — if
+  it's not configured, credentials are stored in plaintext.
+- The FortiGate client **skips TLS verification by default** (enable `verify_tls`
+  on the credential for strict checking).

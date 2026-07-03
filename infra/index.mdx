@@ -1,0 +1,59 @@
+---
+title: "Infrastructure verification"
+description: "A per-client asset registry built from Hudu or runbooks, with reachability sweeps and an append-only audit trail"
+---
+
+The Infrastructure Verification Engine is a per-client registry of network and
+endpoint assets — firewalls, servers, switches, access points, domain
+controllers, VPNs, backups, printers, cloud services, and workstations. For each
+client you build a device inventory by hand, import it from a CSV runbook, or
+sync it from Hudu, then run **verification sweeps** to confirm each device is
+reachable. Every change and check is written to an append-only audit trail, and
+the verified inventory feeds compliance, SIEM, RMM, and other modules.
+
+Open it at `/infra`.
+
+## When to use it
+
+- Onboard a client — stand up the asset inventory from Hudu or a runbook CSV.
+- Reconcile documented assets against what's actually reachable.
+- Produce a verification report as compliance evidence.
+- Confirm a device is online before or after maintenance.
+
+## Building the inventory
+
+- **Manual** — create, update, and decommission devices (delete is soft — it
+  marks the device decommissioned rather than removing it).
+- **Hudu sync** — pull assets and passwords for a Hudu-synced company and upsert
+  them, mapping Hudu asset layouts to device types.
+- **Runbook import** — upload a CSV to create device shells (credentials are
+  intentionally *not* stored here — they live in Hudu or the device vault).
+
+## Verification sweeps
+
+Verify all devices for a company, or a single device. Each probe picks a protocol
+from the device (or a sensible default by type) and checks reachability:
+
+- **HTTP/HTTPS** — a GET with status and Server header
+- **SSH / LDAP / generic TCP** — a port connect
+
+Results are cached on the device and appended to the audit trail, bucketed as
+verified, unreachable, timeout, protocol error, or pending — with average latency.
+
+## Important limitations
+
+<Warning>
+  **Verification checks *reachability*, not authentication.** A "verified" result
+  means the port or HTTP endpoint answered — not that credentials work. Deeper
+  auth probes (firewall API, SSH login, LDAP bind) aren't wired yet.
+</Warning>
+
+<Warning>
+  **Sweeps target *public* management endpoints only.** A built-in SSRF guard
+  blocks private/LAN, loopback, and cloud-metadata addresses at the IP layer, so
+  devices with private IPs (most LAN gear) will fail HTTP verification by design.
+</Warning>
+
+- **SNMP and RMM-agent device types always report *pending*** — they aren't
+  actively probed here (printers and workstations won't go green).
+- The HTTP probe skips TLS certificate validation.
