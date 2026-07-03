@@ -116,6 +116,14 @@
               "risk/index",
               "review/index"
             ]
+          },
+          {
+            "group": "AI & analytics",
+            "pages": [
+              "nexie/index",
+              "performance/index",
+              "epa/index"
+            ]
           }
         ]
       },

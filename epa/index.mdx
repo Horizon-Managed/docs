@@ -1,0 +1,52 @@
+---
+title: "Employee productivity analytics"
+description: "Per-employee focus and app-usage analytics from RMM agent telemetry, with AI coaching insights — gated by consent"
+---
+
+Employee Productivity Analytics (EPA) measures **individual** endpoint-user
+productivity. A NexusRMM agent reports 15-minute windows of foreground-app usage;
+EPA classifies each app (productive, communication, meeting, distraction,
+neutral), computes a 0–100 **focus score** per window, and rolls the data up into
+per-client dashboards, per-person drilldowns, alerts, and AI insights.
+
+This is **distinct from [NexusPulse](/performance/index)** — NexusPulse tracks
+company-level KPIs; EPA tracks how a specific monitored person spends active
+screen time. EPA appears as a per-client tab.
+
+<Warning>
+  EPA is employee monitoring. Collection is gated by a **tenant-admin consent
+  acknowledgement** plus a **per-person opt-in**, both set by the MSP — make sure
+  your monitoring has the appropriate legal basis and employee notice for your
+  jurisdiction.
+</Warning>
+
+## When to use it
+
+- Review a client team's productivity trends (focus score, active hours, time mix).
+- Spot a sustained focus decline on one employee (rolling-average alerts).
+- Prepare a manager 1:1 with an AI-generated, constructive coaching brief.
+- Get Nexie recommendations for an account manager from a client's telemetry.
+
+## How it works
+
+- **Ingestion** — the RMM agent posts telemetry authenticated by its device
+  certificate signature; no header is trusted.
+- **Consent gates** — ingestion only proceeds when the tenant has acknowledged
+  consent, the agent is assigned to a contact, and that contact is opted in.
+- **Scoring** — apps are classified and a focus score computed per window, stored
+  idempotently, with nightly baseline recompute and retention pruning.
+- **AI insights** — org-wide, per-company, and per-contact analyses plus persisted
+  coaching briefs, via Nexie.
+
+## Access
+
+Access is role-gated to Admin, Manager, and C-Level; HR is excluded by default
+and must be opted in per tenant. Snapshots are pruned per your retention setting.
+
+## Good to know
+
+- **App classification is a fixed built-in list** (substring matching); unknown
+  apps are treated as neutral and never penalized. It isn't tenant-configurable.
+- Consent is a **tenant-admin acknowledgement** and an **MSP-toggled per-contact
+  opt-in** — not a self-service consent by the monitored employee.
+- AI insights require your tenant's Claude API key.
