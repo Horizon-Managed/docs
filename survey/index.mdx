@@ -1,0 +1,57 @@
+---
+title: "Field survey"
+description: "iPad pre-bid site walkthroughs — GPS photos, voice-to-item capture, AI equipment detection, and one-tap conversion to a bid"
+---
+
+Field Survey is a pre-bid site assessment tool for low-voltage and IT
+infrastructure work. A technician walks a prospective job site on an iPad and
+captures a room-by-room inventory of existing and needed equipment, GPS-tagged
+photos, spoken observations, and trade checklists. AI assists throughout —
+transcribing speech into structured line items, reading equipment nameplates from
+photos, and flagging code issues — and when the walkthrough is done, the survey
+converts into a draft bid.
+
+Open it at `/surveys`.
+
+## When to use it
+
+- Pre-bid walkthroughs for cabling, access control, fire alarm, CCTV, network,
+  A/V, or electrical work.
+- Capture data hands-busy on an iPad — dictate items and snap photos instead of
+  typing.
+- Document existing equipment condition to scope replacements.
+- Turn field findings directly into a bid without re-keying.
+
+## Walkthrough mode
+
+A dedicated large-touch-target page per survey (`/surveys/{id}/walkthrough`)
+shows areas, trade checklists, and capture controls — built for a tablet in the
+field.
+
+## Capture
+
+- **GPS-tagged photos** — the browser supplies coordinates with each upload;
+  photos group by area and floor with auto-generated thumbnails.
+- **Voice notes** — speak while you walk; the browser transcribes, then Claude
+  extracts structured survey items and area attributes (ceiling type, height,
+  square footage) and auto-checks matching checklist items.
+- **AI equipment detection** — Claude Vision reads each photo for equipment
+  (manufacturer, model, serial from nameplates), a photo-quality score, code
+  violations (NEC, NFPA 72, TIA-568, UL 294), and label text.
+
+## Convert to a bid
+
+A completed survey generates a draft [bid](/bidengine): each area becomes a bid
+section and each item needing work becomes a line item (equipment already in good
+condition is skipped). Conversion pulls quantities and descriptions, not pricing.
+
+## Good to know
+
+- **Voice capture is transcript-only** — no audio file is stored, and it relies
+  on the browser's speech recognition (Chrome/Safari), so unsupported browsers
+  won't capture.
+- **GPS coordinates come from the device** and are stored as-is (no server-side
+  validation).
+- AI detection is **on-demand** (you trigger it, and it runs in the background)
+  and needs your tenant's Claude API key.
+- Conversion to a bid requires the survey to be marked **completed**.

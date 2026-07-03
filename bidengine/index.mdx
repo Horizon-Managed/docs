@@ -1,0 +1,67 @@
+---
+title: "Bid engine"
+description: "Construction and low-voltage bidding — AI drawing takeoff, addendum handling, scope narratives, and deterministic cost math"
+---
+
+The Bid Engine is NEXOS CORE's construction, low-voltage, and electrical bidding
+tool — it replaces an Excel cost workbook with a server-side calculation engine
+and AI-assisted takeoff. Create a bid sheet, upload the spec documents and
+drawings, and NEXOS CORE reads the drawings with Claude Vision to count devices,
+generates line items grouped by trade, applies addendums, writes a scope
+narrative, and runs a pre-submission audit — all while computing hard cost,
+margins, tax, commission, and grand total deterministically.
+
+Open it at `/bids`.
+
+## When to use it
+
+- Bid a construction / low-voltage / electrical job (cameras, cabling, access
+  control, fire alarm).
+- Take off devices from plan sets without hand-counting.
+- Re-scope existing line items against issued addendums.
+- Get a pre-submission sanity check before you send a bid.
+- Generate a contractor-readable scope-of-work narrative from the source docs.
+
+## Cost math
+
+Costing is deterministic: material + tax + subs + equipment + labor + burden =
+**hard cost**; hard cost × (overhead + profit + contingency); + commission; +
+customer sales tax; + permits and bond = **grand total** — with profit per
+man-day, margin %, and an optional manual bid-price override.
+
+## Drawing takeoff (Vision)
+
+Point the engine at a bid's drawings and it runs Claude Vision (via the
+[Drawings](/drawing) module) to count low-voltage devices, then generates
+trade-grouped line items from the takeoff — drawings are authoritative for
+quantities. Takeoff is scoped to the trades the bid actually covers.
+
+<Note>
+  The same device can appear on several sheets (floor plan, RCP, riser). The
+  **Vision Findings** audit surfaces per-sheet counts and duplicate tags, and
+  **Dedupe by tag** keeps the highest-quantity sheet — review it, since it's a
+  heuristic that can drop a legitimate sheet.
+</Note>
+
+## Addendums
+
+Upload an addendum and each page is mirrored in; a sheet whose number matches a
+base drawing automatically supersedes the older one. For line-item impact, AI
+produces a **reviewable diff** (partial-scope aware — e.g. "terminations by
+others" trims labor rather than deleting the cable), which you Apply or Dismiss
+per change.
+
+## Reconciliation, scope summary, and audit
+
+- **Reconcile** compares spec-required vs. drawing-observed quantities, row by row.
+- **Scope summary** generates an editable SoW narrative (overview, in/out scope,
+  assumptions, risks, quantities).
+- **Pre-submission audit** flags red/yellow/green findings (phantom OFCI hardware,
+  double-counted labor); **red findings block** moving a draft to submitted.
+
+## Good to know
+
+- The AI steps (takeoff, reconcile, addendum diff, scope summary) require your
+  tenant's Claude API key and carry a per-drawing cost.
+- Confidence scores on generated items are AI-supplied estimates — verify before
+  you submit.

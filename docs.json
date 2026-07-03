@@ -81,6 +81,14 @@
             ]
           },
           {
+            "group": "Construction & bid",
+            "pages": [
+              "bidengine/index",
+              "drawing/index",
+              "survey/index"
+            ]
+          },
+          {
             "group": "RMM",
             "pages": [
               "rmm/deploy-agent"
