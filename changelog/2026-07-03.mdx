@@ -1,0 +1,94 @@
+---
+title: "Week of June 29, 2026 — recap"
+description: "The v1.14.x platform is fully in place: 30+ product areas across service desk, sales, quoting, projects, field, RMM, security, compliance, AI, and analytics."
+---
+
+The full [v1.14.x platform](/changelog/2026-07-01) is now generally available. Here's everything that shipped this week, grouped by area with links to the detailed release notes.
+
+## New features
+
+### Service desk & automation
+
+- **Ticket queue** — triage helpdesk tickets from a sticky command region with SLA stat tiles and inline actions. See [Ticket queue](/helpdesk/ticket-queue).
+- **Ticket Peek** — a two-pane slide-out for working a single ticket, with live SLA, asset, RMM posture, Nexie summary, and remote actions. See [Ticket Peek](/helpdesk/ticket-peek).
+- **Workflow studio** — no-code automation rules that fire on ticket events (10 triggers). See [Ticket arrival routing](/workflow-studio/ticket-arrival-routing).
+- **Knowledge base**, **Dispatch board**, and the field-tech **Mobile app**. See the [Monday recap](/changelog/2026-07-02).
+
+### Sales, quotes & billing
+
+- **CRM** with a 360° account view, weighted deal pipeline, activity log, and AI lead capture from sales-call transcripts. See [CRM](/crm/index).
+- **Discovery blueprint** — Nexie-generated Client Operations Blueprint that converts to a draft quote in one click. See [Discovery blueprint](/assessment/index).
+- **Quotes & invoices** — sectioned versioned quotes with online e-sign, one-click conversion to invoices, and AR aging. See [Quotes & invoices](/billing).
+- **Contracts & e-sign**, **Purchase orders & Pax8 procurement**, and the **Product catalog**. See the [mid-week ship](/changelog/2026-07-02-quotes-billing).
+
+### Projects & field
+
+- **Projects** with WBS, earned-value job costing, and client-signed change orders.
+- **Work orders** for field crews.
+- **Time tracking** with QuickBooks push.
+- **Team & employees** record.
+
+See [Projects & field](/changelog/2026-07-03-projects-field).
+
+### Construction & bid
+
+- **Bid engine** — AI-assisted takeoff for construction, low-voltage, and electrical bids.
+- **Drawings** — versioned site drawings with 3D floor-plan analysis.
+- **Field survey** — iPad pre-bid walkthroughs that convert straight to a bid.
+
+See [Construction & bid](/changelog/2026-07-03-construction-bid).
+
+### RMM & infrastructure
+
+- **NexusRMM Go agent** for Windows, macOS, and Linux. See [Deploy the RMM agent](/rmm/deploy-agent).
+- **Remote sessions & recording** — in-browser terminal, remote desktop, and SOCKS tunnels with auditable WebM recording.
+- **Device vault** with encrypted credentials and **FortiGate automation**.
+- **Infrastructure verification** and **host & service health** dashboards.
+
+See [RMM & infrastructure](/changelog/2026-07-03-rmm-infrastructure).
+
+### Security & SIEM
+
+- **SIEM** — auto-detecting syslog listener (TLS/plain on port 6514), PCAP parsing, and Nexie AI threat analysis.
+- **Email security** — automated Microsoft 365 phishing triage.
+- **Vulnerability scanning** with a Red Team wizard.
+- **Security posture dashboard** — single-pane rollup.
+
+See [Security & SIEM](/changelog/2026-07-03-security-siem).
+
+### Compliance & governance
+
+- **Compliance Composer** — one engine covering 15 frameworks with auto-collected evidence and Nexie gap analysis.
+- **CMMC Level 2 workspace**, **NCSR intake**, **Risk acceptance registry**, and the **Live Review Engine** for signed client attestations.
+
+See [Compliance & governance](/changelog/2026-07-03-compliance-governance).
+
+### Client portal & onboarding
+
+- **Client portal** — tenant-scoped self-service for tickets, invoices, quotes, contracts, KB, and risk acceptances, with an embedded Nexie concierge.
+- **Client onboarding** — 9-phase, 30-day pipeline from signed contract to steady-state managed services.
+
+See [Client portal & onboarding](/changelog/2026-07-03-portal-onboarding).
+
+### AI & analytics
+
+- **Nexie assistant** — conversational AI over your live tenant data (read-only, row-limited, cost-reported).
+- **NexusPulse (SMART Numbers)** — MSP KPI engine.
+- **Employee productivity analytics** — consent-gated per-employee reporting.
+
+See [AI & analytics](/changelog/2026-07-03-ai-analytics).
+
+### Procurement & network
+
+- **Distributor catalog (Pax8)** — unified search with cost/MSRP comparison across every billing-term combination. See [Distributor catalog](/distributors/catalog).
+
+## Known limitations
+
+Each detail entry lists the specific limitations for its area. The most notable carry-overs:
+
+- **Distributor catalog** — Pax8 descriptions render as escaped text; **Add to quote** is disabled pending quote integration.
+- **RMM agent** — auditable session recording on macOS/Linux is a stub; field auto-update is Windows-only.
+- **Dispatch board** — Microsoft 365 calendar sync is one-way (NEXOS CORE → Outlook).
+- **AI features** — Nexie, AI lead capture, Discovery blueprint, and KB article drafting require a tenant Claude API key.
+
+See the individual entries above for the full list.
