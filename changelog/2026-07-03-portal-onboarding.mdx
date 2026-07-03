@@ -1,0 +1,60 @@
+---
+title: "Client portal & onboarding"
+description: "The client-facing self-service portal and a 9-phase, 30-day client onboarding pipeline round out the v1.14.x platform."
+---
+
+End-of-week ship, extending the [v1.14.x platform](/changelog/2026-07-01). Two
+new product areas cover client self-service and the first 30 days of a new
+managed-services engagement.
+
+## New features
+
+### Client portal
+
+The self-service web app your clients log into — a separate, tenant-scoped
+stack from the MSP staff app. Clients can list and create **tickets**, view
+**invoices** (with the QuickBooks pay-link when configured), review **quotes
+and contracts**, search the **knowledge base**, e-sign **risk acceptances**,
+and update their profile. An embedded **Nexie concierge** answers account
+questions using a role-filtered, read-mostly tool set (it can open a ticket,
+but can't pay invoices or sign contracts on the client's behalf). Portal
+users are contacts, not MSP users, and every session is bound to a single
+tenant, company, and contact.
+
+From the staff side, invite or disable portal users, manage per-page **roles
+and permissions**, set a default role, and **impersonate** a contact to
+preview exactly what they see (audited and time-limited). Permission changes
+take effect on the next request. See [Client portal](/portal/index).
+
+### Client onboarding
+
+A 9-phase, 30-day pipeline for bringing a new managed-services client online.
+Once an MSA is signed, onboarding creates the client record, seeds a per-phase
+checklist, and fires the repeatable automation — the **branded welcome
+email**, an **RMM enrollment token**, **kickoff report tickets**, and
+**compliance framework assignment** (inferred from the client's industry or
+pulled from a Nexie [Discovery Blueprint](/assessment/index)). Blueprint
+recommendations are injected as concrete sub-tasks into the security-stack,
+software, hardware, and compliance phases at start.
+
+Phases run **0 MSA & Setup → 1 Welcome & Access → 2 RMM Deployment → 3 Network
+Discovery → 4 Security Assessment → 5 Tool Deployment → 6 30-Day Program → 7
+Hardware Audit → 8 Compliance**, with an immutable audit trail on every step.
+See [Client onboarding](/onboarding/index).
+
+## Known limitations
+
+- **Client portal** — login is **magic-link only** today; TOTP MFA and
+  password login aren't available yet. Magic-link delivery requires a
+  configured mailer, and the Nexie concierge requires your tenant's Claude
+  API key.
+- **Client onboarding** — **phase advancement is manual**; the "30-day" is a
+  target date and phase labels, not a scheduler. The Network Discovery,
+  Security Assessment, and Hardware Audit phases **summarize existing RMM
+  agent data** into report tickets — they don't run live scans. RMM
+  Deployment hands the enrollment token to a technician via a ticket rather
+  than pushing an installer. Compliance-framework inference is keyword-based
+  and defaults to SOC 2 when nothing matches.
+
+Earlier [known limitations from v1.14.x](/changelog/2026-07-01#known-limitations)
+remain unchanged.

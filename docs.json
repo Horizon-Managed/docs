@@ -142,6 +142,7 @@
             "pages": [
               "changelog/2026-07-08",
               "changelog/2026-07-03-ai-analytics",
+              "changelog/2026-07-03-portal-onboarding",
               "changelog/2026-07-03-compliance-governance",
               "changelog/2026-07-03-security-siem",
               "changelog/2026-07-03-rmm-infrastructure",
