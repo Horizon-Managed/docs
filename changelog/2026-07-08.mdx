@@ -1,31 +1,96 @@
 ---
 title: "Week of July 8, 2026"
-description: "A quiet week — no product changes shipped. The v1.14.x platform from last week remains the current release."
+description: "v1.16.0 ships — tenant isolation now enforces at the database layer, plus ticket experience refinements and security hardening."
 ---
 
-No product changes shipped this week. The current release is the **v1.14.x**
-platform that landed last week, including the end-of-week
-[RMM & infrastructure ship](/changelog/2026-07-03-rmm-infrastructure).
+Mid-week release **v1.16.0** rolls up several weeks of behind-the-scenes work
+that finally lands as customer-visible improvements. Two themes: a stronger
+security posture for how your data is isolated from every other MSP on NEXOS
+CORE, and a set of polish improvements to the ticket experience.
 
-## Current release recap
+## Trust & security — tenant isolation at the database
 
-The following capabilities from the [v1.14.x rollout](/changelog/2026-07-01)
-remain generally available:
+NEXOS CORE has always kept each MSP's data separate from every other MSP's
+data on the same platform. What changed in v1.16.0 is **where** that boundary
+is enforced. Previously the guarantee came from the application layer alone —
+every query the platform runs already carries a tenant scope. Now the same
+policy is also enforced **inside PostgreSQL itself**, through Row-Level
+Security policies attached to every tenant-scoped table.
 
-- **Helpdesk** — [Ticket queue](/helpdesk/ticket-queue) and [Ticket Peek](/helpdesk/ticket-peek).
-- **Automation** — [Workflow studio: ticket arrival routing](/workflow-studio/ticket-arrival-routing).
-- **RMM** — [NexusRMM Go agent](/rmm/deploy-agent) and [Remote sessions & recording](/rmm/remote-sessions).
-- **Procurement** — [Distributor catalog (Pax8)](/distributors/catalog).
-- **Network** — [Device vault & FortiGate automation](/devices/index).
-- **Assets** — [Infrastructure verification](/infra/index).
-- **Ops** — [Host & service health](/health/index).
+The practical impact for your organization:
+
+- **Defense in depth.** A hypothetical application-layer bug that forgets to
+  filter by tenant no longer has a path to leak data — the database refuses
+  the query outright.
+- **A stronger audit story.** Security teams and auditors can now verify
+  tenant isolation by inspecting PostgreSQL's own `pg_policies` catalog, not
+  just by reading NEXOS CORE's source code.
+- **Cross-tenant proof tests.** The platform ships automated tests that
+  seed two tenants, attempt to read and mutate each other's data, and
+  verify the database blocks every path.
+
+See the new **[Trust & security → Tenant isolation](/trust/tenant-isolation)**
+page for the full guarantee, the failure modes when a cross-tenant query is
+attempted, and the three independent verification mechanisms.
+
+## Ticket experience refinements
+
+The [Ticket Peek](/helpdesk/ticket-peek) two-pane slide-out shipped in
+v1.14.x. This release polishes the details:
+
+- **Sticky action bar** on the ticket list keeps Reply, Assign, and Resolve
+  visible while you scroll a long queue. No more re-selecting a row just to
+  reach the actions.
+- **Width-fit list layout** — the ticket queue now sizes to the available
+  viewport instead of overflowing on narrower monitors.
+- **Peek visual fidelity** — theme colors, top spacing, and the slide-out
+  container all render correctly across Firefox, Chrome, and Safari. Fixed a
+  brief flash-of-unstyled-content when opening a ticket from a cold cache.
+- **Reply-outbound fix** — the **Send reply** button on a ticket now
+  reliably delivers the email to the requester. A background regression
+  had been silently dropping outbound customer replies in some
+  configurations.
+
+The [Workflow studio: ticket arrival routing](/workflow-studio/ticket-arrival-routing)
+engine gained two new trigger events — `ticket_assigned` (fires when a
+ticket's assignee changes) and `ticket_note_added` — so studio rules can
+automate on those moments as well.
+
+## Security hardening
+
+Three security-posture improvements that customers care about at the
+compliance-review level:
+
+- **SSO client secrets encrypted at rest.** OAuth client secrets for your
+  SSO providers are now encrypted in the database using envelope encryption
+  and decrypted on read. A DB backup, if it ever fell into the wrong hands,
+  no longer exposes the secrets in plaintext.
+- **Fail-closed device credential vault.** The FortiGate/network-device
+  credential store no longer falls back to plaintext under any error
+  condition. If decryption fails, the credential is refused rather than
+  silently used.
+- **Pen-test authorization hardblock (Nexie Red Team).** Nexie Red Team
+  will not launch any Metasploit-based exploitation module without a
+  recorded, signed pen-test authorization for the target scope. This is a
+  hard block, not a warning — no authorization on file, no exploitation.
 
 ## Bug fixes
 
-None this week.
+- Ticket reply outbound (as above)
+- Ticket Peek concept-C rendering across browsers (as above)
+- Dispatch page column reference for unassigned items (an internal
+  regression that occasionally surfaced as "No dispatchable items" on the
+  dispatch board — no more)
+- RMM deploy-agent page copy corrected to reference the current Go agent
+  (the page previously mentioned a legacy .NET agent that is no longer
+  the platform's agent-of-record)
+- Cleanup pass on the ticket list — several minor layout and spacing
+  regressions rolled up
 
 ## Known limitations
 
-Unchanged from last week — see the
+Unchanged from previous releases — see the
 [RMM & infrastructure ship](/changelog/2026-07-03-rmm-infrastructure#known-limitations)
-and earlier entries for the current list.
+and earlier entries for the current list. The Trust & security section is
+new in this release; expand it to a broader "Trust center" over time
+(compliance framework mapping, sub-processor list, DPA on request).
