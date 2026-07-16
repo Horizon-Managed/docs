@@ -58,6 +58,7 @@
             "group": "CRM & sales",
             "pages": [
               "crm/index",
+              "crm/contract-coverage",
               "assessment/index"
             ]
           },
@@ -67,6 +68,7 @@
               "billing/index",
               "legal/contracts",
               "po/index",
+              "po/detail-and-approval",
               "product/index",
               "distributors/catalog"
             ]

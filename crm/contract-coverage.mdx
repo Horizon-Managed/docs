@@ -1,0 +1,68 @@
+---
+title: "Contract coverage & profitability"
+description: "On a client's 360° view, see logged ticket time split into covered / billable-extra / non-contract, and track a contract's profitability against its value or included hours"
+---
+
+Every client's 360° detail view (`/crm/clients`, then open a client) includes a
+**contract coverage** panel that answers two questions at a glance: *how is our
+time on this client being absorbed by their contract?* and *is that contract
+still profitable?*
+
+## When to use it
+
+- Check whether a managed-services contract is still profitable — covered time
+  against contract value.
+- Spot a client running up a lot of ad-hoc work that isn't under any contract —
+  a signal to propose one.
+- Understand the mix of covered, billable-extra, and non-contract effort before a
+  QBR or a renewal conversation.
+
+## The hours ring
+
+The hours ring breaks the client's logged ticket time into three parts:
+
+| Segment | What it is |
+| --- | --- |
+| **Covered** | Time absorbed by an active contract — typically the non-billable managed-services effort you've already agreed to deliver. |
+| **Billable-Extra** | Contract-linked work billed *on top* of the contract — in-scope client, out-of-scope-of-the-flat-fee work. |
+| **Non-Contract** | Ad-hoc work not tied to any contract — pure break-fix or project time with no coverage behind it. |
+
+Toggle the window between **week**, **month**, and **year** to see the mix over
+different horizons.
+
+<Note>
+  A large or growing **Non-Contract** slice is the signal to watch. It means
+  you're delivering unmanaged work — a clear opening to propose a contract that
+  turns that ad-hoc time into recurring revenue.
+</Note>
+
+## Contract profitability meter
+
+Alongside the ring, the profitability meter tracks how much of the active
+contract has been consumed: covered hours (or their cost) burned against the
+contract's value or its included hours. The meter shows one of three states:
+
+- **Healthy** — comfortably within the contract's value or included hours.
+- **Warning** — approaching the limit; worth a look before it tips over.
+- **Over budget** — covered effort has exceeded what the contract pays for; the
+  engagement is running at a loss and needs attention.
+
+The meter also carries an **MRR / ORR / NRR** tag so you can see at a glance what
+kind of revenue the contract represents:
+
+- **MRR** — core recurring managed services.
+- **ORR** — other recurring revenue (SaaS resale, VoIP, hosted services).
+- **NRR** — non-recurring revenue (projects, break-fix, hardware).
+
+## The value story
+
+Together, the ring and the meter turn logged time into a profitability signal:
+
+- **Watch covered vs. contract value.** When covered effort climbs toward — or
+  past — the contract's value, the contract is thinning out. Catch it in the
+  **warning** band and you can right-size scope or price at renewal instead of
+  discovering the loss after the fact.
+- **Turn Non-Contract time into recurring revenue.** A client generating steady
+  ad-hoc work without a contract is leaving money on the table for both of you.
+  The Non-Contract segment quantifies exactly how much, so the case for a
+  contract writes itself.

@@ -1,0 +1,96 @@
+---
+title: "PO detail & approval"
+description: "The full purchase-order detail page, plus the approve / reject / receive workflow and where approvers and auto-approve limits are configured"
+---
+
+Every purchase order opens to a full detail page at `/purchase-orders/{id}` —
+the canonical surface for reviewing a PO and acting on it. This is where an
+approver sees exactly what is being requested, from whom, and against which
+client or work, before releasing the spend.
+
+## When to use it
+
+- Review the complete contents of a PO before approving or rejecting it.
+- Approve, reject, or receive a purchase order.
+- See who requested a PO, who approved it, and when each step happened.
+- Confirm a PO pushed to QuickBooks, and trace it back to the ticket or project
+  it was raised for.
+
+## The detail page
+
+The detail page is organized into a header, the line items, the money summary,
+and notes.
+
+### Header
+
+The header carries the PO's identity and status at a glance:
+
+| Field | What it shows |
+| --- | --- |
+| **PO number** | The auto-assigned `PO-YYYY-NNN` identifier. |
+| **Status** | Current lifecycle state (draft, pending approval, approved, rejected, received). |
+| **Priority** | The urgency set on the PO. |
+| **Vendor** | The vendor the goods or services are being ordered from. |
+| **Company** | The client the purchase is associated with. |
+| **Requested by / Approved by** | The user who raised the PO and the approver who released it. |
+| **Created / Approved / Received dates** | The timestamp for each lifecycle step, as it happens. |
+| **QuickBooks PO number** | Shown once the approved PO has pushed to QuickBooks. |
+| **Linked ticket / project** | The ticket or project the PO was raised against, if any. |
+
+### Line items
+
+A line-items table lists each product or service on the order — **product**,
+**description**, **quantity**, **unit price**, and **line total**.
+
+### Totals
+
+Below the line items, the money summary shows **subtotal**, **tax**,
+**shipping**, and the **order total**.
+
+### Notes and rejection reason
+
+Free-text **notes** carry any context added to the PO. If a PO was rejected, the
+**rejection reason** is shown so the requester understands why and can raise a
+corrected PO.
+
+## Approval workflow
+
+A new purchase order enters **pending approval** unless its total falls under the
+tenant's configured auto-approve dollar threshold — in which case it approves
+automatically on creation.
+
+Approvers — users who hold the approve permission or who sit on the tenant's
+approver list — can act on a PO from either the purchase-order list or the detail
+page:
+
+<Steps>
+  <Step title="Approve">
+    Release the PO for fulfillment. Approval captures the approver's
+    **signature**, stamps the approved-by user and the approval date, and (for
+    distributor SaaS) makes the PO eligible to dispatch. An approved PO can push
+    to QuickBooks as a QBO purchase order.
+  </Step>
+  <Step title="Reject">
+    Decline the PO with a **reason**. The reason is recorded on the detail page so
+    the requester knows what to fix.
+  </Step>
+  <Step title="Receive">
+    Mark the goods or services as received once they arrive.
+  </Step>
+</Steps>
+
+When a PO needs approval, its approvers receive a **notification that deep-links
+straight to that PO**, so releasing spend is a single click from the alert.
+
+<Note>
+  **Approvers and the auto-approve limit are managed under Settings →
+  Procurement.** That is where you set the dollar threshold below which POs
+  approve automatically, and where you maintain the list of who can approve.
+</Note>
+
+<Note>
+  **Approval is not provisioning.** For distributor SaaS, approving a PO makes it
+  eligible to dispatch but does not send it to the distributor — see
+  [Purchase orders & procurement](/po/index) for the dispatch and remediation
+  flow.
+</Note>
