@@ -1,0 +1,83 @@
+---
+title: "Team members & invitations"
+description: "Add staff to your NEXOS CORE tenant — invite them by email to set their own password, or create an account directly — and manage pending invitations."
+---
+
+Everyone on your team signs in to NEXOS CORE as a **user** in your tenant. You
+add users from **Settings → Users**, either by **inviting** them (they receive
+an email and set their own password) or by **creating** the account directly
+with a password you set. Each user is assigned a [role](/admin/roles-permissions)
+that governs what they can see and do.
+
+## When to use it
+
+- Onboard a new technician, dispatcher, or manager.
+- Send someone a self-service invite so they choose their own password.
+- Create a shared or service account directly, without email.
+- Re-send or cancel an invitation that hasn't been accepted yet.
+
+## Two ways to add someone
+
+<CardGroup cols={2}>
+  <Card title="Invite Team Member" icon="envelope">
+    Enter their name, email, and role. They receive an email with a secure link
+    to set their own password, then sign in. **No password is set by you** —
+    best for real people onboarding themselves.
+  </Card>
+  <Card title="Add New User" icon="user-plus">
+    Enter their name, email, role, **and a password**. The account is usable
+    immediately and **no email is sent** — useful for a shared or service
+    account, or when you're setting someone up in person.
+  </Card>
+</CardGroup>
+
+## Inviting a team member
+
+<Steps>
+  <Step title="Open Settings → Users">
+    Click **Invite Team Member**. (The separate **Add New User** button creates
+    an account with a password instead and sends no email.)
+  </Step>
+  <Step title="Enter their details">
+    Provide the person's **email**, **name**, and the **role** to assign. The
+    invite form has no password field — the invitee sets their own.
+  </Step>
+  <Step title="They receive an email">
+    NEXOS CORE emails the invitee a **"You're Invited"** message with an
+    **Accept Invitation** button. The invitation is valid for **7 days**.
+  </Step>
+  <Step title="They set a password and sign in">
+    The link opens a set-password page showing the account it's for. Once they
+    choose a password, they're taken to sign in — and appear in your Users list
+    as an active member.
+  </Step>
+</Steps>
+
+<Note>
+  The invitation email is sent from **your own configured email address** when
+  you've connected one under **Settings → Integrations**. If your tenant hasn't
+  set up email yet, NEXOS CORE sends the invite from a Horizon system address so
+  onboarding is never blocked — connect your own sender when you're ready and
+  future invites come from your domain automatically.
+</Note>
+
+## Managing pending invitations
+
+Invitations that haven't been accepted appear in the Users screen with two
+actions:
+
+| Action | What it does |
+| --- | --- |
+| **Resend** | Issues a fresh link and emails it again — use if the original expired or was missed. |
+| **Cancel** | Revokes the invitation so its link can no longer be used. |
+
+## Good to know
+
+- **Invitations expire after 7 days.** Use **Resend** to issue a new link.
+- An invited user chooses their **own** password — you never see or set it. The
+  link is single-use and tied to that one invitation.
+- **Add New User** is the only path that sets a password on the user's behalf,
+  and it sends no email — share those credentials securely and out of band.
+- The assigned **role** takes effect when the user first signs in
+  (see [Roles & permissions](/admin/roles-permissions)).
+- You can't invite an email that already belongs to a user in your tenant.

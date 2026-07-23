@@ -154,6 +154,7 @@
             "pages": [
               "admin/sign-in-mfa",
               "admin/roles-permissions",
+              "admin/team-members",
               "admin/tenant-settings",
               "admin/notifications"
             ]
