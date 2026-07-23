@@ -1,0 +1,209 @@
+---
+title: "Tenant isolation"
+description: "How NEXOS CORE keeps every customer's data invisible to every other customer — enforced at the database, not the application."
+---
+
+NEXOS CORE is multi-tenant by design. One instance serves every MSP that
+uses it, and every MSP serves every one of *their* customers from that
+same instance. Tenant isolation is the property that keeps those
+boundaries hard: no query, no mistake, and no compromised handler can
+return data from a tenant it does not belong to.
+
+This page describes how that boundary is enforced, what happens when a
+request tries to cross it, and where to look if you need evidence for a
+security review.
+
+## The short version
+
+Every row that belongs to a tenant carries the tenant's ID. Every query
+runs inside a transaction that sets the tenant ID as a session
+variable. **PostgreSQL Row-Level Security** enforces, at the database
+layer, that any query touching a tenant-scoped table can only see rows
+whose `tenant_id` matches the session variable. If a bug in the
+application ever forgets to filter by tenant, the database still
+returns zero rows — the boundary does not rely on application code
+being correct.
+
+<Note>
+  Isolation is a property of the storage layer, not the API layer.
+  Anyone reviewing the security posture can inspect the database
+  policies directly — they are visible to any authorized reader in
+  `pg_policies` and do not depend on trusting NEXOS CORE application
+  logic.
+</Note>
+
+## How it works
+
+<Steps>
+  <Step title="Request arrives">
+    A request comes in with an authentication token. Middleware verifies
+    the token, extracts the tenant ID, and opens a database transaction.
+  </Step>
+  <Step title="Session variable is set">
+    Inside that transaction, NEXOS CORE sets a PostgreSQL setting
+    (`app.tenant_id`) to the authenticated tenant's ID. The setting is
+    scoped to the transaction — it does not leak to other requests or
+    background jobs.
+  </Step>
+  <Step title="Query runs under Row-Level Security">
+    Every tenant-scoped table has a policy attached that reads
+    `app.tenant_id` and admits only rows whose `tenant_id` matches.
+    Reads see only the tenant's rows; inserts and updates are rejected
+    at the database level if the row's `tenant_id` does not match.
+  </Step>
+  <Step title="Transaction closes">
+    When the request finishes, the transaction closes and the session
+    variable is cleared. The next request starts from the same
+    zero-knowledge baseline.
+  </Step>
+</Steps>
+
+## What is protected
+
+Every table in NEXOS CORE that stores tenant-owned data — customer
+records, tickets, contracts, quotes, invoices, time entries, tasks,
+knowledge-base articles, assets, agent inventory, and dozens more —
+carries `ENABLE ROW LEVEL SECURITY` and `FORCE ROW LEVEL SECURITY`
+attributes plus a `tenant_isolation` policy. The `FORCE` attribute is
+what makes the policy apply to the application itself, not just to
+regular users — without it, the app's database role would silently
+bypass the policy.
+
+The complete inventory of tenant-scoped tables can be listed with:
+
+```sql
+SELECT tablename FROM pg_tables
+ WHERE schemaname = 'public'
+   AND rowsecurity = true
+ ORDER BY tablename;
+```
+
+Any table that stores tenant-owned data and is missing from this list
+is a bug — see [Verification](#verification) for how NEXOS CORE catches
+that automatically.
+
+## What is not protected — by design
+
+Some tables are intentionally shared across tenants because they hold
+platform data, not tenant data. These are limited to:
+
+- **`tenants`** — the roster of tenants themselves. Access is gated at
+  the application layer via a `is_horizon_staff` role check; only
+  Horizon Managed Services staff can list all tenants.
+- **`schema_migrations`** — bookkeeping for database migrations.
+  Contains no tenant information.
+- **System catalog rows** in a small number of tables (for example,
+  ticket sources like "Portal / Email / Phone" or built-in onboarding
+  checklist templates) that are shared across all tenants and can be
+  extended per-tenant. These use a "NULL-tenant" pattern: shared rows
+  carry `tenant_id = NULL`, per-tenant customizations carry the
+  tenant's ID, and the policy admits both to a given tenant but blocks
+  writes to the shared rows.
+
+Any query path that legitimately needs to run outside a tenant scope —
+pre-authentication token lookups, scheduled sweepers that touch every
+tenant — is called out explicitly on a small allowlist that is
+reviewable in one file. Everything else goes through the enforced
+boundary.
+
+## What happens when a cross-tenant query is attempted
+
+Three failure modes, in the order the database reaches them:
+
+<AccordionGroup>
+  <Accordion title="Read across tenants">
+    Returns **zero rows**. The `USING` clause of the policy filters out
+    every row that does not match the current `app.tenant_id`. The
+    application never sees the data — even if a bug in a handler
+    forgot to add a `WHERE tenant_id = ?` clause, the database silently
+    hides everything the tenant is not entitled to.
+  </Accordion>
+  <Accordion title="Write across tenants (INSERT)">
+    Returns **error 42501 — `insufficient_privilege`**. The `WITH
+    CHECK` clause of the policy rejects any INSERT whose `tenant_id`
+    column value does not match the current `app.tenant_id`. This
+    prevents "forgery" attacks where a compromised or buggy path
+    could plant rows in another tenant's namespace.
+  </Accordion>
+  <Accordion title="Update / delete across tenants">
+    Affects **zero rows**. UPDATE and DELETE only see the rows the
+    policy admits (as with reads), so cross-tenant modification
+    attempts silently succeed at the SQL level but change nothing.
+    Combined with application-layer audit logging, cross-tenant
+    modification attempts are detectable as "affected zero rows"
+    events.
+  </Accordion>
+</AccordionGroup>
+
+## Verification
+
+Isolation is enforced by three independent mechanisms — belt, braces,
+and a second belt.
+
+<CardGroup cols={2}>
+  <Card title="Static lint" icon="code">
+    A code linter scans every database query in the application source
+    and flags any that touch a tenant-scoped table without a
+    `tenant_id` predicate. Runs on every pull request; blocks merges
+    that would introduce a bare-tenant query.
+  </Card>
+  <Card title="Live schema audit" icon="database">
+    A runtime tool inspects the actual database and verifies: the
+    application role has row-level security *enforced*; every
+    tenant-carrying table has the policy attached; every
+    pre-authentication lookup function follows the correct privilege
+    pattern.
+  </Card>
+  <Card title="Cross-tenant proof tests" icon="shield-check">
+    An automated test suite creates paired test tenants, attempts
+    every documented attack pattern (read, insert, update across
+    tenants), and asserts each is rejected. Runs against a fresh
+    PostgreSQL container on every change to security-relevant code.
+  </Card>
+  <Card title="Independent audit" icon="clipboard-check">
+    Security controls (SOC 2 CC6.1, CMMC AC.L2-3.1.3) reference this
+    isolation model directly. Evidence is maintained alongside the
+    code and refreshed on every change.
+  </Card>
+</CardGroup>
+
+## Deployment options
+
+The default deployment is shared-instance multi-tenant with the
+database-level isolation described above. This is the model used by
+Horizon Managed Services itself and by every commercial tier
+Starter / Pro / Enterprise.
+
+For customers with additional compliance requirements that mandate
+physical database separation — federal contractors under CJIS, some
+healthcare covered entities under HIPAA, defense-industrial-base
+suppliers pursuing CMMC Level 3 — NEXOS CORE also offers a
+**dedicated-instance tier**. In that mode the customer's data lives in
+a physically separate PostgreSQL database, on separately provisioned
+infrastructure, with no shared connection pool to any other tenant.
+Both the shared and dedicated modes use the same application binary
+and the same tenant-isolation guarantees; the difference is the
+number of tenants living behind a single database.
+
+Contact [sales@horizonmanaged.com](mailto:sales@horizonmanaged.com) to
+discuss which tier fits your requirements.
+
+## Where to get more detail
+
+- **For your auditor:** every framework control that references
+  tenant isolation (SOC 2 CC6.1, CMMC AC.L2-3.1.3) is documented with
+  the specific database policies, the code paths that enforce them,
+  and the tests that prove enforcement. Available on request.
+- **For your security team:** we're happy to walk through the
+  Row-Level Security policies, the audit tooling, and the
+  cross-tenant test suite in a joint session.
+- **For your legal team:** dedicated-instance deployment terms and
+  data-processing agreements are available for review.
+
+<Note>
+  This page describes the property NEXOS CORE guarantees, not the
+  implementation detail. If you need engineering-level depth for a
+  vendor security assessment, ask your Horizon Managed Services
+  account contact — we can share the internal design document and
+  audit tooling output under NDA.
+</Note>
