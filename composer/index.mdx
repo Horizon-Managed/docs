@@ -50,9 +50,20 @@ NEXOS CORE ships its own Standards, authored in-house:
   workstations & mobile, servers, backup & continuity, power & environment, and
   documentation & access.
 
+### Author your own Standards
+
+Beyond the built-in baselines you can create your own alignment Standards and
+their controls, or **bulk-import controls from a CSV or XLSX file**. The import
+expects a header row plus one row per control, with columns for **ref**,
+**title**, **why-it-matters** (description), **category**, and **severity**
+(critical / high / medium / low); each row is validated and any problems are
+reported back by row number. Your Standards are private to your organization —
+the built-in NexOS baselines are read-only and can't be edited.
+
 <Note>
-  In-app Standards authoring/import and the full Technology Alignment (TAM/vCIO)
-  workspace are planned — these first Standards ship as ready-to-use baselines.
+  The full Technology Alignment (TAM/vCIO) workspace — scheduled reviews,
+  recommendations, and the client technology roadmap — is planned. Standards
+  authoring, CSV/XLSX import, and the built-in baselines are available now.
 </Note>
 
 ## Evidence auto-collection
