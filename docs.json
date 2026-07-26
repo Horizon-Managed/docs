@@ -121,6 +121,7 @@
             "pages": [
               "composer/index",
               "composer/alignment-reviews",
+              "composer/client-walkthrough",
               "cmmc/index",
               "composer/ncsr/index",
               "risk/index",

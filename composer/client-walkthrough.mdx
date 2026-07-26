@@ -1,0 +1,59 @@
+---
+title: "Client review walkthrough (iPad handoff)"
+description: "Hand the client the review on their own device to walk the findings, accept risks, and sign off — producing a signed binder"
+---
+
+Once the TAM has completed the initial alignment review, the findings are reviewed
+**with the client**. NEXOS CORE hands the review to the client on their own device —
+an iPad via QR code, or any browser via a link — where they walk each finding,
+accept the risks they've chosen not to remediate, and sign off. It's the same
+live-review-and-sign flow the [compliance review](/composer/ncsr/index) uses, so
+it behaves identically to the compliance walkthrough.
+
+## Two passes
+
+The alignment review is intentionally two passes:
+
+1. **TAM review** — the technician judges each control (aligned / at-risk /
+   not-aligned / N/A). This is the technical assessment; the client isn't involved.
+2. **Client walkthrough** — you sit with the client and walk the findings. This is
+   where risk acceptance and the signature happen.
+
+## The walkthrough
+
+<Steps>
+  <Step title="Hand off the review">
+    From the review, choose **Begin client walkthrough**. NEXOS CORE mints a
+    short-lived token (24 hours) and shows a **QR code** plus a **link**. The
+    client scans the QR on an iPad, or you send them the link to open on a laptop
+    or any browser — the walkthrough is a standard web page and runs anywhere. No
+    login: the link authenticates the client to that one review only.
+  </Step>
+  <Step title="Client walks the findings">
+    The client sees each control alongside the TAM's alignment judgment,
+    **read-only** — the client reviews and acknowledges the assessment but cannot
+    change it.
+  </Step>
+  <Step title="Accept risks">
+    On any **not-aligned** or **at-risk** finding the client won't remediate, they
+    **accept the risk** — capturing their **initials**, a short **reason**, and a
+    required **re-review date**. Accepting a risk is a decision, not a passing
+    grade: it doesn't change the alignment score, and the risk resurfaces for
+    re-review on the date chosen.
+  </Step>
+  <Step title="Sign off">
+    At the end the client applies an **on-device e-signature** and signs off the
+    whole review, sealing it.
+  </Step>
+  <Step title="Signed binder">
+    Sign-off produces a **signed PDF binder** — the alignment score, findings by
+    state, the accepted-risk register (with re-review dates), and the signature —
+    and writes the whole exchange to a tenant-scoped audit trail.
+  </Step>
+</Steps>
+
+<Note>
+  The handoff token is short-lived (24h) and scoped to a single review; the link
+  works on any device, so the client can complete the walkthrough on an iPad,
+  laptop, or phone. The TAM's judgments are never editable by the client.
+</Note>
