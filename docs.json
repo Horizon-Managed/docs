@@ -120,6 +120,7 @@
             "group": "Compliance & governance",
             "pages": [
               "composer/index",
+              "composer/alignment-reviews",
               "cmmc/index",
               "composer/ncsr/index",
               "risk/index",
