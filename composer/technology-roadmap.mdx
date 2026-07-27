@@ -1,0 +1,81 @@
+---
+title: "Recommendations & the technology roadmap"
+description: "Turn a review's misaligned controls into prioritized recommendations, then promote them onto the client's technology roadmap with full provenance"
+---
+
+An alignment review measures the gaps; the **technology roadmap** is what you do
+about them. Every control a review judges **Not aligned** or **At risk** becomes a
+recommendation candidate you can price, prioritize, and promote onto the client's
+roadmap — and each promoted item remembers exactly which Standard and control it
+came from. Open a review's recommendations at
+`/summit/reviews/{id}/recommendations`, and the roadmap at `/summit/roadmap`.
+
+## From findings to recommendations
+
+Only misaligned controls surface as candidates — controls marked **Aligned** or
+**N/A** never produce a recommendation. For each candidate, Summit proposes a
+starting **priority** derived from the control's severity: a hard miss (Not
+aligned) inherits the control's severity, and an At-risk finding is set one notch
+less urgent. You override it before promoting.
+
+<Steps>
+  <Step title="Open recommendations">
+    From a completed or in-progress review, open **Recommendations**. Each
+    misaligned control is listed with its severity, the "why it matters" text, and
+    the note you captured during the review.
+  </Step>
+  <Step title="Set priority, effort, and cost">
+    For each candidate set a **priority** (critical / high / medium / low), an
+    **estimated effort** in hours, and an **estimated cost**. The recommendation's
+    text is composed for you from the control — its why-it-matters, your review
+    note, and the effort estimate — so there's nothing to write from scratch.
+  </Step>
+  <Step title="Promote to the roadmap">
+    Promote the candidate to push it onto the client's technology roadmap as a
+    **planned** item. A control can't be promoted twice — if it's already on the
+    roadmap, Summit points you at the existing item instead of creating a
+    duplicate.
+  </Step>
+</Steps>
+
+<Note>
+  A finding whose risk the client has **accepted** shows that disposition (with
+  its re-review date) instead of re-offering promotion. Accepting a risk is a
+  decision, not a fix — see
+  [Technology Alignment reviews](/composer/alignment-reviews#risk-acceptance--sign-off).
+</Note>
+
+## Provenance — the roadmap always shows *why*
+
+Every promoted item keeps a link back to the **Standard and control** it came
+from. On the roadmap that link renders as a provenance chip, so anyone looking at
+the roadmap can see which best-practice gap justifies the work. Provenance is
+resolved server-side from the review — it can't be forged or edited — which is
+what lets the roadmap double as the evidence trail for a vCIO conversation.
+
+Items added to the roadmap by hand simply carry no provenance chip; promoted and
+hand-added items live on the same roadmap.
+
+## Managing the roadmap
+
+Open `/summit/roadmap` and pick a client to see their roadmap. Items are ordered
+with completed work last, then by priority, then newest first. For each item you
+can:
+
+- **Edit** its title, description, **category**, priority, **target quarter**, and
+  estimated cost.
+- **Change status** as work moves: `planned` → `in_progress` → `completed`, or
+  `deferred` / `cancelled`. Marking an item completed stamps its completion date.
+- **Remove** an item.
+
+Categories are `infrastructure`, `security`, `compliance`, `software`,
+`hardware`, `cloud`, or `other` — anything else collapses to `other`. Items
+promoted from a review start in the `security` category and `planned` status; edit
+them to fit.
+
+<Note>
+  The same roadmap items render **read-only** on the CRM client-detail
+  Account-Management tab, so account managers see the plan without needing the
+  Summit workspace. The **target quarter** you set here is what the vCIO
+  [budget rollup](/composer/vcio-qbr) buckets investment by.
+</Note>

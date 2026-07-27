@@ -1,0 +1,65 @@
+---
+title: "vCIO: budgets, QBR & sign-off"
+description: "The vCIO close — set a client's IT budget, roll the roadmap up against it, and assemble a client-facing quarterly business review"
+---
+
+Where the TAM judges the environment and builds the roadmap, the **vCIO** puts the
+financial layer on top: a per-client IT budget, a roll-up of the roadmap against
+that budget, and a client-facing **Quarterly Business Review (QBR)** that ties the
+alignment score, the investment plan, and the accepted risks into one deliverable.
+Open it at `/summit/qbr`.
+
+## Set the client's IT budget
+
+Summit keeps a per-client **annual IT budget** figure, set inline from the vCIO
+panel. It's a Summit setting of its own — distinct from your MSP contract value or
+the client's company revenue — so the roll-up measures the roadmap against what the
+client actually has to spend. You can add a short fiscal note alongside it.
+
+## Budget rollup — committed vs. planned
+
+The rollup buckets the client's roadmap investment against their annual budget:
+
+- **Committed** — roadmap items that are `in_progress` or `completed`. The client
+  has approved this work; it's underway or done.
+- **Planned** — items still in `planned` status. Proposed, not yet approved.
+- **Excluded** — `deferred` and `cancelled` items are left out of the rollup
+  entirely.
+
+The **FY investment total** is committed + planned, and the **headroom** is the
+annual budget minus that total. Go past the budget and the rollup flags it as
+over budget. Investment is also broken out **by quarter**, using the target
+quarter you set on each [roadmap item](/composer/technology-roadmap#managing-the-roadmap).
+
+## The QBR deliverable
+
+`/summit/qbr?company={id}` assembles the client's business review from everything
+Summit already knows — nothing to re-enter:
+
+- The current **alignment score**, from the client's latest review.
+- The **budget rollup** — committed, planned, headroom, and the by-quarter
+  breakdown.
+- The **technology roadmap** with per-item cost and **provenance chips** showing
+  which Standard and control each item traces back to.
+- The **accepted-risk register** — the risks the client chose not to remediate,
+  each with its required re-review date.
+
+Open `/summit/qbr` without a client to get a picker. The QBR renders on-brand and
+tablet-friendly, and a **Print / Save PDF** action isolates the deliverable from
+the app chrome so you can hand the client a clean document.
+
+## Signing off the review
+
+The vCIO close ends with the client **signing off** the review. Sign-off seals the
+review as complete, finalizes every risk the client accepted during it, and writes
+the sign-off to a tenant-scoped audit trail — so the QBR is backed by a signed,
+audited record. The mechanics of per-finding risk acceptance and the final
+signature are covered on
+[Technology Alignment reviews](/composer/alignment-reviews#risk-acceptance--sign-off)
+and, for the on-device client experience,
+[Client review walkthrough](/composer/client-walkthrough).
+
+<Note>
+  The QBR is currently an internal, printable page. A read-only client-portal
+  mirror of the alignment score and roadmap is planned.
+</Note>
