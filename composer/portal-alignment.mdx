@@ -1,0 +1,66 @@
+---
+title: "What clients see in the portal"
+description: "The read-only Technology Alignment mirror in the client portal — a client's live alignment score, upcoming review, and roadmap, scoped to their own company"
+---
+
+Everything the TAM and vCIO build inside NexOS Summit —
+[the alignment score](/composer/alignment-reviews),
+[the technology roadmap](/composer/technology-roadmap) — has a **read-only mirror**
+in the client's own portal. Your client logs into the
+[Client Portal](/portal/index) and sees, on one page, how their environment
+measures against the standard you assigned them and what's planned ahead. There's
+nothing new for you to publish — the portal reads the same live data your team
+maintains. Clients open it at `/portal/alignment`.
+
+## What the client sees
+
+<Steps>
+  <Step title="Their alignment score">
+    The live score from the client's latest non-cancelled alignment review, shown
+    out of 100 with a progress meter and a breakdown of how many controls came
+    back **Aligned**, **At risk**, and **Not aligned** (controls marked N/A are
+    excluded from the score). It's the same score your team sees — the client is
+    looking at the real assessment, not a snapshot. Before their first review is
+    complete, the page shows a friendly "no alignment review yet" placeholder
+    instead.
+  </Step>
+  <Step title="Their upcoming review">
+    The next scheduled alignment review — its date, time, standard, and cadence —
+    so the client always knows when their next checkpoint is. From here they can
+    also [request a reschedule](/composer/reschedule-requests).
+  </Step>
+  <Step title="Their technology roadmap">
+    The client's planned and in-flight initiatives, each with its status,
+    priority, category, target quarter, and cost. Items promoted from an alignment
+    review carry the same **provenance chip** your team sees, so the client can
+    trace a roadmap item back to the standard and control that justified it.
+  </Step>
+</Steps>
+
+## Read-only by design
+
+The portal alignment page is strictly **read-only**. There is no edit path — a
+client can view their score and roadmap, but can never change a control judgment,
+a roadmap item, or the score. The one action they can take is to
+[request a reschedule](/composer/reschedule-requests) of their upcoming review,
+which goes to your team's approval queue rather than changing anything directly.
+
+The score and roadmap the client sees are computed from the exact same data and
+scoring logic as the internal TAM/vCIO workspace, so the two surfaces can never
+drift apart.
+
+## Scoped to their company
+
+Portal users are *contacts*, not MSP staff, and authenticate through the portal's
+[passwordless magic-link stack](/portal/index#logging-in). Every session is bound
+to a single tenant and company, and the alignment page only ever shows **that
+company's** score, schedule, and roadmap. Which company's data a client sees is
+resolved server-side from their session — never from anything in the request — so
+one client can never see another's alignment.
+
+<Note>
+  The portal mirror is the client-facing counterpart to the internal
+  [vCIO QBR](/composer/vcio-qbr): the QBR is the deliverable you present and
+  print, while the portal is the always-on, self-service view the client can
+  return to any time between reviews.
+</Note>
