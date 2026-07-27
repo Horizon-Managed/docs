@@ -1,0 +1,71 @@
+---
+title: "Client reschedule requests"
+description: "Let a client propose a new date for their upcoming alignment review from the portal, and approve or decline it from the Schedule dashboard"
+---
+
+A client can't move their own alignment review — but from the portal they can
+**request** a reschedule, and your team approves or declines it. The request lands
+in an approval queue on the Summit [Schedule dashboard](/composer/alignment-reviews),
+a manager or vCIO decides, and the client sees the outcome back in their portal.
+Nothing about the schedule changes until someone on your side approves it.
+
+## The client's request
+
+From their [portal alignment page](/composer/portal-alignment), a client with an
+upcoming review sees a **Request reschedule** action. It opens a small form where
+they propose a **new date and time** and, optionally, a **reason** for the move.
+
+- The proposed time must be in the future.
+- The request is tied to *their own* company's scheduled review — a client can
+  only ever propose against their own schedule, and the company and requester
+  identity come from their portal session, never from the form.
+- Requests are rate-limited, so a client can't flood the queue.
+
+Once submitted, the request shows on the client's own alignment page as
+**Pending**, alongside any earlier requests and their outcomes — so the client
+always has a record of what they asked for and how it was decided.
+
+## The staff decision
+
+Pending requests surface at the top of the Summit **Schedule dashboard** so
+they're the first thing your team sees, and they're visible in the TAM workspace.
+Each request shows the client, the standard, the currently-scheduled date, the
+client's proposed date, and their reason.
+
+<Steps>
+  <Step title="Review the request">
+    Open the Schedule dashboard. The client reschedule-requests queue lists every
+    pending request with the current date, the proposed date, and the client's
+    reason.
+  </Step>
+  <Step title="Approve">
+    Approving **moves the review** to the client's proposed date and marks the
+    request approved. The client sees the new date and an approved status back in
+    their portal.
+  </Step>
+  <Step title="Decline">
+    Declining leaves the scheduled date **unchanged**. You can attach an optional
+    note explaining why — the client sees that note next to the declined request
+    in their portal.
+  </Step>
+</Steps>
+
+## Who can approve
+
+Seeing the queue and deciding on it are separate permissions. A **TAM** can see
+pending requests on the Schedule dashboard, but **approving or declining requires
+a manager, vCIO, or admin**. A user without approval permission who tries to
+decide is refused.
+
+Every request and every decision is written to a tenant-scoped **audit trail** —
+who requested it, who decided it, and when — so the whole exchange is
+reconstructable.
+
+<Note>
+  Approving is idempotent and safe against races: a request that's already been
+  decided can't be approved or declined a second time, and if the underlying
+  schedule was deactivated between the request and the approval, the move is
+  rejected rather than silently applied. The client is notified in-portal (they
+  see the updated status on their alignment page); a separate email notification
+  is planned.
+</Note>
