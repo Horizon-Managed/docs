@@ -50,13 +50,14 @@ the app chrome so you can hand the client a clean document.
 
 ## Signing off the review
 
-The vCIO close ends with the client **signing off** the review. Sign-off seals the
-review as complete, finalizes every risk the client accepted during it, and writes
-the sign-off to a tenant-scoped audit trail — so the QBR is backed by a signed,
-audited record. The mechanics of per-finding risk acceptance and the final
-signature are covered on
-[Technology Alignment reviews](/composer/alignment-reviews#risk-acceptance--sign-off)
-and, for the on-device client experience,
+The alignment review that feeds the QBR carries its own gated sign-off chain — the
+TAM signs off the assessment, the vCIO countersigns, and the client signs off last
+during the walkthrough, which is what seals the review as complete and finalizes
+every deferred risk. Every sign-off is a real drawn signature written to a
+tenant-scoped audit trail, so the QBR is backed by a signed, audited record. The
+full chain, the attestation lock, and the vCIO round-trip are covered on
+[Technology Alignment reviews](/composer/alignment-reviews#the-guided-workflow);
+the on-device client experience is on
 [Client review walkthrough](/composer/client-walkthrough).
 
 <Note>

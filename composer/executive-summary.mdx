@@ -1,0 +1,58 @@
+---
+title: "Executive Summary report"
+description: "The branded, printable client deliverable generated from an alignment review — score, findings, roadmap, accepted-risk register, sign-offs, and review history"
+---
+
+Every [alignment review](/composer/alignment-reviews) generates a client-facing
+**Executive Summary** — a single, branded, printable NEXOS CORE document that turns
+the review into the deliverable you hand the client. It's assembled entirely from
+what the review already knows, so there's nothing to re-enter. Open it at
+`/summit/reviews/{id}/executive-summary`.
+
+The report **prints or saves to PDF straight from the browser** (Print → Save as
+PDF) on a clean, US-Letter light-paper theme that isolates the deliverable from the
+app chrome.
+
+## What's on it
+
+<CardGroup cols={2}>
+  <Card title="Alignment score & maturity">
+    The review's alignment score as a score ring and a maturity gauge, with the gap
+    to target called out.
+  </Card>
+  <Card title="Key findings">
+    The misaligned controls — not-aligned and at-risk — ordered most-urgent first,
+    each with its severity, why-it-matters, and the TAM's note.
+  </Card>
+  <Card title="Prioritized roadmap">
+    The promoted [Technology Roadmap](/composer/technology-roadmap) items, phased
+    into Now / Next / Later, each carrying the Standard and control it traces back
+    to.
+  </Card>
+  <Card title="Accepted-risk register">
+    The risks the client chose to **Accept Risk & Defer**, each with its
+    justification and required re-review date.
+  </Card>
+  <Card title="Sign-off block">
+    The TAM, vCIO, and client sign-offs — with the **captured signatures** rendered
+    in place, and dates.
+  </Card>
+  <Card title="Review history">
+    The sign-off / flag / return / reopen trail, so the TAM ↔ vCIO round-trip is
+    visible on the deliverable itself.
+  </Card>
+</CardGroup>
+
+## Live snapshot before completion
+
+You don't have to wait until the review is signed to generate the report — it
+renders as a **live snapshot** at any point. Sign-offs that haven't happened yet
+show as **Pending** rather than being faked, so an in-progress report is always an
+honest picture of where the review stands.
+
+<Note>
+  The narrative prose is composed from the review's own score and counts — it
+  states what the review found and never invents specifics the data doesn't carry.
+  The report is read-only; it sends nothing and generates no files server-side —
+  the PDF is produced by your browser's print dialog.
+</Note>
