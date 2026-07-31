@@ -1,54 +1,63 @@
 ---
 title: "Client review walkthrough (iPad handoff)"
-description: "Hand the client the review on their own device to walk the findings, accept risks, and sign off — producing a signed binder"
+description: "Hand the client the finished review on their own device to walk the findings read-only and sign off — the final gate that completes an alignment review"
 ---
 
-Once the TAM has completed the initial alignment review, the findings are reviewed
-**with the client**. NEXOS CORE hands the review to the client on their own device —
-an iPad via QR code, or any browser via a link — where they walk each finding,
-accept the risks they've chosen not to remediate, and sign off. It's the same
-live-review-and-sign flow the [compliance review](/composer/ncsr/index) uses, so
-it behaves identically to the compliance walkthrough.
+An alignment review is finished **with the client**. After the internal gates are
+done — the TAM has judged the controls and signed off, and the vCIO has
+countersigned — NEXOS CORE hands the review to the client on their own device to
+walk the findings and sign. The client sign-off is the **only** way an alignment
+review reaches complete.
 
-## Two passes
+It's the same live-review-and-sign flow the
+[compliance review](/composer/ncsr/index) uses, so it behaves identically to the
+compliance walkthrough.
 
-The alignment review is intentionally two passes:
+## Where the walkthrough sits in the gated flow
 
-1. **TAM review** — the technician judges each control (aligned / at-risk /
-   not-aligned / N/A). This is the technical assessment; the client isn't involved.
-2. **Client walkthrough** — you sit with the client and walk the findings. This is
-   where risk acceptance and the signature happen.
+The [alignment review](/composer/alignment-reviews) runs through an ordered chain,
+and the client walkthrough is the last two gates:
+
+1. **Judge controls** — the TAM assesses each control (aligned / at-risk /
+   not-aligned / N/A).
+2. **Build recommendations** — every misaligned finding is dispositioned: promoted
+   to the roadmap or **Accept Risk & Defer**.
+3. **TAM sign-off** — the TAM signs off the technical assessment, which freezes it.
+4. **vCIO countersign** — the vCIO reviews and countersigns (or returns it to the
+   TAM).
+5. **Client walkthrough** — the client walks the findings on their own device.
+6. **Client sign-off** — the client signs, sealing the review as complete.
+
+The walkthrough handoff **auto-surfaces** the moment the review reaches this stage
+— the QR is ready and lit as the active step — so there's no separate setup.
 
 ## The walkthrough
 
 <Steps>
   <Step title="Hand off the review">
-    From the review, choose **Begin client walkthrough**. NEXOS CORE mints a
-    short-lived token (24 hours) and shows a **QR code** plus a **link**. The
-    client scans the QR on an iPad, or you send them the link to open on a laptop
-    or any browser — the walkthrough is a standard web page and runs anywhere. No
-    login: the link authenticates the client to that one review only.
+    From the review, the walkthrough handoff is already waiting: a **QR code** plus
+    a **link**. NEXOS CORE reuses the review's live, short-lived token (24 hours)
+    rather than minting a new one on every refresh. The client scans the QR on an
+    iPad, or you send them the link to open on a laptop or any browser — the
+    walkthrough is a standard web page and runs anywhere. No login: the link
+    authenticates the client to that one review only.
   </Step>
   <Step title="Client walks the findings">
     The client sees each control alongside the TAM's alignment judgment,
-    **read-only** — the client reviews and acknowledges the assessment but cannot
-    change it.
-  </Step>
-  <Step title="Accept risks">
-    On any **not-aligned** or **at-risk** finding the client won't remediate, they
-    **accept the risk** — capturing their **initials**, a short **reason**, and a
-    required **re-review date**. Accepting a risk is a decision, not a passing
-    grade: it doesn't change the alignment score, and the risk resurfaces for
-    re-review on the date chosen.
+    **read-only** — they review and acknowledge the assessment but cannot change
+    it. The findings, the roadmap dispositions, and any accepted-risk deferrals are
+    all there to see.
   </Step>
   <Step title="Sign off">
     At the end the client applies an **on-device e-signature** and signs off the
-    whole review, sealing it.
+    whole review, sealing it and finalizing every accepted risk.
   </Step>
-  <Step title="Signed binder">
-    Sign-off produces a **signed PDF binder** — the alignment score, findings by
-    state, the accepted-risk register (with re-review dates), and the signature —
-    and writes the whole exchange to a tenant-scoped audit trail.
+  <Step title="Signed deliverable">
+    The completed review produces the branded
+    [Executive Summary](/composer/executive-summary) — the alignment score,
+    findings, roadmap, accepted-risk register, and the sign-off block with every
+    captured signature — and the whole exchange is written to a tenant-scoped audit
+    trail.
   </Step>
 </Steps>
 

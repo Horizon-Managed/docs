@@ -1,78 +1,164 @@
 ---
 title: "Technology Alignment reviews"
-description: "Assess a client against a best-practice Standard, judge each control, and turn the gaps into a prioritized technology roadmap"
+description: "Run a client alignment review as a guided, gated workflow — judge controls, build the roadmap, capture TAM and vCIO sign-offs, and walk the client to a signed result"
 ---
 
 A **Technology Alignment review** measures how well a client's environment matches
 a best-practice [Standard](/composer/index#standards-vs-compliance-frameworks) —
 the AI Baseline, the Core Infrastructure Baseline, or one you authored. Unlike a
-compliance audit, it's advisory: you judge each control and the gaps become a
-costed roadmap you take to the client. Open it at `/summit/reviews`.
+compliance audit, it's advisory: you judge each control, turn the gaps into a
+costed roadmap, and walk the client through the result to a signature. Open it at
+`/summit/reviews`.
 
-## Running a review
+The review runs as a **guided, gated workflow**. A cyan stepper across the top of
+the workspace lights up as you progress, and each stage unlocks only when the
+previous one is genuinely finished — you can't sign off a half-judged review, and
+the review isn't complete until the client has signed.
+
+## The guided workflow
 
 <Steps>
-  <Step title="Start a review">
-    Pick the client and the alignment Standard. Re-opening the same pair resumes
-    the review in progress rather than starting a duplicate.
+  <Step title="Judge controls">
+    Mark each control **Aligned**, **At risk**, **Not aligned**, or **N/A**. The
+    step is done when every control has a judgment.
   </Step>
-  <Step title="Judge each control">
-    For every control, mark it **Aligned**, **At risk**, **Not aligned**, or
-    **N/A**. There's no evidence to upload — alignment is a professional judgment,
-    so it moves fast.
+  <Step title="Build recommendations">
+    Turn every misaligned finding into a disposition — promote it to the client
+    **roadmap**, or **Accept Risk & Defer** it. Unlocks once all controls are
+    judged.
   </Step>
-  <Step title="Capture context">
-    Add a note to any control — type it, or use the microphone to dictate. Notes
-    are where the "why" lives for the client conversation.
+  <Step title="TAM sign-off">
+    The Technical Account Manager signs off the technical assessment. Unlocks only
+    when every control is judged **and** every misaligned finding is
+    dispositioned.
   </Step>
-  <Step title="Watch the score">
-    The alignment score updates live as you go (Aligned = full credit, At risk =
-    half, Not aligned = none; N/A is excluded). Progress tracks how many controls
-    you've judged.
+  <Step title="vCIO countersign">
+    A second reviewer (the vCIO) reviews the TAM's work and countersigns — or
+    flags controls and returns the review to the TAM for revision.
   </Step>
-  <Step title="Complete">
-    Finalize the review to lock the score and hand off to recommendations.
+  <Step title="Client walkthrough">
+    Hand the client the review on their own device to walk the findings.
+  </Step>
+  <Step title="Client sign-off">
+    The client signs off, which seals the review as complete. There is no other
+    way to complete a review.
   </Step>
 </Steps>
 
-## From gaps to recommendations
+Each stage's badge shows **done**, **active**, or **pending**, and a persistent
+action strip at the foot of the control list keeps the single next step reachable
+no matter how long the control list is.
 
-Every control marked **Not aligned** or **At risk** surfaces as a recommendation
-candidate. For each, set a **priority** (critical / high / medium / low), an
-**estimated effort** (hours), and a **cost**. These are the improvements you'll
-propose to the client.
+## Judging controls
 
-## Promote to the roadmap
+For every control, record a judgment. There's no evidence to upload — alignment is
+a professional judgment, so it moves fast.
 
-Promote a recommendation to push it onto the client's **Technology Roadmap** as a
-planned item. Each promoted item keeps its **provenance** — which Standard and
-control it came from — so the roadmap always shows *why* the work is there. A
-control can't be promoted twice; if it's already on the roadmap, Summit points you
-at the existing item instead of creating a duplicate.
+- **List / Cards view.** Toggle between a full-width **List** and a roomier
+  **Cards** layout; your choice is remembered per user. Both show a
+  judgment-colored accent so the posture reads at a glance.
+- **Per-control notes with voice dictation.** Add a note to any control — type it,
+  or tap the microphone to **dictate** it. Notes are where the "why" lives for the
+  client conversation, and they carry through to the recommendation text and the
+  final report.
+- **Live score.** The alignment score updates as you go — Aligned = full credit,
+  At risk = half, Not aligned = none; N/A is excluded from the score entirely.
+  Progress tracks how many of the total controls you've judged.
 
-From the roadmap you can edit an item, change its status as work progresses, or
-remove it. Promoted items appear on the client's roadmap alongside anything added
-by hand.
+## Building recommendations
 
-## Risk acceptance & sign-off
+Every control judged **Not aligned** or **At risk** becomes a finding you must
+dispose of before the review can be signed off. For each one you either **Promote**
+it to the roadmap or **Accept Risk & Defer** it — the TAM sign-off is blocked until
+none are left undecided.
 
-Not every gap gets remediated. When a client chooses to **accept a risk** rather
-than fix a misaligned control, record it right on the finding — the client's
-**initials**, a short **justification**, and a **re-review date** (accepted risks
-don't disappear; they resurface for re-review when that date arrives). Accepting a
-risk is a *decision*, not a passing grade: it doesn't change the alignment score,
-and accepted risks are shown distinctly (e.g. "72% aligned · 3 risks accepted").
+- **Promote to the roadmap.** Set a **priority**, an **estimated effort**, and a
+  **cost**, and push the finding onto the client's
+  [Technology Roadmap](/composer/technology-roadmap) as a planned item. Each
+  promoted item keeps its provenance — the Standard and control it came from.
+- **Accept Risk & Defer.** When the client chooses not to remediate a finding,
+  record the deferral instead: the client's **initials**, a short
+  **justification**, and a required **re-review date**. On a tablet the client
+  **draws their initials** (finger or Apple Pencil) and picks the re-review date on
+  a large, touch-friendly calendar. Accepting a risk is a *decision*, not a passing
+  grade — it doesn't change the alignment score, and the finding stays technically
+  not-aligned and resurfaces for re-review when the date arrives.
 
-At the end, **sign off** to seal the review — it's marked complete, every accepted
-risk is finalized, and the signer is recorded. Each acceptance and sign-off is
-written to a tenant-scoped audit trail for internal and external review.
+The score header reflects both, e.g. **"72% aligned · 3 risks accepted."**
+
+## Real sign-offs at every gate
+
+The TAM, the vCIO, and the client each **sign** — not just click a button. Each
+internal gate opens a signature pad; a sign-off is rejected unless it carries an
+actual drawn signature, so a stage can never advance unsigned. The captured
+signatures appear on the printable [Executive Summary](/composer/executive-summary).
+
+- **TAM sign-off** requires the TAM role (a manager or admin may act in their
+  place) and can only be recorded once every control is judged and every finding is
+  dispositioned.
+- **vCIO countersign** requires the vCIO role (or a manager/admin) and can only be
+  recorded after the TAM has signed.
+- **Client sign-off** happens on the client's own device during the walkthrough and
+  is the only path to a completed review.
+
+## Attestation integrity — locking and the vCIO round-trip
+
+Once the TAM signs off, the assessment **freezes**: judgments, notes, and
+dispositions become read-only, and the staff edit actions are refused until the
+review is reopened. The client walkthrough is unaffected.
+
+The vCIO review is a genuine two-way gate, modeled on a code review:
+
+<Steps>
+  <Step title="Flag controls">
+    During the vCIO review the reviewer can **flag** individual controls with a
+    comment. The vCIO never edits the TAM's judgment — separation of duties: the
+    TAM owns the assessment, the vCIO annotates it.
+  </Step>
+  <Step title="Countersign or return">
+    The vCIO either **countersigns** — which is blocked while any flag is still
+    open — or chooses **Return to TAM**. A return reopens the review, invalidates
+    the TAM's sign-off, and bumps a revision round, while keeping the flags and
+    comments visible so the TAM sees exactly what to fix.
+  </Step>
+  <Step title="Reopen (recoverability)">
+    A manager or admin can **Reopen** any signed-off review that the client hasn't
+    yet signed — a general escape hatch for a mistaken sign-off.
+  </Step>
+</Steps>
+
+<Info>
+  The full TAM ↔ vCIO back-and-forth is **auditable**. Every sign-off, flag,
+  return, and reopen is written to a tenant-scoped audit trail on the same
+  transaction as the state change, so it can never land unrecorded. It surfaces as
+  a collapsible **Review activity** panel on the review page and a **Review
+  history** section on the Executive Summary — with the actor, the timestamp, and
+  the revision round for each event.
+</Info>
+
+## Pause and resume
+
+A review can be explicitly **paused** ("Pause — finish later") and picked back up
+whenever you're ready — progress is already auto-saved, so pausing just marks a
+clear stopping point. A paused review shows an amber **Paused** badge with a
+**Resume** action in the Reviews list, which distinguishes it from **In progress**
+and **Complete** reviews at a glance. Pause and resume are recorded to the audit
+trail alongside cancel.
+
+## The deliverable
+
+The review generates a branded, printable
+[Executive Summary](/composer/executive-summary) for the client — the alignment
+score, key findings, prioritized roadmap, the accepted-risk register, the sign-off
+block with every captured signature, and the review history.
 
 <Note>
-  Once findings are captured, promote them onto the client's roadmap — see
-  [Recommendations & the technology roadmap](/composer/technology-roadmap) — and
-  deliver the plan to the client with the
-  [vCIO budget & QBR](/composer/vcio-qbr) layer. The on-site
-  [iPad client walkthrough](/composer/client-walkthrough), the cross-client TAM
-  **workspace** (`/summit/workspace`), and **recurring review scheduling** are all
+  This alignment review is the technical (TAM/vCIO) motion. Promote its findings
+  onto the client's plan with
+  [Recommendations & the technology roadmap](/composer/technology-roadmap), hand it
+  to the client on an iPad with the
+  [client walkthrough](/composer/client-walkthrough), and layer the financial view
+  on top with the [vCIO budget & QBR](/composer/vcio-qbr). The cross-client TAM
+  **workspace** (`/summit/workspace`) and **recurring review scheduling** are both
   live.
 </Note>
