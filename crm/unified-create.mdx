@@ -1,0 +1,89 @@
+---
+title: "Client, lead & deal creation"
+description: "One canonical deal form shared by the pipeline and the Sales Workspace — plus create a client or lead without leaving the page you're on."
+---
+
+NEXOS CORE gives you a single way to create a deal, no matter where you start. The **Pipeline** board and the **NexOS IQ Sales Workspace** now open the *same* deal form and write through the *same* path, so a deal you create from your workspace carries exactly the same fields as one created from the pipeline — nothing is quietly dropped depending on where you clicked.
+
+You can also spin up a brand-new **client** (company) or capture a **lead** from a call transcript directly inside the Sales Workspace, without navigating away from the deal you're building.
+
+Open the pipeline at `/crm/pipeline` and the Sales Workspace at `/nexiq/workspace`.
+
+## When to use it
+
+- You're working a deal in the **Sales Workspace** and realize the company isn't in NEXOS CORE yet — create it in place and keep going.
+- You just finished a discovery call and want to turn the transcript into a lead, contact, and draft opportunity in one pass.
+- You want a deal created from the workspace to have the same weighted value, PBR placement, seats, and product details as one built on the pipeline board.
+- You need a company's **industry** visible on the deal itself while you qualify it.
+
+## One canonical deal form
+
+Both entry points — the **+ New Deal** button on the pipeline and the **+ New Deal** button in the Sales Workspace — open the same fields and submit to the same endpoint (`/api/crm/deals/unified`). The pipeline submits it as a normal form, the workspace submits it as JSON, but the server writes an identical set of columns either way.
+
+**Title**, **Company**, and **Stage** are required. If you don't pick an **Owner**, the deal is assigned to you (the person creating it). Every other field — value, recurring value, win probability, source, expected close date, seats, product label, PBR bucket, and next-step notes — is optional.
+
+<Note>
+Because both surfaces share one write path, a field you fill in on the workspace form lands on the deal the same way it would from the pipeline. There is no longer a "workspace version" of a deal that's missing its value or description.
+</Note>
+
+New deals are appended to the end of their chosen stage's column, so they show up at the bottom of that stage on the board.
+
+### Where the deal lands after you save
+
+<Steps>
+  <Step title="From the pipeline">
+    Saving redirects you to the pipeline board (`/crm/pipeline`) with the new deal in place.
+  </Step>
+  <Step title="From the Sales Workspace">
+    Saving closes the modal and refreshes your workspace rail in place — you stay on the same screen and the new deal appears in your list. No page navigation.
+  </Step>
+</Steps>
+
+## Create a client without leaving the workspace
+
+Inside the Sales Workspace, when you're building a deal or a lead and the company doesn't exist yet, choose **＋ Create new company…** in the company picker. This opens the same **New Client** form you'd use anywhere else in the CRM — including the **Industry** field.
+
+When you save it here, NEXOS CORE creates the company and hands it straight back to the form you were on: the new client is added to the **Company** dropdown and selected automatically, so your deal or lead flow continues uninterrupted.
+
+<Note>
+The New Client form only accepts a company **name** as required — everything else (industry, website, contact email/phone, address, lifecycle stage) is optional. New companies default to a health score of 50 and a **prospect** lifecycle stage unless you set one.
+</Note>
+
+## Capture a lead from a transcript
+
+The **⚡ New Lead** button in the Sales Workspace turns a call recording or pasted transcript into structured CRM records. Upload a transcript file or paste the text, then let NEXOS CORE analyze it.
+
+<Steps>
+  <Step title="Add the transcript">
+    Attach a file or paste the conversation text into the **New Lead** modal.
+  </Step>
+  <Step title="Analyze">
+    NEXOS CORE extracts pain points and suggested opportunities from the conversation. The estimated AI cost is shown before you commit anything.
+  </Step>
+  <Step title="Match or create the company">
+    If the caller's company is already in your CRM, pick it. If there's no match, NEXOS CORE opens the **New Client** modal pre-filled with the detected company name so you can add the industry and remaining details before saving.
+  </Step>
+  <Step title="Save the lead">
+    The lead is written through the same canonical deal path, so the resulting opportunity carries its full field set like any other deal.
+  </Step>
+</Steps>
+
+<Note>
+Transcript analysis uses Claude and requires your tenant's AI features to be enabled. The cost estimate shown in the modal reflects that usage.
+</Note>
+
+## Industry on the deal
+
+A company's **Industry** now appears on the deal's detail view in the Sales Workspace. When you open a deal, the industry of its associated company is shown alongside the company name — useful context for qualifying and for tailoring your pitch without clicking through to the company record. If a company has no industry set, the line is simply hidden.
+
+## Good to know
+
+- **Ownership is enforced.** You can only attach a deal to a company, contact, and stage that belong to your organization. A reference to anything outside your tenant is rejected — the deal won't be created.
+- **Seats are optional, and zero is real.** Leaving **seats** blank stores it as unset; entering `0` stores a genuine zero. The two are not the same.
+- **PBR placement is derived.** If you assign a deal to a PBR bucket (for example `90d`, `A`, or `won`), its PBR section is set automatically from that bucket so the two can never disagree. Values outside the recognized bucket vocabulary are rejected rather than stored.
+
+## How it connects
+
+- Deals you create here flow into the [CRM pipeline](/crm/index) and its stage totals.
+- Company records created from the workspace behave exactly like companies created anywhere else — see the [CRM overview](/crm/index).
+- Deal value and recurring value feed the revenue picture described in [contract coverage & profitability](/crm/contract-coverage).

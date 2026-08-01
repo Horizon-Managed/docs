@@ -1,0 +1,105 @@
+---
+title: "Client experience surveys (CSAT)"
+description: "Generate a single-use, contact-attributed CSAT link from a client's detail page, share it over any channel, and roll the responses into a live client sentiment gauge."
+---
+
+Client experience surveys let you ask a client's contact one simple question — how satisfied they are with your service — and turn the answers into a sentiment signal on the account. You generate a **single-use CSAT link** for a specific contact, send it to them however you like (email, SMS, a chat message), and their rating flows straight back into the client's health picture. No template designer, no invite campaign, no extra tooling: pick a contact, generate a link, paste it, done.
+
+You generate and manage these links from the **Account Mgmt** tab of a client in the CRM. The client fills out the survey at a public link of the form `/s/<token>`.
+
+<Note>
+This is **not** the same feature as **Site Assessments** (the iPad site-walkthrough tool, on its own tab of the client's detail page). Client experience surveys measure how a client *feels* about your service; Site Assessments capture a physical site for a bid. They are unrelated systems.
+</Note>
+
+## When to use it
+
+- After you close a significant ticket and want to confirm the client is happy with how it went.
+- Following an onboarding, a project milestone, or a quarterly business review.
+- When an account feels quiet and you want an explicit read on sentiment before it becomes a renewal risk.
+- Any time you want a client-authored data point feeding the **Sentiment** gauge on the client's header.
+
+## How it works
+
+Each survey link is tied to **one contact** and is **single-use**. The first person to submit a rating consumes the link; after that, the link shows a "no longer valid" page to anyone else who opens it. You generate a fresh link per person you want to hear from.
+
+<Note>
+Because the link is single-use, pasting it into a broad channel (a group email, a shared chat) is **first-responder-wins** — the first submission consumes it and everyone else sees the "no longer valid" page. Send each link to one known contact.
+</Note>
+
+The survey itself is **CSAT only**: a single question rated **1 to 5**, plus an optional free-text comment. Because you already chose the recipient when you generated the link, the public page never asks the client for their name or email — it already knows who they are and which company they belong to.
+
+## Generate a survey link
+
+<Steps>
+  <Step title="Open the client">
+    In the CRM, open the client, then select the **Account Mgmt** tab. The CSAT survey section lives there alongside the account's other health tools.
+  </Step>
+  <Step title="Pick the contact">
+    Choose the contact you want to survey from the **contact** dropdown. The link is attributed to that person, so their response is recorded against them. If the client has no contacts yet, add one first — you can't generate a link without a recipient.
+  </Step>
+  <Step title="Generate the link">
+    Select **Generate link**. A new single-use link appears in the active-links list below, showing the contact, the survey type, the link itself, and when it was created.
+  </Step>
+  <Step title="Copy and send">
+    Use **Copy link** to put the URL on your clipboard, then paste it into whatever channel you already use with that contact — a direct email, an SMS, a chat DM. There is no built-in send; delivery is up to you.
+  </Step>
+</Steps>
+
+## Manage active links
+
+The active-links list shows every link that hasn't been deactivated, newest first. A link stays in this list even after it has been used — its single-use protection is enforced by the token itself, not by removing the row, so a spent link simply shows the "no longer valid" page if anyone opens it again. Each row gives you:
+
+| Column | What it shows |
+|---|---|
+| **Contact** | The person the link is attributed to. |
+| **Type** | The survey type (`CSAT`). |
+| **Survey link** | The public URL, ready to copy. |
+| **Created** | The date the link was generated. |
+| **Deactivate** | Manually retires the link. |
+
+Selecting **Deactivate** asks you to confirm, then retires the link immediately — the contact can no longer use it, and it drops out of the active-links list. There is **no automatic expiry**: a link stays live until it is either used once or deactivated by hand. Deactivate a link if you sent it to the wrong person, or if it's gone stale and you'd rather it stopped working.
+
+## What the client sees
+
+The public link opens a standalone, branded page — your company's identity up top, a small "Powered by NEXOS CORE" mark in the footer, no login, no app chrome. It greets the contact by first name and names their company, then asks one question:
+
+> **Overall, how satisfied were you with the support we provided?**
+
+The client picks a face on a **1 to 5** scale, from **Very dissatisfied** (1) through **Neutral** (3) to **Very satisfied** (5), and can optionally add a comment (up to 2,000 characters). After they submit, they see a short thank-you that names their company. If they open a link that has already been used or been deactivated, they instead see a friendly "this survey link is no longer valid" page telling them to reach out for a fresh one.
+
+## The sentiment gauge
+
+Once responses land, they roll up into the **Sentiment** gauge in the client's header posture strip, next to compliance, SLA, and touches.
+
+The gauge is the client's **all-time average CSAT score, normalized to 0–100** — the average rating divided by 5, times 100. So an average rating of 4.0 shows as **80**, and 3.0 shows as **60**. Every scored CSAT response counts; there is **no recency window**.
+
+The colour tracks the score:
+
+| Score | Colour | Reading |
+|---|---|---|
+| 80 and above | Green | Happy |
+| 60 to 79 | Amber | Watch |
+| Below 60 | Red | At-risk |
+
+Until at least one CSAT response is submitted, the gauge shows **n/a** rather than a misleading zero — an empty account reads as "no signal yet," not "unhappy."
+
+## Audit trail
+
+Every survey event is recorded to an append-only audit log so there's a defensible record of who did what:
+
+- A link being **generated** (which staff member, which contact).
+- A link being **deactivated**.
+- A response being **captured** (attributed to the responding contact, with the score).
+
+The audit trail deliberately never stores the raw link token or the client's free-text comment — link events record only a short, non-secret token prefix for correlation, and the comment is feedback that lives with the response, not in the audit record. These entries are immutable once written.
+
+## Good to know
+
+- **CSAT only for now.** The survey is a single 1–5 satisfaction question. Other survey types (NPS, onboarding, QBR, annual) are planned but not yet available to send.
+- **Delivery is manual.** There is no invite email or automated campaign — you copy the link and send it yourself.
+- **Attribution is per contact.** Each link, and each response, is tied to the specific contact you chose.
+- **Single-use is the point.** One link equals one captured response; generate a new link for each recipient.
+
+## How it connects
+
+Client experience surveys sit inside the [CRM](/crm/index) and surface on the client's detail page, feeding the same header posture strip that shows compliance and SLA health. Pair them with a resolved [ticket](/helpdesk/ticket-queue) to confirm the client was satisfied with how you handled it — a quick CSAT link after a big fix turns a closed ticket into a measured sentiment signal on the account.

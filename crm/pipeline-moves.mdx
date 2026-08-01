@@ -1,0 +1,85 @@
+---
+title: "Pipeline stage moves"
+description: "Drag deals between stages and reorder cards to advance, win, or lose them — closing a deal is a single drop."
+---
+
+Your sales pipeline is a kanban board: one column per deal stage, one card per deal. You move a deal forward by dragging its card from one stage to the next — no form, no edit screen. Dropping a card into a **Won** or **Lost** stage closes the deal, and the board keeps every count, total, and forecast in sync as you go.
+
+Open it at `/crm/pipeline`.
+
+## When to use it
+
+- Advancing a deal to the next stage as the opportunity progresses.
+- Marking a deal **Won** or **Lost** the moment you know the outcome.
+- Reordering the cards inside a stage so your most important deals sit at the top.
+- Reopening a deal that was closed by mistake or that came back to life.
+- Keeping your pipeline totals and forecast current without opening each deal.
+
+## Move a deal between stages
+
+Every card has a **drag handle** — the six-dot grip in its top-left corner. Dragging starts from the handle, so tapping or clicking the rest of the card never moves it by accident.
+
+<Steps>
+  <Step title="Grab the handle">
+    Press and hold the six-dot handle on the card you want to move.
+  </Step>
+  <Step title="Drag to the target stage">
+    Drag the card into another stage's column, or up and down within its current column to reorder it.
+  </Step>
+  <Step title="Drop it">
+    Release. The move saves immediately and the board refreshes so stage counts, per-stage totals, and the weighted forecast reflect the new position.
+  </Step>
+</Steps>
+
+Reordering cards **within** a stage saves silently — there's no prompt, and nothing about the deal changes except its position in the column.
+
+<Note>
+  Only the drag handle starts a drag. Clicking the card body opens the deal's linked quote when it has one, and clicking the company name or the **Bid** / **Assessment** buttons follows those links instead.
+</Note>
+
+## Close a deal — Won or Lost
+
+Some stages are flagged as closing stages: your **Won** stage and your **Lost** stage. Dragging a deal into one of these from any other stage is how you close it.
+
+When a card crosses into a Won or Lost stage, NEXOS CORE asks you to confirm:
+
+> Move this deal to "Won"? This closes the deal.
+
+- **Confirm** — the move saves and the deal is stamped with a **close date** of the moment you dropped it.
+- **Cancel** — the card snaps back to where it started and nothing changes.
+
+The close date is what feeds your closed-revenue and win-rate reporting, so the confirm step protects you from closing a deal with a stray drag.
+
+<Note>
+  If a deal already has a close date — for example, you're just reordering cards **inside** your Won column — that original date is kept. Rearranging closed deals never resets anyone's close date to today.
+</Note>
+
+## Reopen a closed deal
+
+Changed your mind, or a "lost" deal came back? Drag the card out of the Won or Lost stage and back into any open stage. There's no confirmation for this direction — the card simply returns to your open pipeline.
+
+Once it's back in an open stage, the deal stops counting toward your won and lost figures (see below), because those metrics only include deals that are sitting in a closing stage.
+
+## What updates automatically
+
+Every move re-reads the board, so the numbers at the top of the page stay honest without a manual refresh:
+
+| Metric | What it reflects |
+|---|---|
+| **Total Pipeline** | Combined value of every deal currently on the board, across all stages. |
+| **Weighted Forecast** | Pipeline value weighted by each deal's win probability (value × probability). |
+| **Active Deals** | Count of deals on the board. |
+| **Avg Deal Size** | Total Pipeline divided by the number of deals on the board. |
+| **Win Rate** | Won ÷ (won + lost) for deals closed in the **last 90 days**. |
+| **Avg Days to Close** | Average time from creation to close for **won** deals in the last 90 days. |
+| **Closed $** | Won-deal value by close date — this week, this month, each quarter, and year-to-date, each with a change chip versus the prior like-period. |
+
+<Note>
+  Win Rate and Avg Days to Close only consider deals closed in the trailing **90 days**, so both reflect your recent performance rather than your all-time history. A deal you reopen drops out of these figures because it's no longer in a closing stage.
+</Note>
+
+## How it connects
+
+- Each card links straight to its **client record** and, when a quote is attached, opens that quote in one click — see [CRM](/crm/index).
+- The **Bid** and **Assessment** shortcuts on a card start a new bid or site assessment pre-linked to that deal and company.
+- Closing revenue and stage weighting build on your revenue classification — see [contract coverage & profitability](/crm/contract-coverage) for how MRR, ORR, and NRR are tracked across the account.
