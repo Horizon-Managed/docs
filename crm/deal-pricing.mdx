@@ -1,0 +1,86 @@
+---
+title: "Deal pricing"
+description: "Price a deal from a per-seat number — AISP drives MRR and ARR automatically, and picking a catalog product fills in the price for you."
+---
+
+When you work a deal in the **NexOS IQ Sales Workspace**, you price it the way you sell it: per seat. You enter the average price per seat and the number of seats, and NexOS figures out the recurring revenue for you. There is no separate spreadsheet and no manual monthly-times-twelve math — the deal's MRR and ARR update as you type.
+
+Open it at `/nexiq/workspace`, then find the **Economics** section of the deal panel.
+
+## When to use it
+
+- You are quoting managed services and think in **price per seat**, not a lump monthly figure.
+- You want the deal's **MRR** (monthly recurring revenue) and **ARR** (annual recurring revenue) to stay correct without hand-calculating them.
+- You are selling one of your standard packages and want the per-seat price filled in from your **product catalog** so every rep quotes the same number.
+- You are forecasting: the MRR you set here is what flows up to your pipeline totals, weighted values, and the Sales Cockpit.
+
+## The Economics fields
+
+The **Economics** section has these fields:
+
+| Field | You enter it? | What it means |
+|---|---|---|
+| **Product** | Pick from a list | A package from your product catalog. Picking one prefills **AISP**. |
+| **Seats** | Yes | How many seats the deal covers. A seat is any managed user or server. |
+| **AISP** | Yes | **A**verage **I**n-**S**eat **P**rice — the per-seat monthly price. |
+| **MRR** | No (auto) | Monthly recurring revenue. Calculated as **AISP × Seats**. |
+| **ARR** | No (auto) | Annual recurring revenue. Calculated as **MRR × 12**. |
+| **Close Probability %** | Yes | Your confidence the deal closes. |
+
+**MRR** and **ARR** are read-only — you never type into them. They recompute the moment you change **AISP** or **Seats**.
+
+## How AISP drives the math
+
+The pricing is deliberately simple, so every rep gets the same answer:
+
+- **MRR = AISP × Seats**
+- **ARR = MRR × 12**
+
+For example, 45 seats at an AISP of `$185` gives an MRR of `$8,325` and an ARR of `$99,900`. Change the seat count to 50 and the MRR jumps to `$9,250` the instant you leave the field.
+
+<Note>
+MRR and ARR only calculate once **both** AISP and Seats are filled in with a value greater than zero. If either is blank or zero, MRR and ARR stay empty rather than showing `$0` — that way an unpriced deal reads as unpriced, not as a zero-dollar deal.
+</Note>
+
+## Prefilling AISP from the product catalog
+
+You do not have to remember your per-seat prices. The **Product** dropdown is populated from your own [product catalog](/product/index) — every active product, scoped to your tenant.
+
+<Steps>
+  <Step title="Open the deal in the Sales Workspace">
+    Go to `/nexiq/workspace` and select the deal from the left-hand deal rail, or create a new one.
+  </Step>
+  <Step title="Pick a product">
+    In **Economics**, open the **Product** dropdown and choose the package you are selling.
+  </Step>
+  <Step title="AISP fills in automatically">
+    NexOS drops that product's monthly per-seat price into **AISP** for you.
+  </Step>
+  <Step title="Set the seats">
+    Enter the seat count. MRR and ARR update from the prefilled AISP × your seats.
+  </Step>
+</Steps>
+
+### The AISP is a starting point, not a lock
+
+The prefilled price is only a suggestion. After you pick a product you can still type a different **AISP** — for a volume discount, a promotional rate, or a custom package — and MRR and ARR recompute from your edited number. Choosing a product never freezes the field.
+
+Likewise, if you change the product, only the AISP prefills; your seat count and any manual notes stay as they were.
+
+## Your standard packages
+
+NexOS ships with Horizon's three flagship managed-IT packages already in the catalog, so they are selectable the first time you open the Economics section:
+
+| Package | Per-seat / month | What it covers |
+|---|---|---|
+| **NexOS Guardian** | `$125` | Essential managed IT — service desk, RMM monitoring & patching, cloud backup, email security, unlimited remote support. |
+| **NexOS Sentinel** | `$185` | Everything in Guardian plus on-site hours, EDR + 24/7 SOC, dark web monitoring, business continuity, and annual pen testing. |
+| **NexOS Fortress** | `$250` | Everything in Sentinel plus near-unlimited on-site support, compliance management (SOC 2 / CMMC / NIST), semi-annual pen testing, and a priority critical-incident SLA. |
+
+Each price is **per seat, billed monthly**, where a seat is any managed user or server. These are examples of catalog products — you can price, rename, or add your own packages in the catalog, and whatever is active there is what appears in the deal's **Product** dropdown.
+
+## How it fits the bigger picture
+
+- The **MRR** you set on the deal is the recurring figure that rolls into your pipeline totals and forecasts. Set it right and every downstream number is right.
+- Because these packages are classed as managed services, their revenue counts as **MRR** in your revenue mix. For how MRR, ORR, and NRR are assigned and reported, see [contract coverage & profitability](/crm/contract-coverage).
+- To change a package's per-seat price, add a new package, or adjust how a product is revenue-classed, manage it in the [product catalog](/product/index) — those edits flow straight into the deal dropdown.

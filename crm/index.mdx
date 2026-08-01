@@ -28,9 +28,14 @@ c-suite), channel preferences, and opt-outs.
 The pipeline (`/crm/pipeline`) groups deals by **stage**. Stages are yours to
 define — sort order, color, win-probability %, and won/lost flags. Each deal
 carries value, recurring value, owner, expected close date, source, and an
-optional linked quote. The board shows each stage's total **and a weighted value**
-(deal value × win-probability). Moving a deal into a won or lost stage
-auto-stamps the close date.
+optional linked quote.
+
+The board is drag-and-drop: you advance, win, lose, and reorder deals by moving
+their cards, and moving a deal into a won or lost stage auto-stamps the close
+date. See [pipeline stage moves](/crm/pipeline-moves) for the full drag-and-drop
+behavior. The KPI rows above the board — total and weighted pipeline, win rate,
+sales-cycle length, and won revenue by period — are covered in
+[pipeline KPIs & closed revenue](/crm/pipeline-kpis).
 
 ## Activity log
 
@@ -56,7 +61,7 @@ From a raw sales-call transcript, NEXOS CORE extracts ready-to-save records:
 <Steps>
   <Step title="Paste or upload the transcript">
     Paste text or upload a `.txt`/`.md` file (up to 10 MB) — surfaced as "New
-    lead from transcript" in the NexusIQ Sales Workspace.
+    lead from transcript" in the [NexOS IQ Sales Workspace](/crm/sales-workspace).
   </Step>
   <Step title="AI extracts the details">
     Claude returns contact details, the interaction summary and outcome, key pain
@@ -73,3 +78,7 @@ From a raw sales-call transcript, NEXOS CORE extracts ready-to-save records:
   needs your tenant's Claude API key in Settings → Integrations. Only `.txt`/`.md`
   uploads are accepted.
 </Note>
+
+Lead capture, new-deal creation, and creating a client on the fly all share one
+canonical write path, whether you start from the pipeline or the Sales Workspace
+— see [client, lead & deal creation](/crm/unified-create).

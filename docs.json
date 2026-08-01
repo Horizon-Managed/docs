@@ -66,6 +66,12 @@
             "pages": [
               "crm/index",
               "crm/contract-coverage",
+              "crm/pipeline-moves",
+              "crm/pipeline-kpis",
+              "crm/unified-create",
+              "crm/deal-pricing",
+              "crm/sales-workspace",
+              "crm/client-surveys",
               "assessment/index"
             ]
           },

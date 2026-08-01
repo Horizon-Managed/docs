@@ -1,0 +1,87 @@
+---
+title: "Pipeline KPIs & closed revenue"
+description: "Read your sales health at a glance — total and weighted pipeline, win rate, sales-cycle length, and won revenue by week, month, quarter, and year with vs-prior-period deltas."
+---
+
+Your deal **pipeline** is topped by two rows of key performance indicators (KPIs) that turn the cards on the board into numbers you can act on. The first row summarizes the *open* pipeline and your recent close performance. The second row shows *won* revenue by time period, each with a chip telling you whether you are up or down against the prior period.
+
+Open it at `/crm/pipeline`. The KPI rows sit above the drag-and-drop stage columns and recalculate every time the page loads, so they always reflect the live state of your deals.
+
+## When to use it
+
+- Start your sales stand-up on the pipeline page and read the two KPI rows aloud — they answer "how are we doing?" without a report.
+- Check **Weighted Forecast** when you need a realistic revenue number to commit to, rather than the raw sum of every open deal.
+- Watch **Win Rate** and **Avg Days to Close** over time to spot a stalling or improving sales motion.
+- Review the **Closed $** row at the end of a week, month, or quarter to see what actually landed and whether you beat the last period.
+- Use the quarter toggle to compare Q1–Q4 performance across the current year.
+
+## The summary row
+
+The top row has six cells describing your open pipeline and recent close rate.
+
+| Cell | What it means | How it is calculated |
+|---|---|---|
+| **Total Pipeline** | The full dollar value of every open deal on the board. | Sum of each open deal's value. |
+| **Weighted Forecast** | A probability-adjusted forecast — your most realistic number. Shown in the brand accent color as the hero figure. | Sum of each deal's value × that deal's own win probability. A $10,000 deal with a 40% win probability contributes $4,000. |
+| **Active Deals** | How many open deals are in the pipeline. | Count of deals on the board. |
+| **Avg Deal Size** | The typical size of an open deal. | Total Pipeline ÷ Active Deals. |
+| **Win Rate** | The share of recently closed deals you won. | Won ÷ (Won + Lost) over the **last 90 days**, shown as a percentage. |
+| **Avg Days to Close** | Your recent sales-cycle length. | Average of (close date − created date), in whole days, over deals **won in the last 90 days**. |
+
+<Note>
+**Win Rate** and **Avg Days to Close** only count deals closed in the **last 90 days**, so they describe your *current* sales motion rather than all-time history. Until you have recent closes, each cell shows a dash (`—`) with "no closes yet" or "no won deals yet" instead of a misleading `0%` or `0 days`. Win Rate needs at least one won or lost deal in the window; Avg Days to Close needs at least one won deal.
+</Note>
+
+### How win probability drives the weighted forecast
+
+Weighted Forecast is driven by the **Win Probability (%)** you set on each individual deal, not by the deal's stage. Every deal carries its own win-probability field (you enter it on the deal form, and it shows as a percentage pill on the deal card). The forecast is the sum of each deal's value multiplied by that deal's own probability, and it updates on the next page load. Moving a card between stages does **not** change its win probability — the number stays whatever you set on the deal until you edit it. Keep each deal's probability honest and the weighted number stays trustworthy.
+
+## The Closed $ row
+
+The second row reports **won** revenue by close date. Only deals in a won stage with a recorded close date are counted — open and lost deals never appear here. Each cell shows the dollar amount (abbreviated, with the full figure on hover), the number of deals that closed in that window, and a delta chip comparing it to the prior like-period.
+
+- **This Week** — won value since the start of the current week, versus the previous week.
+- **This Month** — won value since the start of the current month, versus the previous month.
+- **Quarter** — won value for a single quarter of the current year, versus the preceding quarter. This cell defaults to the quarter in progress (labeled **CURRENT**) and has a **Q1 / Q2 / Q3 / Q4** toggle so you can switch between quarters. Q1's comparison uses last year's Q4 as its baseline.
+- **Year to date** — won value since January 1, versus the same span of the prior year (year-start through today, one year ago).
+
+### Reading the delta chips
+
+Each Closed $ cell carries a small "vs prior like-period" chip:
+
+- An **up arrow with a percentage** — this period beat the prior one, by that percent.
+- A **down arrow with a percentage** — this period trailed the prior one.
+- **new** — you closed revenue this period after closing nothing in the prior one, so there is no percentage to compute.
+- **No chip** — both this period and the prior one were zero.
+
+The arrow direction is purely factual (higher or lower), independent of any color theme.
+
+## How closing a deal feeds these numbers
+
+The KPIs are driven entirely by how deals close on the board, so no separate data entry is needed.
+
+<Steps>
+<Step title="Drag a deal into a Won or Lost stage">
+On the pipeline board, drag a deal card from its current column into a stage marked as won or lost.
+</Step>
+<Step title="Confirm the close">
+Because this closes the deal, NEXOS CORE asks you to confirm: **"Move this deal to '<stage>'? This closes the deal."** Confirm to proceed, or cancel to snap the card back to where it was. Reordering cards *within* a column — including a column that is already won or lost — saves silently with no prompt.
+</Step>
+<Step title="The close date is stamped">
+Confirming stamps the deal's close date. Won deals immediately feed **Win Rate**, **Avg Days to Close**, and the matching **Closed $** cells; lost deals feed **Win Rate** only.
+</Step>
+<Step title="Reload to see the KPIs move">
+The KPI rows recompute on page load, so refresh the pipeline to see the updated numbers.
+</Step>
+</Steps>
+
+## Good to know
+
+- **Everything is tenant-scoped.** The KPIs only ever count your own organization's deals.
+- **Only won deals count as revenue.** The Closed $ row and Avg Days to Close ignore lost deals; lost deals affect Win Rate only.
+- **The 90-day window is fixed** for Win Rate and Avg Days to Close. It is not adjustable from the page.
+- **Time windows follow the server clock.** Week, month, quarter, and year boundaries are computed server-side, so the periods are consistent for everyone in your organization.
+
+## How it connects
+
+These KPIs read directly from your [CRM deal pipeline](/crm/index) — the same board where you manage stages and drag deals through their lifecycle. Each deal's Win Probability (%), which powers the Weighted Forecast, is set on the deal itself. For how recurring versus one-time deal value maps to MRR, ORR, and NRR revenue, see [contract coverage &amp; profitability](/crm/contract-coverage).

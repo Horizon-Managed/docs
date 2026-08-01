@@ -1,0 +1,214 @@
+---
+title: "Sales Workspace"
+description: "A salesperson's home screen in NexOS IQ — your goals and pace up top, every deal in a rail on the left, and one deal's economics, timeline, timer, and activity in the center"
+---
+
+The Sales Workspace is the home screen for a salesperson in **NEXOS CORE**. It
+pulls everything you work on into one view: a **goal strip** across the top that
+shows how you are tracking against your number, a rail of every deal you own down
+the left, and — in the center — the **NexOS C²** panel for the deal you have
+focused, where you set its economics and timeline. A per-deal timer and a live
+activity feed sit on the right.
+
+Open it at `/nexiq/workspace`.
+
+Everything on the page revolves around one **focused deal**. Click a deal in the
+left rail (or search for it) and the center panel, the timer, and the activity
+feed all follow it.
+
+## When to use it
+
+- Start your day here to see your attainment, pace, and commissions at a glance.
+- Work a single deal end to end — update its numbers, timeline, and next step
+  without leaving the page.
+- Capture a brand-new lead from a call transcript and let Nexie fill in the
+  details.
+- Track time against the exact deal you are working on.
+- Keep the **Sales Cockpit** current for your manager without any extra data
+  entry.
+
+## The goal strip
+
+The sticky strip across the top is your scoreboard. It stays visible as you
+scroll and is broken into five zones.
+
+| Zone | What it shows |
+| --- | --- |
+| **My Sales Goal** | Your name and the current goal period, with days remaining. |
+| **Attainment** | Closed dollars so far, a progress bar toward your goal, the percentage attained, and the remaining gap. |
+| **Revenue Mix** | Your MRR, ORR, and NRR each against its own target, plus **Project Mix** — non-recurring revenue as a percentage of MRR, measured against the 20% benchmark. |
+| **Pace** | Whether you are on track, the dollars-per-day you need to close to hit your goal, and your average days to close. |
+| **Commissions** | Commission **earned** to date and **forecast** on your open pipeline. |
+
+Your goal, revenue-mix targets, and commission target are set by your manager in
+the **Plan Cascade** — you see them here, you don't edit them.
+
+<Note>
+  **Project Mix** compares your non-recurring (project / break-fix) revenue to
+  your recurring revenue. The 20% target follows the TruMethods guideline: a
+  healthy book carries roughly one dollar of project work for every five dollars
+  of managed services. The figure turns amber when you fall below it.
+</Note>
+
+## The deal rail
+
+The left rail is your whole pipeline, list-style. Deals are grouped into
+**prospects**, **suspects**, and **closed**, each with a count. A search box
+filters the list by company name (or deal title), and the header shows your
+totals — number of deals, total MRR, and weighted value (MRR × close
+probability).
+
+Two buttons sit at the top of the rail:
+
+- **New Deal** — opens the standard deal-create form. This is the same form and
+  the same save path the pipeline kanban uses, so a deal you create here shows up
+  everywhere. When it saves, the rail refreshes and focuses the new deal.
+- **New Lead (from transcript)** — opens the transcript-driven lead capture flow
+  (see [Capture a lead from a transcript](#capture-a-lead-from-a-transcript)).
+
+A link at the bottom opens the full [pipeline kanban](/crm/index) if you'd rather
+drag deals between stages.
+
+## The NexOS C² deal panel
+
+The center of the page is **NexOS C²** — the source-of-truth inputs for the
+focused deal. A **LIVE → Cockpit** badge in the header signals that every change
+you make here streams straight to the shared **Sales Cockpit** your manager
+watches. There is no separate save button; edits are saved automatically a moment
+after you finish typing.
+
+The panel is organized into sections so the fields you touch daily stay front and
+center.
+
+### Identity
+
+Company, sales rep (read-only — it's you), and the **PBR bucket** the deal sits
+in (30-, 60-, 90-, or 180-day prospect, cold, suspect A/B/C, or closed
+won/lost).
+
+### Economics
+
+This is where the deal's money is set. **Seats** and **AISP** are two separate
+inputs, and together they drive the recurring value:
+
+<Steps>
+  <Step title="Pick a product (optional)">
+    Selecting a product from your catalog prefills **AISP** with that product's
+    per-seat monthly price. It's a starting point — you can still edit it.
+  </Step>
+  <Step title="Enter seats and AISP">
+    **Seats** is the headcount on the deal. **AISP** (Average Initial Sale Price)
+    is the price *per seat, per month*.
+  </Step>
+  <Step title="MRR and ARR calculate for you">
+    **MRR** is read-only and always equals **AISP × Seats**. **ARR** is also
+    read-only and equals **MRR × 12**. Change either seats or AISP and both
+    recompute instantly.
+  </Step>
+</Steps>
+
+For example, 45 seats at an AISP of $200 gives an MRR of $9,000 and an ARR of
+$108,000. A **Close Probability %** field rounds out the section and feeds the
+weighted value shown in the rail and the goal strip.
+
+<Note>
+  AISP is a convenience input — the deal stores the resulting **MRR**. If you
+  clear seats or AISP, MRR falls back to empty rather than showing a stale
+  number.
+</Note>
+
+### Stage & timeline
+
+The expected **close date**, the deal **source** (referral, COI, marketing,
+outbound, inbound, event), and the **last step** and **next step** with their
+dates. The next-step date is color-coded so an overdue follow-up stands out.
+
+### Admin & system fields
+
+Collapsed by default so the everyday fields have room to breathe. Expand it to
+set the date the deal entered the PBR and its PBR section; the deal's **stage** is
+shown here read-only (it moves as the deal advances through the pipeline, not by
+editing this field).
+
+For details on how these numbers roll up into revenue reporting, see
+[contract coverage & profitability](/crm/contract-coverage) and the
+[product catalog](/product/index).
+
+## Working tabs
+
+Below the C² panel, a set of tabs holds the rest of the deal's context —
+**Overview**, **Notes & SRS**, **Quotes**, **Documents**, **Emails**, and **My
+Time**.
+
+The **My Time** tab shows your week-to-date hours pulled from the shared
+timesheet and grouped by sales category (discovery, quote building, follow-up,
+proposal prep, and so on), plus a per-deal breakdown so you can see which deals
+are earning your hours.
+
+## The deal timer
+
+On the right, the **Deal Timer** tracks time against whichever deal you have
+focused. It shows the deal name, a running clock, the current category, and
+Start / Pause / Stop controls.
+
+- **Categories** cycle through Discovery Call, Demo, Proposal Prep, Follow-up,
+  Negotiation, and Admin — use the gear button to switch.
+- **Change** (or clicking a deal in the rail) re-points the timer at a different
+  deal. When you switch, the timer **pauses** whatever was running and picks up
+  the target deal's own saved time — it never merges two deals' hours.
+- Each deal keeps its own running total, so you can pause and step away to
+  another deal, then come back and the elapsed time is still there. (Pressing
+  **Stop** clears the running total for that deal.)
+
+<Note>
+  The Deal Timer runs in your browser and keeps each deal's elapsed time locally.
+  It's a focus aid for the deal in front of you; your official hours live on your
+  timesheet and in the **My Time** tab.
+</Note>
+
+## The activity feed
+
+Under the timer, a live feed lists the deal's recent history — timer starts,
+imported transcripts, generated quotes, meetings held, emails, and calls — newest
+first, so you have the full story of the deal without leaving the page. Below it,
+**Time Today** totals your hours across deals, and a **Nexie** panel offers a
+suggestion for your next best move.
+
+## Capture a lead from a transcript
+
+The **New Lead** flow turns a raw call transcript into ready-to-save records.
+
+<Steps>
+  <Step title="Open New Lead">
+    Click **New Lead (from transcript)** in the deal rail.
+  </Step>
+  <Step title="Drop in a transcript">
+    Upload a `.txt` or `.md` file, or paste text from Plaud, Otter, Granola, or
+    any source. Click **Analyze with Nexie**.
+  </Step>
+  <Step title="Review what Nexie extracted">
+    Nexie pulls out the contact, the interaction, pain points, and quotable
+    opportunities, and shows you the AI cost of the run. Nothing is saved yet.
+  </Step>
+  <Step title="Confirm and save">
+    Adjust anything that needs it, choose whether to also create an opportunity
+    in your pipeline, and save. You confirm every field before it's written.
+  </Step>
+</Steps>
+
+<Note>
+  Transcript analysis uses Nexie, which needs your tenant's Claude API key
+  configured. The extracted values are always yours to review and edit before
+  anything is saved.
+</Note>
+
+## How it connects
+
+- **New Deal** and **New Lead** write through the same paths as the
+  [CRM pipeline](/crm/index), so deals and contacts you create here appear
+  everywhere.
+- The **NexOS C²** panel streams its fields to the **Sales Cockpit**, giving your
+  manager a live read of your pipeline with no double entry.
+- **Product** selection pulls per-seat pricing from your
+  [product catalog](/product/index); revenue is classified as MRR, ORR, or NRR
+  and reported through [contract coverage & profitability](/crm/contract-coverage).
