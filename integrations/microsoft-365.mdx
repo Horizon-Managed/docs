@@ -17,6 +17,106 @@ tokens automatically.
 The app registration needs these **application** permissions (admin-consented):
 `Calendars.ReadWrite`, `Mail.Read` + `Mail.ReadWrite`, and `Mail.Send`.
 
+## Restrict outbound send to one mailbox
+
+`Mail.Send` is an **application** permission, so by default the app registration
+can send as **any mailbox in your tenant**. Scope it to the single mailbox NEXOS
+CORE should send from.
+
+This step is not optional on newer tenants: without it, outbound send is refused
+outright. Which command you use depends on which model your tenant is on, and
+Microsoft is midway through migrating everyone from one to the other.
+
+**Check first — this one command decides everything:**
+
+```powershell
+Connect-ExchangeOnline -UserPrincipalName <you>@yourdomain.com
+Get-ServicePrincipal | Format-List DisplayName, AppId
+```
+
+### If it returns nothing — RBAC for Applications
+
+Your tenant uses the current model. You need the **enterprise application's**
+Object ID from Entra — *Enterprise applications → your app → Object ID*. That is
+not the same value as the app registration's Object ID.
+
+```powershell
+New-ServicePrincipal -AppId <client-id> `
+  -ObjectId <enterprise-app-object-id> `
+  -DisplayName "NEXOS CORE"
+
+New-ManagementScope -Name "NEXOS CORE Senders" `
+  -RecipientRestrictionFilter "PrimarySmtpAddress -eq 'support@yourdomain.com'"
+
+New-ManagementRoleAssignment -App <service-principal-id> `
+  -Role "Application Mail.Send" `
+  -CustomResourceScope "NEXOS CORE Senders"
+```
+
+The management scope is the security boundary. Without it the role applies
+tenant-wide and the app can send as anyone.
+
+### If it returns entries — legacy Application Access Policy
+
+```powershell
+New-DistributionGroup -Name "NEXOS CORE Senders" `
+  -Alias nexos-senders -Type Security `
+  -Members support@yourdomain.com
+
+# Use the address this returns — usually @yourtenant.onmicrosoft.com,
+# NOT your vanity domain.
+Get-DistributionGroup -Identity nexos-senders | Select PrimarySmtpAddress
+
+New-ApplicationAccessPolicy -AppId <client-id> `
+  -PolicyScopeGroupId <that-address> `
+  -AccessRight RestrictAccess `
+  -Description "NEXOS CORE outbound only"
+```
+
+<Note>
+Binding to the vanity domain instead of the real `PrimarySmtpAddress` produces a
+policy that denies everything while reporting healthy.
+</Note>
+
+## Before mail will actually arrive
+
+Microsoft accepting a message is not the same as it being delivered. The sending
+domain needs working email authentication, or recipients — Gmail especially, which
+has rejected unauthenticated mail since February 2024 — will drop it silently.
+
+| Record | Value |
+|---|---|
+| **SPF** | must include `spf.protection.outlook.com` |
+| **DKIM** | `selector1` / `selector2` CNAMEs from the Defender portal, then **Enable** |
+| **DMARC** | `v=DMARC1; p=none; rua=mailto:dmarc@yourdomain.com` to start |
+
+If you previously sent through a filtering service and have since moved MX to
+Microsoft, remove the old provider from SPF — a record describing a path you no
+longer use will fail.
+
+## Troubleshooting outbound send
+
+**`403 ErrorAccessDenied` — "Access to OData is disabled: [RAOP] : Blocked by
+tenant configured AppOnly AccessPolicy settings"**
+
+This message is misleading. It names *Application Access Policy*, the **legacy**
+model — but on a tenant using RBAC for Applications it actually means **the app
+has no Exchange role assignment**. Creating an access policy will not help.
+
+Run `Get-ServicePrincipal` and follow whichever tab above applies.
+
+Two things that will mislead you while diagnosing:
+
+- **`Test-ApplicationAccessPolicy` returns `Granted` on an RBAC tenant and means
+  nothing.** It evaluates the legacy store, which no longer governs access.
+- **A valid token is not proof.** The token legitimately carries
+  `roles: ["Mail.Send"]` because Entra granted the permission. Exchange refuses it
+  separately, at a later stage.
+
+**Mail sends successfully but never arrives** — that is delivery, not permissions.
+Check the DNS records above, and confirm the message is in the sending mailbox's
+Sent Items.
+
 ## What it powers
 
 - **Calendar sync** — [Dispatch](/dispatch) creates, updates, and deletes events
