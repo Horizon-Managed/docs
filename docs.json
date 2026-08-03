@@ -119,6 +119,7 @@
               "siem/index",
               "emailsec/index",
               "metasploit/index",
+              "metasploit/scan-library",
               "cybersec/index"
             ]
           },

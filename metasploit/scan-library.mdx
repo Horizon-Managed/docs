@@ -1,0 +1,86 @@
+---
+title: "Scan Library"
+description: "Browse every scanner module with an AI-written overview — what it finds, how severe a hit is, what it targets, and whether it's safe to run — before you launch."
+---
+
+The Scan Library is a browsable catalog of every Metasploit `auxiliary/scanner`
+module available to your tenant, each paired with a plain-English overview
+written by Nexie AI. Instead of cryptic module paths like
+`auxiliary/scanner/smb/smb_ms17_010`, you see the human name ("EternalBlue
+Detection"), what a positive result actually means, how severe it is, the
+protocol and port it targets, and whether it's safe to run against production —
+all at a glance, before you launch anything.
+
+Open it at `/security/scan-library`.
+
+<Warning>
+  Only scan networks you are **explicitly authorized** to test. The library's
+  safe-to-run flag tells you how a module behaves (read-only probe vs. active
+  login attempt), but you remain responsible for having the client's
+  penetration-test authorization in place before running any scan.
+</Warning>
+
+## When to use it
+
+- Decide which scan to run without memorizing Metasploit module names.
+- Understand an unfamiliar module — what it probes, the CVE behind it, and the
+  remediation — before adding it to a scan.
+- Onboard junior technicians with a self-explaining catalog rather than raw
+  module paths.
+- Quick-launch a targeted scan for a single module against a specific host or
+  range.
+
+## The enriched grid
+
+Every module renders as a card. At a glance each card shows:
+
+- **Severity** — a colored stripe and chip (Critical / High / Medium / Info)
+  reflecting what a positive finding means for the client.
+- **Category** and the module's protocol and port (e.g. `SMB · 445`).
+- **What it finds** — a one-line summary, with the CVE called out where the
+  module targets a known vulnerability.
+- **What a hit means** — the short consequence (e.g. "Pre-auth RCE").
+- **Safe-to-run flag** — read-only probe, sends probes, or active login
+  (authorization required).
+
+Use the **search box** (match on name, CVE, protocol, or keyword) and the
+**category pills** to filter the grid.
+
+## Details in place
+
+Click **Details** on any card to expand a fuller overview without leaving the
+page — what the module does, why it matters, a remediation summary, an
+at-a-glance stat table (severity, protocol/port, impact, auth required,
+estimated runtime), and reference links (CVE / advisory). Close the panel with
+the **✕** button, **Collapse**, or the **Esc** key.
+
+## Launch a scan
+
+Click **Scan** on a card to open the quick-scan dialog: give it a name, a target
+IP or CIDR range, and optionally the client it belongs to, then launch. The scan
+runs through the same Metasploit pipeline as the
+[Vulnerability scanning](/metasploit/index) module and its findings are recorded
+against the client.
+
+## How the overviews are generated
+
+The overviews are written by Nexie AI and **cached per tenant** in NEXOS CORE.
+Each module is described once, on first view, then served from the cache on every
+subsequent visit — so after the initial load the library opens instantly and does
+not re-call the AI. A module's overview is regenerated only if its underlying
+Metasploit description changes.
+
+<Note>
+  The Scan Library needs your AI provider configured — add your Anthropic API key
+  under **Settings → Integrations → AI Provider**, where you can also choose the
+  Claude model used for generation. If AI is unavailable, the library still lists
+  every module with its raw Metasploit description so the page stays usable.
+</Note>
+
+## Good to know
+
+- Overviews are **tenant-private** — one tenant's generated library is never
+  visible to another.
+- The module list itself is pulled live from your connected Metasploit instance
+  each visit; only the AI overviews are cached.
+- The grid follows your chosen NEXOS CORE theme (Dark, Tinted, or Parchment).
