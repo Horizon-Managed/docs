@@ -1,0 +1,111 @@
+---
+title: "Inbound email to tickets"
+description: "How customer emails become tickets or replies, how threading works, and what NEXOS CORE strips out of the message body."
+keywords: ["inbound email", "email to ticket", "email threading", "quoted reply", "external banner", "support mailbox"]
+---
+
+When a customer emails your support address, NEXOS CORE either **threads the message onto an existing ticket** or **opens a new one**. The decision comes entirely from the subject line, and the body is cleaned before it is stored.
+
+## Prerequisites
+
+Inbound email needs a mail account configured under **Settings → Integrations**. For Microsoft 365 that means an app registration with `Mail.Read` granted and admin-consented — see [Microsoft 365](/integrations/microsoft-365).
+
+<Warning>
+  Until `Mail.Read` is granted and consented, the poller cannot read the mailbox and no tickets are created from email. Nothing surfaces in the UI to tell you the permission is missing.
+</Warning>
+
+## How a message is matched to a ticket
+
+NEXOS CORE looks for a ticket number in the **subject**, in this order:
+
+| Subject contains | Result |
+| --- | --- |
+| `[#1234]` anywhere | Threads onto ticket 1234. |
+| A bare `#1234`, **and** the subject starts with a reply prefix | Threads onto ticket 1234. |
+| A bare `#1234` with **no** reply prefix | Ignored — opens a new ticket. |
+| No number at all | Opens a new ticket. |
+
+Outbound replies from the ticket composer automatically tag the subject with `[#<ticket-number>]`, which is why a customer's reply threads back on its own.
+
+The recognised reply prefixes cover the locales Outlook and Gmail emit — `Re:`, `Aw:`, `Sv:`, `Vs:`, `Res:`, `Antw:`, `Odp:`, `Ref:` — and tolerate variants like `RE :` and `Re[2]:`.
+
+<Note>
+  A bare `#1234` is deliberately distrusted on a fresh subject. On a first-contact email, a hash-number is far more likely to be an invoice, PO, or serial number than one of your ticket IDs.
+</Note>
+
+### When it threads
+
+The message is added to the ticket as a **customer message**, not a technician reply, so it appears on the customer side of the [ticket Peek](/helpdesk/ticket-peek) conversation. The sender's address is recorded as the author.
+
+Threading also fires the `client_reply` and `note_added` workflow triggers, so [arrival-routing rules](/workflow-studio/ticket-arrival-routing) can act on customer replies.
+
+### When it opens a new ticket
+
+A message with no recognisable ticket number creates a ticket with:
+
+| Field | Value |
+| --- | --- |
+| Title | The email subject |
+| Description | The cleaned email body |
+| Status | `new` |
+| Priority | `medium` |
+| Type | `incident` |
+| Source | `email` |
+| Contact | The sender's email address |
+
+Adjust priority and type after arrival with an arrival-routing rule — for example, route by `sender_domain` or `requester_email`.
+
+## What gets stripped from the body
+
+A raw customer reply is mostly not the customer's message. It typically carries a security banner your mail gateway prepended, the reply itself, and the entire quoted thread beneath it. NEXOS CORE removes the parts that are not the sender's words so the ticket timeline reads as the conversation.
+
+Removed:
+
+- **Quoted originals** — Outlook's `From: / Sent: / To: / Subject:` header block, Gmail's `On <date>, <person> wrote:` (including its `Le` / `Am` / `El` localisations), `-----Original Message-----`, and Apple Mail's `Begin forwarded message:`. The body is trimmed at the earliest of these.
+- **Mail-security banners** — `Caution: External`, `Internal Name Match`, `Safe Spam Phish …`, `Send Encrypted Email`, `Protection by HMS`, a bare `[EXTERNAL]` line, and `This email originated from outside …`.
+- **Padding characters** — zero-width spaces and joiners some clients pack into replies (they render as odd gaps or trails of dots). Non-breaking spaces become regular spaces.
+- **Excess blank lines** — runs of three or more collapse to one.
+
+So a reply that arrives as this:
+
+```text Raw inbound message
+Caution: External
+
+Sup
+
+Protection by HMS | Send Encrypted Email
+
+From: Support <support@example.com>
+Sent: Monday, August 3, 2026 4:12 PM
+To: Customer <customer@acme.example>
+Subject: RE: [#21] Printer offline
+
+Hi — we've reset the print spooler, can you confirm?
+--
+Support Team
+```
+
+is stored as just:
+
+```text Stored on the ticket
+Sup
+```
+
+### It errs toward keeping content
+
+The trim is heuristic, in the same class as Gmail's collapsed quoted text. It is deliberately conservative: an ambiguous line is **kept**. A sentence you write that happens to begin with `From:` is only treated as a quote header if the full multi-line header shape follows it, so ordinary prose survives.
+
+The trade-off runs one way on purpose — leaving a stray banner fragment on a note is a cosmetic annoyance, while dropping a sentence the customer actually wrote loses information you cannot recover from the ticket.
+
+<Tip>
+  Nothing is lost from the mailbox. Cleaning affects only what is stored on the ticket; the complete original message remains in the mailbox NEXOS CORE polled.
+</Tip>
+
+## Known behaviour
+
+- **A staff member emailing the support address opens a new ticket.** If someone at your own organisation emails support from an address that is not itself a configured mail account, the message is treated as a new customer request. Reply from the ticket rather than by email to avoid the loop.
+- **Graph tokens are cached for about an hour.** If mailbox permission is revoked or lapses, polling can keep failing for up to that long before the token is re-minted.
+
+## Tenant isolation
+
+Inbound processing runs inside the tenant's own transaction scope. A message is matched, threaded, and stored entirely within the receiving tenant — an email can never attach to another tenant's ticket, even if the subject quotes a ticket number that exists there.
