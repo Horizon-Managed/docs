@@ -55,6 +55,7 @@
             "pages": [
               "helpdesk/ticket-queue",
               "helpdesk/ticket-peek",
+              "helpdesk/inbound-email",
               "workflow-studio/ticket-arrival-routing",
               "kb/index",
               "dispatch/index",

@@ -34,12 +34,16 @@ The agent runs on Windows, macOS, and Linux, but a few capabilities are Windows-
 Prerequisites:
 
 - A NexusOS operator account with access to **RMM Agents → Deploy Agent**.
-- The client company exists in CRM (each company gets a stable enrollment token automatically).
+- The client company exists in CRM.
+- An enrollment token for that company — see [Enrollment tokens](#enrollment-tokens). Create one from the deploy page if the company does not have one yet.
 - Administrator / `sudo` access on the target endpoint.
 
 <Steps>
   <Step title="Open the deploy page">
-    In NexusOS, go to **RMM Agents → Deploy Agent**. Each company in CRM is listed with its reusable enrollment token.
+    In NexusOS, go to **RMM Agents → Deploy Agent**. Every company in CRM is listed. A company that already has an enrollment token shows it; a company that does not shows **No enrollment token** with a **Create enrollment token** action.
+  </Step>
+  <Step title="Create the token, if the company has none">
+    Click **Create enrollment token**. One token per company is enough — it is reusable for every endpoint you enroll for that client.
   </Step>
   <Step title="Reveal the enrollment token">
     Click the eye icon next to the target company to reveal the token. Install commands are gated behind this reveal because they embed the token.
@@ -62,7 +66,7 @@ Because `agent.update` is Windows-only, the in-product "update agent" action is 
 
 <Steps>
   <Step title="Re-open Deploy Agent">
-    Go to **RMM Agents → Deploy Agent** and reveal the company token.
+    Go to **RMM Agents → Deploy Agent** and reveal the company's existing token. Re-enrolling does not need a new one.
   </Step>
   <Step title="Re-run the installer or one-liner">
     Use the same install command or installer for the platform. The installer is idempotent — re-running it on an already-enrolled endpoint updates the binary in place and keeps the existing certificate and identity.
@@ -85,6 +89,32 @@ Because `agent.update` is Windows-only, the in-product "update agent" action is 
 ## Verifying a release before you deploy
 
 The **Download Agent** card on the deploy page lists the current release for each platform with its SHA-256. The installer and the Windows field auto-update both verify downloads against this hash. If you are scripting deployment outside the UI, copy the hash from the **Copy hash** button and pin to it.
+
+## Enrollment tokens
+
+An enrollment token is a per-company credential that lets a new endpoint request its certificate. It is what attributes the endpoint to the right client: the server reads the company from the token and assigns the agent accordingly.
+
+**Tokens are created only when you ask for one.** A company has no enrollment credential until someone clicks **Create enrollment token** on the deploy page. Opening the page does not create anything.
+
+**A token is reusable and does not expire.** One token enrolls as many endpoints as that client has, indefinitely, until you regenerate or revoke it. There is no use limit and no TTL.
+
+<Warning>
+  Because a token is reusable and long-lived, treat it as a standing credential for that client. Anyone holding it can enroll an endpoint into that company. Share it over the install link or command rather than in plain email, and revoke it if you suspect exposure.
+</Warning>
+
+Each company row offers three actions:
+
+| Action | Effect |
+| --- | --- |
+| **Copy** | Copies the token to your clipboard. |
+| **Regen** | Issues a new token and immediately stops the old one working. Endpoints already enrolled are unaffected. |
+| **Revoke** | Deactivates the token. No new endpoint can enroll with it. Endpoints already enrolled are unaffected. |
+
+After a **Revoke**, the company returns to **No enrollment token** and stays that way — the token does not come back on its own. Create a new one when you next need to enroll an endpoint for that client.
+
+<Note>
+  Revoking or regenerating a token never disconnects a working agent. Enrolled endpoints authenticate with their own certificate, not the token. To remove a single endpoint's access, delete that agent from the **RMM Agents** list — its certificate stops being honoured immediately.
+</Note>
 
 ## Enrollment and configuration at a glance
 
