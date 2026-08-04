@@ -35,7 +35,7 @@ The recognised reply prefixes cover the locales Outlook and Gmail emit — `Re:`
 
 ### When it threads
 
-The message is added to the ticket as a **customer message**, not a technician reply, so it appears on the customer side of the [ticket Peek](/helpdesk/ticket-peek) conversation. The sender's address is recorded as the author.
+The message is added to the ticket as a **customer message**, not a technician reply, so it appears on the customer side of the [ticket Peek](/helpdesk/ticket-peek) conversation. The author is shown as the sender's **name** if the address matches a known contact, and falls back to the raw address otherwise.
 
 Threading also fires the `client_reply` and `note_added` workflow triggers, so [arrival-routing rules](/workflow-studio/ticket-arrival-routing) can act on customer replies.
 

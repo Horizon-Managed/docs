@@ -37,6 +37,8 @@ The thread mixes four message types, each visually distinct:
 
 Inbound customer emails threaded onto a ticket are stored as customer-channel messages, so they appear on the customer side of the thread rather than being mislabeled as technician replies. The quoted reply chain and any mail-security banner are stripped before the message is stored — see [Inbound email to tickets](/helpdesk/inbound-email).
 
+Every message and note in the thread attributes to the author's **name**, resolved against your contacts and users at the moment it's written — not a raw email address. If the sender is a stranger to both, the address is shown instead, since there's no name to resolve to.
+
 ### Composer
 
 Below the thread, the composer has two modes:
