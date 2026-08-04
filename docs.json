@@ -182,6 +182,7 @@
           {
             "group": "Changelog",
             "pages": [
+              "changelog/2026-08-04",
               "changelog/2026-07-08",
               "changelog/2026-07-03",
               "changelog/2026-07-03-ai-analytics",

@@ -1,0 +1,57 @@
+---
+title: "Week of August 4, 2026"
+description: "v1.51.1 ships two fixes: ticket notes attribute to the actual person, and the Security Dashboard's score panel populates again."
+---
+
+A quiet week focused on two fixes: one to how ticket notes attribute their
+author, and one that restores data to the Security Dashboard.
+
+## Ticket notes now show names, not email addresses
+
+Every note on a ticket's conversation thread — replies, internal notes,
+inbound customer email, AI-generated notes — now consistently shows the
+author's **name**. Previously two of the four sources (a customer's inbound
+email reply, and a staff member's internal note) recorded the raw email
+address instead, so a single ticket's thread could show a mix: some notes
+with a real name, others with `someone@example.com`.
+
+NEXOS CORE now resolves the address to a name at the moment the note is
+written, checking your **contacts** before your **users** — because the same
+address can belong to both (for example, a technician who is also listed as
+a contact on their own company's account), and the contact record is the
+customer-facing identity you'd want shown.
+
+A few things worth knowing:
+
+- **Attribution is fixed at write time.** A note is a record of who said what
+  and when, so it keeps the name its author had at that moment. Renaming or
+  deleting a contact later does not retroactively relabel old notes.
+- **A stranger still shows as an address.** If the sender isn't a known
+  contact or user, there's no name to resolve to, so the address is shown —
+  that's the honest result, not a bug.
+- **Existing notes were repaired.** A one-time backfill corrected historical
+  notes that had an address where a name belonged, without touching any note
+  that already carried a real name (automation-authored notes like "Nexie
+  (Automation)" or hand-entered names were left alone).
+
+See [Ticket Peek](/helpdesk/ticket-peek#conversation-thread) for how the
+conversation thread renders.
+
+## Security Dashboard score panel is populating again
+
+The [Security Dashboard](/cybersec)'s Overall Security Score, category
+breakdown, endpoint agent stats, and recent-alerts feed had gone silently
+empty for every tenant due to a query bug introduced in an earlier release.
+The dashboard loaded without error, but showed no score, no agent counts,
+and no alerts.
+
+That's fixed — the dashboard now populates normally. No action is needed on
+your part; scores, endpoint stats, and alerts should reflect current data the
+next time you open the page. If a client's dashboard still looks empty,
+that means no compliance, vulnerability, or endpoint scores have been
+computed for that tenant yet, rather than the display issue above.
+
+## Bug fixes
+
+- Ticket note author attribution (as above)
+- Security Dashboard score panel not populating (as above)
