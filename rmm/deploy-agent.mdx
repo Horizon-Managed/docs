@@ -35,18 +35,16 @@ Prerequisites:
 
 - A NexusOS operator account with access to **RMM Agents → Deploy Agent**.
 - The client company exists in CRM.
-- An enrollment token for that company — see [Enrollment tokens](#enrollment-tokens). Create one from the deploy page if the company does not have one yet.
 - Administrator / `sudo` access on the target endpoint.
 
 <Steps>
   <Step title="Open the deploy page">
-    In NexusOS, go to **RMM Agents → Deploy Agent**. Every company in CRM is listed. A company that already has an enrollment token shows it; a company that does not shows **No enrollment token** with a **Create enrollment token** action.
-  </Step>
-  <Step title="Create the token, if the company has none">
-    Click **Create enrollment token**. One token per company is enough — it is reusable for every endpoint you enroll for that client.
+    In NexusOS, go to **RMM Agents → Deploy Agent**. Every company in CRM is listed, whether or not it already has an enrollment token.
   </Step>
   <Step title="Reveal the enrollment token">
-    Click the eye icon next to the target company to reveal the token. Install commands are gated behind this reveal because they embed the token.
+    Click the eye icon next to the target company. Install commands are gated behind this reveal because they embed the token.
+
+    If the company shows **No token yet — reveal to create**, this same click creates its token. You do not need a separate step. See [Enrollment tokens](#enrollment-tokens) for what that means.
   </Step>
   <Step title="Pick the target OS">
     Switch between **Windows**, **macOS**, and **Linux** tabs. Each tab exposes three equivalent install paths:
@@ -94,7 +92,9 @@ The **Download Agent** card on the deploy page lists the current release for eac
 
 An enrollment token is a per-company credential that lets a new endpoint request its certificate. It is what attributes the endpoint to the right client: the server reads the company from the token and assigns the agent accordingly.
 
-**Tokens are created only when you ask for one.** A company has no enrollment credential until someone clicks **Create enrollment token** on the deploy page. Opening the page does not create anything.
+**A token is created the first time you reveal it.** Clicking the eye icon on a company that shows **No token yet — reveal to create** mints its token and unlocks the install commands in one action — the same click you would make anyway before copying a command.
+
+**Opening the deploy page creates nothing.** Only revealing a specific company does. So a client you never deploy to never has an enrollment credential at all, and simply viewing the list cannot bring back a token you revoked.
 
 **A token is reusable and does not expire.** One token enrolls as many endpoints as that client has, indefinitely, until you regenerate or revoke it. There is no use limit and no TTL.
 
@@ -110,7 +110,7 @@ Each company row offers three actions:
 | **Regen** | Issues a new token and immediately stops the old one working. Endpoints already enrolled are unaffected. |
 | **Revoke** | Deactivates the token. No new endpoint can enroll with it. Endpoints already enrolled are unaffected. |
 
-After a **Revoke**, the company returns to **No enrollment token** and stays that way — the token does not come back on its own. Create a new one when you next need to enroll an endpoint for that client.
+After a **Revoke**, the company returns to **No token yet** and stays that way. Reloading the deploy page does **not** bring a token back. The next time you reveal that company — because you are deploying to it again — a new token is minted then.
 
 <Note>
   Revoking or regenerating a token never disconnects a working agent. Enrolled endpoints authenticate with their own certificate, not the token. To remove a single endpoint's access, delete that agent from the **RMM Agents** list — its certificate stops being honoured immediately.
