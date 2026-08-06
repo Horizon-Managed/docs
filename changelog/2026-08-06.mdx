@@ -1,0 +1,107 @@
+---
+title: "Week of August 6, 2026"
+description: "Sales Workspace dates now save, deal stage history is recorded again, close-won automation actually closes the deal, and admin-only notifications stop going to everyone."
+---
+
+Four fixes, all in the sales and automation paths: the Sales Workspace date
+fields save, a deal's stage history is recorded again, an automation rule that
+closes a deal as won now really closes it, and a notification meant for admins
+no longer reaches every user.
+
+## Sales Workspace date fields now save
+
+On the **NexOS C²** panel, **Close Date**, **Last Step Date**, **Next Step
+Date** and **Entered PBR** did not save. Clicking a day in the calendar looked
+like it worked — the field showed your choice — but the value never reached the
+deal, so reloading the page or opening the deal elsewhere showed the old date
+(or none at all).
+
+All four now save the moment you pick a day, with no separate save step, and the
+change streams to the **Sales Cockpit** like every other field on the panel.
+
+Two related improvements landed with it:
+
+- **Dates are calendar days.** A date you pick reads back as exactly that day
+  for everyone who opens the deal, regardless of their time zone. Previously a
+  stored date could render as the day before the one that was chosen.
+- **The calendar re-opens on the stored date.** Click into a field that already
+  has a date and the calendar lands on that month and day, so you can shift a
+  close date by a week without hunting for it.
+
+If you have been keeping these dates somewhere else — a note on the deal, a
+spreadsheet, the deal title — you can move them onto the fields now. Dates that
+had been entered before this fix were never stored, so the fields will read
+empty until you set them; nothing needs to be corrected or cleaned up.
+
+See [Sales Workspace → Stage & timeline](/crm/sales-workspace#stage--timeline)
+for how the fields work.
+
+## Deal stage history is recorded again
+
+A deal's history — the entries in the **activity feed** on the Sales Workspace
+and on the deal's timeline — had stopped capturing stage changes, including the
+move to **won** or **lost**. Other activity (quotes, emails, meetings, timer
+starts) kept recording normally, so the omission was easy to miss until you went
+looking for when a deal actually advanced.
+
+Stage changes are recorded again, whether you drag the card on the
+[pipeline board](/crm/pipeline-moves) or an automation rule moves the deal for
+you. History from the period when records were being dropped cannot be
+reconstructed, so timelines will show a gap before this release.
+
+## "Close deal as won" automation now closes the deal
+
+An automation rule using the **close deal as won** action reported that it ran
+and recorded a success in its action log, but the deal never left its current
+stage. Anyone relying on the rule had to move the deal by hand while the log
+insisted the automation had done it.
+
+The action now moves the deal.
+
+<Warning>
+  If you have a rule with the **close deal as won** action enabled, it starts
+  taking effect on the next matching event. Deals that would have been closed
+  silently over the last stretch will now genuinely move to **Closed Won** —
+  which shifts your won totals, win rate and forecast. Worth reviewing that
+  rule's conditions before your next matching event if you built it a while ago
+  and never saw it fire.
+</Warning>
+
+## Admin-only notifications stop going to everyone
+
+A workflow's **send notification** action set to deliver to **admins** was
+delivering to every user in the tenant instead. Anything you routed to admins —
+approval nudges, escalations, internal-only warnings — reached your whole staff.
+
+Admin-targeted notifications now go only to users holding your tenant's admin
+role. Two related cases changed with it:
+
+- If your tenant has **no admin role defined**, the notification is not sent at
+  all rather than broadcast to everyone. A missed internal notification is
+  recoverable; telling all staff something meant for admins is not.
+- An **unrecognized recipient setting** no longer falls back to a tenant-wide
+  broadcast.
+
+If you built a rule around the old behavior — using **admins** because it
+happened to reach everyone — switch it to **all users**, which delivers to your
+whole staff by design.
+
+## Bug fixes
+
+- Sales Workspace **Close Date**, **Last Step Date**, **Next Step Date** and
+  **Entered PBR** not saving (as above)
+- Sales Workspace date fields rendering a day earlier than the day picked
+- Deal stage changes, including won and lost, missing from a deal's history
+  (as above)
+- Automation **close deal as won** action reporting success without moving the
+  deal (as above)
+- Workflow **send notification** to **admins** delivering to every user
+  (as above)
+- Group notifications — all users, a role, or admins — triggered from an
+  in-app action occasionally delivering to nobody while reporting success.
+  Affected the assessment-approval and quote-generated notifications.
+- The **Helpdesk Configuration** settings page loading its status, priority,
+  team, type, category, source, impact and urgency lists more slowly than it
+  needed to on first paint.
+- A malformed date sent to the Sales Workspace now returns a clean validation
+  error instead of an unhelpful server error.
