@@ -4,20 +4,24 @@ description: "Live multi-timers that capture billable time, and weekly timesheet
 ---
 
 Time tracking has two connected layers. **Live timers** are running stopwatches
-you start against a ticket, project task, or site survey — several can run at
-once, with one "focused" in the header and the rest ticking in the background.
-Stopping a timer captures the billing details and writes a time entry.
-**Timesheets** are the weekly rollup of those entries: review the week, submit it,
-a manager approves, and approved sheets push to QuickBooks or export to CSV.
+you start against a ticket, a project task, or a site survey — several can run
+at once, with one "focused" in the header and the rest ticking in the
+background. Stopping a timer writes a time entry. **Timesheets** are the weekly
+rollup of those entries: review the week, submit it, a manager approves, and
+approved sheets push to QuickBooks or export to CSV.
 
-Timesheets live at `/timesheets`; timers run from the app header and ticket/task
-pages.
+Timesheets live at `/timesheets`. Timers run from the app header, and from the
+thing you're timing — see [where you can start one](#where-you-can-start-one)
+below.
 
 ## When to use it
 
 - Track live hours against a ticket, project task, or survey while you work.
-- Run several jobs at once and switch which is focused.
-- Capture billable time with a work type, billing role, contract, and product.
+- Run several jobs at once and switch which is focused, without losing the
+  others' elapsed time.
+- Start on your phone and keep going on your desktop, or the other way around.
+- Capture billable time — with a work type, billing role, contract, and
+  effective rate when the timer is on a ticket.
 - Review, submit, and approve a week of time.
 - Push approved time to QuickBooks or export it for payroll.
 
@@ -25,15 +29,22 @@ pages.
 
 <Steps>
   <Step title="Start a timer">
-    Start against a ticket, task, or survey. Starting a new timer unfocuses the
-    others; starting one on a ticket that already has an active timer resumes it
-    rather than duplicating.
+    Start against a ticket, task, or survey. Timers are **server-side and
+    follow you across devices** — one started on your phone shows up on your
+    desktop, focused the same way, and vice versa. If that item already has a
+    timer running, starting it again just **resumes** the existing one instead
+    of creating a second timer for the same job. Starting a new timer unfocuses
+    whichever one was focused before; the others keep accumulating time in the
+    background.
   </Step>
   <Step title="Stop and capture billing context">
-    On stop, you confirm the work type, billing role, contract, and product (or
-    enter a manual minute override). Time under contract block-hours/retainer
-    coverage is drawn down automatically, and a linked project task's actual
-    hours are updated.
+    On a **ticket**, stop asks you to confirm the work type, billing role,
+    contract, and product (or enter a manual minute override); time draws down
+    contract block-hours or retainer coverage automatically and records an
+    effective rate. On a **task** or **survey** timer, stopping still writes a
+    time entry, but at your tenant's default rate — there's no contract to
+    resolve outside a ticket, so that time isn't attached to a specific
+    contract line. A linked project task's actual hours are updated either way.
   </Step>
   <Step title="It becomes a time entry">
     The stop writes a unified time entry (with hours, billable amount, and cost)
@@ -49,6 +60,13 @@ pages.
   </Step>
 </Steps>
 
+## Where you can start one
+
+- **Tickets** — from the ticket peek/detail view, on desktop or in the
+  [mobile app](/mobile/index).
+- **Project tasks** — from the **Time** tab in the [mobile app](/mobile/index).
+- **Site surveys** — from a [survey's](/survey/index) detail page, on desktop.
+
 ## Timesheets
 
 Your timesheet (`/timesheets`) is the weekly view; approvers work a queue at
@@ -57,6 +75,12 @@ with the right permission.
 
 ## Good to know
 
+- **The label sticks with the timer, mostly.** A running ticket timer shows the
+  ticket's current title, so if you rename the ticket mid-timer the label
+  updates with it (unless the ticket is later deleted, in which case it falls
+  back to the title it had when the timer started). Task and survey timers
+  always show the title captured when the timer started, even if that item is
+  later renamed.
 - **QuickBooks push is optional and best-effort** — if it isn't configured or a
   push fails, the timesheet stays **Approved** (not Pushed) and never blocks
   approval; the error is recorded for retry.
