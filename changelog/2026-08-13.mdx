@@ -1,0 +1,116 @@
+---
+title: "Week of August 13, 2026"
+description: "v1.52.10: the ticket queue shows who owes the next move, saved views and column layouts stick, alignment reviews show their step from the list, and the client quote approval page is branded."
+---
+
+A substantial week on the ticket queue — a new column that answers a question
+status never could, and the return of saved layouts that had been quietly broken
+since May. Plus progress-at-a-glance on alignment reviews, and a better first
+impression on the page your clients' clients actually see.
+
+## The ticket queue knows who owes the next move
+
+The queue has a new **Waiting On** column. Status tells you where a ticket sits in
+your workflow; Waiting On tells you **who is currently blocking it** — **Us**,
+**Customer**, **Vendor**, **Parts**, **Scheduled**, or **Working**.
+
+The important part is that it maintains itself. It moves as the conversation moves,
+so it never depends on a technician remembering to set a field:
+
+- A **customer reply** hands the ticket back to you.
+- A **public reply from a technician** hands it to the customer.
+- **Internal notes and automation are inert** — talking amongst yourselves does not
+  change who owes the next move.
+- **Resolved and closed tickets are skipped.** Nobody owes a move on a finished
+  ticket.
+
+You can filter on it from the filter drawer, or directly with `?activity=` on the
+queue URL.
+
+### The Waiting tile now counts what its label says
+
+The **Waiting** decision tile used to count tickets with the **Pending** status,
+which is a different claim than the label made. Pending means a technician paused
+the SLA clock; it says nothing about who is blocking. That produced two wrong
+readings in opposite directions:
+
+- A ticket parked on a Dell RMA was **Pending**, so it counted as "waiting on the
+  customer" when it was waiting on a vendor.
+- A ticket left **Open** after a technician replied — the common case, and the one
+  you most want to see — did not count at all.
+
+The tile now reads the Waiting On column, so it means what it says.
+
+## Saved views, and layouts that stay put
+
+**Saved views** are new: name a set of filters and return to it. Keep a view
+private, or share it with the team so everyone triages from the same definition,
+and mark one as your default so the queue opens on it. A view stores the filters
+rather than a frozen list, so it re-runs and stays current every time you open it.
+
+**Your column and density choices now persist** per user, across sessions and
+devices. This is a repair as much as a feature: the setting had been saving to a
+place that no longer existed since May, so layouts survived only in the browser
+you set them in and vanished on any other machine. Hide a column now, come back
+tomorrow on a different computer, and it is still hidden.
+
+<Note>
+  Fixing that surfaced a second, larger problem: an internal helper that every page
+  in the product used to send authenticated requests was **undefined everywhere**,
+  meaning the restored persistence could not have worked in a browser at all. Four
+  existing features depended on the same helper. That is fixed too, so those are
+  more reliable as a side effect.
+</Note>
+
+## Device column on the queue
+
+A new **Device** column shows the RMM-managed machine a ticket concerns, so
+endpoint problems can be triaged from the list. It is **hidden by default**, since
+a ticket only carries a device once one has been linked — turn it on from
+**Columns**.
+
+Relatedly, the linked-asset panel in the ticket Peek is populating correctly again.
+Its compliance and hardware tiles had been reading zero, and **failing** compliance
+checks were invisible in the pill row — the exact checks the row exists to show.
+The remote-desktop and shell actions on that panel also work where a device is
+linked, instead of reporting no agent.
+
+See [Ticket queue](/helpdesk/ticket-queue) and [Ticket Peek](/helpdesk/ticket-peek).
+
+## Alignment reviews show their step from the list
+
+Rows in the Reviews list now show which step of the guided rail each review is on —
+for example **`2/5 · Build recommendations`** — so you can tell an untouched review
+from one waiting on a vCIO countersign without opening either. The step is derived
+from the same rules the workspace stepper uses, so the list cannot disagree with the
+review it links to.
+
+Inside a review, the rail also **updates as you work**: judge the last control and
+the next stage unlocks in front of you, with no page reload needed to find out
+whether a gate has opened.
+
+See [Technology Alignment reviews](/composer/alignment-reviews).
+
+## Client quote approval page
+
+The quote approval page is the one page in the product a **client's own client** may
+see. It now carries your branding rather than presenting a bare form, the signer's
+name, title, and email arrive prefilled from the contact on the quote instead of
+being retyped, and its confirmations are in-page dialogs styled to match — not the
+browser's native alert boxes, which render unbranded and read as a phishing risk to
+a cautious signer.
+
+See [Quotes & invoices](/billing/index#online-approval--e-signature).
+
+## Bug fixes
+
+- The **Waiting** queue tile counted paused tickets rather than tickets waiting on a
+  customer (as above).
+- Per-user column and density persistence had been a silent no-op since May (as
+  above).
+- The shared helper used to send authenticated requests was undefined on every page,
+  affecting four existing features (as above).
+- The ticket Peek's linked-asset panel reported zeroed compliance and hardware
+  tiles, hid failing compliance checks, and reported no linked agent for remote
+  actions.
+- The alignment review rail did not refresh as judgments landed.

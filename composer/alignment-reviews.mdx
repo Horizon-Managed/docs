@@ -37,17 +37,37 @@ the review isn't complete until the client has signed.
     flags controls and returns the review to the TAM for revision.
   </Step>
   <Step title="Client walkthrough">
-    Hand the client the review on their own device to walk the findings.
-  </Step>
-  <Step title="Client sign-off">
-    The client signs off, which seals the review as complete. There is no other
-    way to complete a review.
+    Hand the client the review on their own device to walk the findings. The
+    client's sign-off during the walkthrough seals the review as complete —
+    there is no other way to complete a review.
   </Step>
 </Steps>
 
 Each stage's badge shows **done**, **active**, or **pending**, and a persistent
 action strip at the foot of the control list keeps the single next step reachable
 no matter how long the control list is.
+
+The stepper **updates as you work**, without a page reload — judge the last
+control and the Build recommendations stage unlocks in front of you, disposition
+the last finding and TAM sign-off opens. You do not need to refresh to find out
+whether a gate has opened.
+
+## Seeing progress from the Reviews list
+
+Every row in the Reviews list shows which step of the rail that review is on —
+for example **`2/5 · Build recommendations`** — so you can tell an untouched
+review from one waiting on a vCIO countersign without opening either.
+
+The number comes from the same phase and completeness rules the workspace stepper
+uses, so the list can never disagree with the review it links to.
+
+Combined with the status badges, the list distinguishes at a glance:
+
+- **In progress** on step 1 — nobody has started judging.
+- **In progress** on step 3 or 4 — the assessment is done and it is waiting on a
+  signature, which is usually a person rather than a task.
+- **Paused** — deliberately stopped, with a **Resume** action.
+- **Complete** — the client has signed.
 
 ## Judging controls
 
