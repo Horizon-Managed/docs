@@ -153,6 +153,7 @@
             "group": "Client portal",
             "pages": [
               "portal/index",
+              "portal/sign-in-2fa",
               "onboarding/index"
             ]
           },
