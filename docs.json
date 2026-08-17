@@ -183,6 +183,7 @@
           {
             "group": "Changelog",
             "pages": [
+              "changelog/2026-08-13",
               "changelog/2026-08-06",
               "changelog/2026-08-04",
               "changelog/2026-07-08",

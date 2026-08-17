@@ -9,7 +9,8 @@ The ticket queue at `/helpdesk/tickets` is the triage surface for incoming work.
 
 Use the queue to:
 
-- Scan SLA health at a glance via the sticky stat tiles.
+- Scan SLA health at a glance via the sticky decision tiles.
+- See at a glance who owes the next move on every ticket — you, or the customer.
 - Filter to the tickets you own, the unassigned backlog, or anything breaching SLA.
 - Reply, assign, or resolve tickets without leaving the list.
 - Open a ticket Peek for the full conversation and context. See [Ticket Peek](/helpdesk/ticket-peek).
@@ -18,9 +19,28 @@ Use the queue to:
 
 When you scroll, the following stays frozen at the top of the viewport:
 
-- **SLA stat tiles** — open, breaching, breached, resolved-today counts.
-- **Toolbar** — view tabs, **Filters**, **Columns**, **Density**, search, and **New ticket**.
+- **Decision tiles** — see below.
+- **Toolbar** — view tabs, **Views**, **Filters**, **Columns**, **Density**, search, and **New ticket**.
 - **Action bar** — appears when one or more rows are selected.
+
+### Decision tiles
+
+The tiles are deliberately not a set of summary statistics — each one answers
+"what should I do next?", and clicking a tile filters the queue to it.
+
+| Tile | Counts |
+| --- | --- |
+| **Breaching** | An hour or less from an SLA response breach. Act now. |
+| **At risk** | Between one and two hours from breach. Act next. |
+| **Stale** | No activity for over 24 hours, whatever the SLA says. |
+| **Waiting** | Waiting on the customer — see [Waiting On](#waiting-on) below. |
+| **Unassigned** | No technician assigned. |
+| **Backlog** | Every open ticket, as the denominator for the rest. |
+
+**Breaching** and **At risk** are deliberately **disjoint** — a ticket 45 minutes
+from breach counts in Breaching only, never in both. Tickets whose clock is paused
+(status **Pending**) are excluded from both, because a paused clock is not running
+down.
 
 Only the ticket rows scroll beneath. The queue fits at 1280px and 1440px viewports with the sidebar expanded or collapsed; if columns ever cannot fit, the horizontal scroll is contained to the table card rather than the whole page.
 
@@ -40,12 +60,96 @@ Combine a chip with **Filters** for finer-grained queries (status, contract, ass
 
 ## Toggles
 
+- **Views** — save and recall a set of filters. See [Saved views](#saved-views).
 - **Filters** — open the filter drawer. The badge reflects how many filters are applied.
-- **Columns** — show or hide columns (Subject, Client, Technician, Priority, SLA, Updated, and so on).
+- **Columns** — show or hide columns (Subject, Client, Technician, Priority, SLA, **Waiting On**, **Device**, Updated, and so on).
 - **Density** — switch between Comfortable and Compact row heights.
 - **Search** — full-text search across subject, body, and contact.
 
 Subject, Client, and Technician cells truncate with an ellipsis so the queue can stay within the viewport at any column configuration.
+
+**Your column and density choices are remembered.** They persist per user across
+sessions and devices, rather than living only in the browser you set them in — so
+hiding a column and coming back tomorrow, or on another machine, gives you the
+layout you left.
+
+## Waiting On
+
+The **Waiting On** column answers the question a status field cannot: *who owes the
+next move?* Status describes where a ticket is in your workflow. Waiting On
+describes who is currently blocking it.
+
+| Shows | Meaning |
+| --- | --- |
+| **Us** | The ball is in your court. This is the default for a new ticket. |
+| **Customer** | Waiting on the customer to reply or act. |
+
+It updates by itself as the conversation moves, so it does not depend on anyone
+remembering to set a field:
+
+- A **customer reply** hands the ticket back to you — Waiting On becomes **Us**.
+- A **public reply from a technician** hands it to the customer — Waiting On becomes
+  **Customer**.
+- **Internal notes and automated notes are inert.** Talking amongst yourselves does
+  not change who owes the next move, and neither does a workflow rule firing.
+- **Resolved and closed tickets are skipped** — nobody owes a move on a finished
+  ticket.
+
+You can filter by it directly with `?activity=` on the queue URL, or from the
+filter drawer.
+
+<Info>
+  Waiting On currently distinguishes **two** states, and it sets them for you —
+  there is no control to set it by hand. Finer distinctions such as *waiting on a
+  vendor* or *waiting on parts* are anticipated but not yet in use, so a ticket
+  blocked on a vendor RMA is not distinguishable on this column: it reads as
+  whichever side the last public reply left it on.
+</Info>
+
+<Note>
+  **Waiting On is not the same as the Pending status.** Pending says the SLA clock
+  is paused, which is a decision a technician makes. Waiting On says who is
+  blocking. A ticket parked on a vendor RMA and a ticket waiting on a customer's
+  answer can both be Pending, but they are not the same problem — and a ticket left
+  **Open** after a technician replied is genuinely waiting on the customer even
+  though nobody set it to Pending. The **Waiting** tile counts this column, not the
+  status.
+</Note>
+
+## Device
+
+The **Device** column shows the RMM-managed machine a ticket is about, so an
+endpoint problem can be triaged without opening each ticket to find out which
+machine it concerns.
+
+It is **hidden by default**, because a ticket only carries a device once one has
+been linked to it — turn it on from **Columns** once you are linking devices to
+tickets. See [Ticket Peek](/helpdesk/ticket-peek#context-stack-right-pane) for
+linking a device and reading its live posture.
+
+## Saved views
+
+A **view** is a named set of filters you can return to — "my breaching criticals",
+"unassigned at Ridgeline", "everything waiting on a vendor".
+
+- **Private or shared.** Save a view for yourself, or share it with the whole team
+  so everyone triages from the same definition.
+- **One default.** Mark a view as your default and the queue opens on it.
+- **A view stores filters, not a frozen list.** It re-runs every time you open it,
+  so the counts and rows are always current.
+
+## Lanes
+
+Rows group into three lanes, in this order:
+
+| Lane | Contains |
+| --- | --- |
+| **Breaching** | SLA runway under 25%, or already breached. |
+| **Unowned** | No assignee, and the clock is running. |
+| **Healthy** | Everything else. |
+
+Breaching sorts first because it is the lane that costs you something. Resolved and
+closed tickets are excluded from the lanes entirely rather than falling into Healthy.
 
 ## Action-bar keyboard shortcuts
 
