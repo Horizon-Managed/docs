@@ -83,10 +83,6 @@ describes who is currently blocking it.
 | --- | --- |
 | **Us** | The ball is in your court. This is the default for a new ticket. |
 | **Customer** | Waiting on the customer to reply or act. |
-| **Vendor** | Waiting on a third party — a vendor case, an escalation. |
-| **Parts** | Waiting on hardware to arrive. |
-| **Scheduled** | Booked for a future visit or window. |
-| **Working** | Actively being worked right now. |
 
 It updates by itself as the conversation moves, so it does not depend on anyone
 remembering to set a field:
@@ -101,6 +97,14 @@ remembering to set a field:
 
 You can filter by it directly with `?activity=` on the queue URL, or from the
 filter drawer.
+
+<Info>
+  Waiting On currently distinguishes **two** states, and it sets them for you —
+  there is no control to set it by hand. Finer distinctions such as *waiting on a
+  vendor* or *waiting on parts* are anticipated but not yet in use, so a ticket
+  blocked on a vendor RMA is not distinguishable on this column: it reads as
+  whichever side the last public reply left it on.
+</Info>
 
 <Note>
   **Waiting On is not the same as the Pending status.** Pending says the SLA clock
