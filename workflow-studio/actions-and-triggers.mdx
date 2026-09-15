@@ -1,13 +1,15 @@
 ---
 title: "Actions and triggers reference"
-description: "Every action and trigger the workflow studio offers, and what to check if you built a workflow before September 2026."
+description: "Every action and trigger the workflow studio offers, what each one does, and how to read what a workflow did on its last run."
 ---
 
-The workflow studio's action and trigger pickers are now generated from the
-running code, so anything you can select is something that actually executes.
-That was not always true. If you built workflows before **September 2026**,
-read [Workflows built before September 2026](#workflows-built-before-september-2026)
-first — some of them may never have done anything.
+The workflow studio's action and trigger pickers are generated from the running
+code, so every action you can select has an implementation behind it and every
+trigger you can pick is an event the product actually emits.
+
+If you have workflows saved from before **September 2026**, see
+[older workflows](#older-workflows) — a few may reference actions that no longer
+appear in the picker.
 
 ## Actions
 
@@ -30,12 +32,11 @@ Available on ticket workflows.
 | `send_webhook` | Posts the event to a URL you configure. |
 | `stop_workflow` | Halts the remaining actions in this workflow. |
 
-<Warning>
-  `set_status`, `set_priority`, `set_type` and `set_source` are **refused before
-  they write** if you leave the value empty, rather than writing a blank and
-  reporting success. The same applies to an empty `add_note`. If a step reports
-  `skipped` with reason `no_value`, that is what happened — fill the value in.
-</Warning>
+<Note>
+  `set_status`, `set_priority`, `set_type`, `set_source` and `add_note` are
+  refused before they write if you leave the value empty. A step reporting
+  `skipped` with reason `no_value` is telling you to fill that value in.
+</Note>
 
 ### Business actions
 
@@ -109,45 +110,35 @@ and `success` only when it earned it.
   returned no error" rather than "the step did something."
 </Tip>
 
-## Workflows built before September 2026
+## Older workflows
 
-<Warning>
-  **Some workflows built before September 2026 contained actions that never
-  ran.** The studio offered 135 actions, of which only around 22 had an
-  implementation behind them. The remaining 113 could be added to a workflow,
-  saved successfully, and would silently do nothing — the run log reported
-  `success` either way. Nothing in the interface distinguished them.
+The pickers became catalog-derived in **September 2026**. Before that they read
+from hand-maintained lists that had drifted from the code, so the studio offered
+actions with no implementation and triggers for events nothing emitted. Those
+entries are gone now — which means a workflow saved back then can contain a step
+whose action is no longer in the picker.
 
-  Those actions have been removed from the picker, so a workflow that used one
-  now shows a step whose action no longer exists.
-</Warning>
-
-Actions that were offered but never executed included `push_to_qbo`,
+Names you may see on an older workflow that are not actions today: `push_to_qbo`,
 `send_invoice`, `void_invoice`, `apply_payment`, `escalate`, `block_ip`,
-`isolate_device`, and every `nexie_*` action. The trigger picker had the same
-problem in reverse — it listed 138 events that nothing ever emitted, so a
-workflow built on one could never fire at all.
+`isolate_device`, and the `nexie_*` family.
 
-### What to check
+### Checking one
 
 <Steps>
-  <Step title="Open each workflow you rely on">
-    In the workflow studio, select the workflow. It now renders as its trigger
-    plus each action in execution order.
+  <Step title="Open the workflow">
+    Select it in the studio. It renders as its trigger plus each action in
+    execution order.
   </Step>
-  <Step title="Look for steps whose action is gone">
-    A step referencing a removed action is the signal. The workflow was saved
-    with that action, and it never did anything.
+  <Step title="Check each action is in the tables above">
+    A step whose action is not listed is one to rebuild.
   </Step>
-  <Step title="Check the trigger still exists">
-    If the workflow has never fired, its trigger may have been one of the 138
-    that nothing emitted. Re-pick a trigger from the current list.
+  <Step title="Check the trigger">
+    If a workflow has never fired, re-pick its trigger from the current list.
   </Step>
-  <Step title="Rebuild the intent with a real action">
-    Find the equivalent in the tables above. Several of the removed names have
-    working counterparts — `send_invoice` is not an action, but
-    `generate_invoice_from_ticket`, `_from_quote`, `_from_contract` and `_from_wo`
-    all are.
+  <Step title="Rebuild with a current action">
+    Several older names have direct counterparts — `send_invoice` is not an
+    action, but `generate_invoice_from_ticket`, `_from_quote`, `_from_contract`
+    and `_from_wo` all are.
   </Step>
 </Steps>
 

@@ -78,12 +78,9 @@ Each option names its record the way you would say it out loud — `#24 — Prin
 offline`, `WO-1043 — Cable pull, floor 3`, `Northwind Ltd — Managed services
 renewal` — rather than showing a bare title.
 
-<Note>
-  The timer itself has always supported all six contexts. Until **v1.71.0** the
-  mobile picker offered only tickets and project tasks, so a salesperson could
-  not log deal time from a phone and a field tech could not log against a work
-  order.
-</Note>
+The picker is a full-screen sheet of large buttons rather than a dropdown, and
+separates "nothing is assigned to you" from "we could not load your work" — the
+second offers a retry.
 
 ## Logging time by hand
 
@@ -95,18 +92,16 @@ The modal shows what the hour will bill at before you commit it: the contract it
 is priced against, the effective rate, and the amount. When it will not bill at
 all, it says so plainly.
 
-<Warning>
-  **Before v1.71.0, hand-logged ticket time never reached the invoice.** Log
-  Time wrote the hours, the description and the billable flag, but none of the
-  four columns an invoice is priced from — so the hour appeared correctly on the
-  ticket and was silently absent from the bill, with nothing anywhere to say it
-  had been left off. **Every hour logged this way before v1.71.0 is unbilled.**
-  If you have relied on Log Time, review those tickets against what was invoiced.
-</Warning>
+Manual entries price through the same code the timer stop uses, so the two ways
+of recording an hour bill identically, and the contract is inherited from the
+ticket.
 
-Manual entries now price through the same code the timer stop uses, so the two
-ways of recording an hour bill identically, and the contract is inherited from
-the ticket.
+Where nothing can price an hour — no work type and no billing role means there
+is genuinely no rate — the entry is written **unpriced** rather than as a zero,
+and surfaced: the invoice form lists those hours above the line items, and a
+QuickBooks push that leaves them behind records them in the
+[Sync Log](/integrations/sync-log). An entry you marked non-billable is a
+correct zero and is never flagged.
 
 <Tip>
   If your tenant has no work types or billing roles configured, the modal tells
@@ -130,12 +125,10 @@ with the right permission.
   later renamed.
 - **Stopping a ticket timer can set the ticket's status**, and the picker offers
   **your own statuses** from Settings → Helpdesk — including any you classified
-  as pausing the SLA clock. It previously offered a fixed list that could not
-  show Pending at all and included three values nothing recognised.
-- **Time captured on a phone is billable.** Before v1.71.0 the mobile stop wrote
-  only a partial record with no billing columns, so field hours were invisible
-  to every invoice path while the app reported the timer stopped successfully.
-  The mobile stop now runs the same code as the desktop stop.
+  as pausing the SLA clock.
+- **Time captured on a phone is billable.** The mobile stop runs the same code
+  as the desktop stop, so it resolves contract, coverage, rate and amount
+  identically and consumes contract block or retainer hours the same way.
 - **Submitting a timesheet requires it to be yours.** Anyone with
   `timesheets:approve` can still submit an absent colleague's week so payroll can
   close it out; without that permission you can only submit your own.

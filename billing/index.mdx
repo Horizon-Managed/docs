@@ -82,13 +82,9 @@ Sending is refused up front when any of these is true:
 
 An invoice carrying $0.00 lines asks for confirmation before it goes out.
 
-<Warning>
-  **Before v1.71.0, Send Invoice marked the invoice sent and stamped a send time
-  without ever contacting the mail provider.** Clients were chased for invoices
-  they had never received. If you have invoices that show as sent but were never
-  paid or acknowledged, they may be affected — check the invoice's audit trail,
-  and re-send if there is no delivery record.
-</Warning>
+Every send is recorded on the invoice's audit trail — the delivery, or the
+failure and its reason. That trail is the record of what the client actually
+received.
 
 ### Unpriced hours
 
