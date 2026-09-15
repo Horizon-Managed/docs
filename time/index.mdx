@@ -126,9 +126,13 @@ with the right permission.
 - **Stopping a ticket timer can set the ticket's status**, and the picker offers
   **your own statuses** from Settings → Helpdesk — including any you classified
   as pausing the SLA clock.
-- **Time captured on a phone is billable.** The mobile stop runs the same code
-  as the desktop stop, so it resolves contract, coverage, rate and amount
-  identically and consumes contract block or retainer hours the same way.
+- **A phone-stopped timer needs its billing context set before it can bill.**
+  The mobile stop writes the same rows as the desktop stop, through the same
+  code — but the phone does not yet ask for a work type and billing role, and
+  without both there is no rate to resolve. Those hours arrive **unpriced**.
+  Set the work type and billing role on the entry from the desktop, or log the
+  time from the ticket, and it prices normally. Capturing billing context on
+  the phone is planned.
 - **Submitting a timesheet requires it to be yours.** Anyone with
   `timesheets:approve` can still submit an absent colleague's week so payroll can
   close it out; without that permission you can only submit your own.
