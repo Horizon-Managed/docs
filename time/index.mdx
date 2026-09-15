@@ -62,10 +62,57 @@ below.
 
 ## Where you can start one
 
-- **Tickets** — from the ticket peek/detail view, on desktop or in the
-  [mobile app](/mobile/index).
-- **Project tasks** — from the **Time** tab in the [mobile app](/mobile/index).
-- **Site surveys** — from a [survey's](/survey/index) detail page, on desktop.
+The [mobile app's](/mobile/index) **Time Capture** tab offers every kind of work
+you can put a timer on, grouped by type:
+
+| Context | Where |
+| --- | --- |
+| **Tickets** — your open tickets | Ticket peek/detail on desktop, or Time Capture on mobile |
+| **Work orders** — the ones you lead | Time Capture on mobile |
+| **Project tasks** | Time Capture on mobile |
+| **Projects** | Time Capture on mobile |
+| **Deals** — the ones you own | The deal's card in [Sales Workspace](/crm/sales-workspace), or Time Capture on mobile |
+| **Site surveys** — the ones you're running | A [survey's](/survey/index) detail page on desktop, or Time Capture on mobile |
+
+Each option names its record the way you would say it out loud — `#24 — Printer
+offline`, `WO-1043 — Cable pull, floor 3`, `Northwind Ltd — Managed services
+renewal` — rather than showing a bare title.
+
+<Note>
+  The timer itself has always supported all six contexts. Until **v1.71.0** the
+  mobile picker offered only tickets and project tasks, so a salesperson could
+  not log deal time from a phone and a field tech could not log against a work
+  order.
+</Note>
+
+## Logging time by hand
+
+Not every hour comes from a running timer. **Log Time** on a ticket records
+hours after the fact, and asks for the **work type** and **billing role** — the
+two things that decide what the hour bills at.
+
+The modal shows what the hour will bill at before you commit it: the contract it
+is priced against, the effective rate, and the amount. When it will not bill at
+all, it says so plainly.
+
+<Warning>
+  **Before v1.71.0, hand-logged ticket time never reached the invoice.** Log
+  Time wrote the hours, the description and the billable flag, but none of the
+  four columns an invoice is priced from — so the hour appeared correctly on the
+  ticket and was silently absent from the bill, with nothing anywhere to say it
+  had been left off. **Every hour logged this way before v1.71.0 is unbilled.**
+  If you have relied on Log Time, review those tickets against what was invoiced.
+</Warning>
+
+Manual entries now price through the same code the timer stop uses, so the two
+ways of recording an hour bill identically, and the contract is inherited from
+the ticket.
+
+<Tip>
+  If your tenant has no work types or billing roles configured, the modal tells
+  you and points at **Settings → Billing** rather than showing an empty picker
+  that quietly produces unbillable time.
+</Tip>
 
 ## Timesheets
 
@@ -81,8 +128,20 @@ with the right permission.
   back to the title it had when the timer started). Task and survey timers
   always show the title captured when the timer started, even if that item is
   later renamed.
+- **Stopping a ticket timer can set the ticket's status**, and the picker offers
+  **your own statuses** from Settings → Helpdesk — including any you classified
+  as pausing the SLA clock. It previously offered a fixed list that could not
+  show Pending at all and included three values nothing recognised.
+- **Time captured on a phone is billable.** Before v1.71.0 the mobile stop wrote
+  only a partial record with no billing columns, so field hours were invisible
+  to every invoice path while the app reported the timer stopped successfully.
+  The mobile stop now runs the same code as the desktop stop.
+- **Submitting a timesheet requires it to be yours.** Anyone with
+  `timesheets:approve` can still submit an absent colleague's week so payroll can
+  close it out; without that permission you can only submit your own.
 - **QuickBooks push is optional and best-effort** — if it isn't configured or a
   push fails, the timesheet stays **Approved** (not Pushed) and never blocks
-  approval; the error is recorded for retry.
+  approval; the error is recorded for retry and appears in the
+  [Sync Log](/integrations/sync-log).
 - Captured time is floored to a small minimum (a fraction of an hour), so very
   short timers still record.

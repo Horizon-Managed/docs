@@ -59,10 +59,51 @@ You can also generate a contract directly from an approved quote (see
 ## Invoices
 
 Generate an invoice from an approved quote — it copies **only the accepted
-lines** (honoring client quantities, skipping unselected optional lines),
-recomputes totals, and sets the due date from the payment terms. Invoices move
-through draft → sent → viewed → partial → paid, and can be voided, duplicated,
-or printed.
+lines** (honoring client quantities, skipping unselected optional lines,
+preserving the catalog product reference), recomputes totals, and sets the due
+date from the payment terms. Invoices move through draft → sent → viewed →
+partial → paid, and can be voided, duplicated, or printed.
+
+Invoices can also be raised from billable ticket time, from a contract, from a
+project, and automatically when a work order completes.
+
+### Sending an invoice
+
+**Send Invoice** emails the invoice to the client's contact address, and the
+invoice's status follows the send. If the email fails, the invoice **stays a
+draft**, the reason appears on screen and on the invoice's audit trail, and the
+Send button is still there to retry.
+
+Sending is refused up front when any of these is true:
+
+- the client has no contact email
+- the invoice has no line items
+- no mailbox is connected
+
+An invoice carrying $0.00 lines asks for confirmation before it goes out.
+
+<Warning>
+  **Before v1.71.0, Send Invoice marked the invoice sent and stamped a send time
+  without ever contacting the mail provider.** Clients were chased for invoices
+  they had never received. If you have invoices that show as sent but were never
+  paid or acknowledged, they may be affected — check the invoice's audit trail,
+  and re-send if there is no delivery record.
+</Warning>
+
+### Unpriced hours
+
+Some hours cannot be priced — a ticket time entry logged without a work type or
+billing role has no rate to bill at. Both invoice paths deliberately skip an
+entry whose rate and amount are zero, so as not to bill a client $0.00.
+
+Those hours are now **listed above the line items** on the invoice form as a
+warning, rather than being left off in silence, and a QuickBooks push that
+leaves them behind records them as a named Integration Failure visible in the
+[Sync Log](/integrations/sync-log). An entry explicitly marked non-billable is a
+correct zero and is never flagged.
+
+See [time tracking](/time/index) for how to capture the work type and billing
+role at the point the hour is logged.
 
 ### Payments and credit memos
 
