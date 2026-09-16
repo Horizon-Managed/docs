@@ -62,10 +62,52 @@ below.
 
 ## Where you can start one
 
-- **Tickets** — from the ticket peek/detail view, on desktop or in the
-  [mobile app](/mobile/index).
-- **Project tasks** — from the **Time** tab in the [mobile app](/mobile/index).
-- **Site surveys** — from a [survey's](/survey/index) detail page, on desktop.
+The [mobile app's](/mobile/index) **Time Capture** tab offers every kind of work
+you can put a timer on, grouped by type:
+
+| Context | Where |
+| --- | --- |
+| **Tickets** — your open tickets | Ticket peek/detail on desktop, or Time Capture on mobile |
+| **Work orders** — the ones you lead | Time Capture on mobile |
+| **Project tasks** | Time Capture on mobile |
+| **Projects** | Time Capture on mobile |
+| **Deals** — the ones you own | The deal's card in [Sales Workspace](/crm/sales-workspace), or Time Capture on mobile |
+| **Site surveys** — the ones you're running | A [survey's](/survey/index) detail page on desktop, or Time Capture on mobile |
+
+Each option names its record the way you would say it out loud — `#24 — Printer
+offline`, `WO-1043 — Cable pull, floor 3`, `Northwind Ltd — Managed services
+renewal` — rather than showing a bare title.
+
+The picker is a full-screen sheet of large buttons rather than a dropdown, and
+separates "nothing is assigned to you" from "we could not load your work" — the
+second offers a retry.
+
+## Logging time by hand
+
+Not every hour comes from a running timer. **Log Time** on a ticket records
+hours after the fact, and asks for the **work type** and **billing role** — the
+two things that decide what the hour bills at.
+
+The modal shows what the hour will bill at before you commit it: the contract it
+is priced against, the effective rate, and the amount. When it will not bill at
+all, it says so plainly.
+
+Manual entries price through the same code the timer stop uses, so the two ways
+of recording an hour bill identically, and the contract is inherited from the
+ticket.
+
+Where nothing can price an hour — no work type and no billing role means there
+is genuinely no rate — the entry is written **unpriced** rather than as a zero,
+and surfaced: the invoice form lists those hours above the line items, and a
+QuickBooks push that leaves them behind records them in the
+[Sync Log](/integrations/sync-log). An entry you marked non-billable is a
+correct zero and is never flagged.
+
+<Tip>
+  If your tenant has no work types or billing roles configured, the modal tells
+  you and points at **Settings → Billing** rather than showing an empty picker
+  that quietly produces unbillable time.
+</Tip>
 
 ## Timesheets
 
@@ -81,8 +123,22 @@ with the right permission.
   back to the title it had when the timer started). Task and survey timers
   always show the title captured when the timer started, even if that item is
   later renamed.
+- **Stopping a ticket timer can set the ticket's status**, and the picker offers
+  **your own statuses** from Settings → Helpdesk — including any you classified
+  as pausing the SLA clock.
+- **A phone-stopped timer needs its billing context set before it can bill.**
+  The mobile stop writes the same rows as the desktop stop, through the same
+  code — but the phone does not yet ask for a work type and billing role, and
+  without both there is no rate to resolve. Those hours arrive **unpriced**.
+  Set the work type and billing role on the entry from the desktop, or log the
+  time from the ticket, and it prices normally. Capturing billing context on
+  the phone is planned.
+- **Submitting a timesheet requires it to be yours.** Anyone with
+  `timesheets:approve` can still submit an absent colleague's week so payroll can
+  close it out; without that permission you can only submit your own.
 - **QuickBooks push is optional and best-effort** — if it isn't configured or a
   push fails, the timesheet stays **Approved** (not Pushed) and never blocks
-  approval; the error is recorded for retry.
+  approval; the error is recorded for retry and appears in the
+  [Sync Log](/integrations/sync-log).
 - Captured time is floored to a small minimum (a fraction of an hour), so very
   short timers still record.

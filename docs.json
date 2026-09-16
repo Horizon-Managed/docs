@@ -57,6 +57,7 @@
               "helpdesk/ticket-peek",
               "helpdesk/inbound-email",
               "workflow-studio/ticket-arrival-routing",
+              "workflow-studio/actions-and-triggers",
               "kb/index",
               "dispatch/index",
               "mobile/index"
@@ -162,7 +163,8 @@
             "pages": [
               "integrations/quickbooks",
               "integrations/microsoft-365",
-              "integrations/hudu"
+              "integrations/hudu",
+              "integrations/sync-log"
             ]
           },
           {
