@@ -1,0 +1,157 @@
+---
+title: "Actions and triggers reference"
+description: "Every action and trigger the workflow studio offers, what each one does, and how to read what a workflow did on its last run."
+---
+
+The workflow studio's action and trigger pickers are generated from the running
+code, so every action you can select has an implementation behind it and every
+trigger you can pick is an event the product actually emits.
+
+If you have workflows saved from before **September 2026**, see
+[older workflows](#older-workflows) — a few may reference actions that no longer
+appear in the picker.
+
+## Actions
+
+An action is what a workflow does when its trigger fires and its conditions
+match. A workflow can chain several; they run in order.
+
+### Ticket actions
+
+Available on ticket workflows.
+
+| Action | What it does |
+| --- | --- |
+| `assign_to` | Sets the ticket's assignee to a specific user. |
+| `assign_team` | Routes the ticket to a team. |
+| `set_status` | Sets the ticket's status. The picker offers **your own statuses** from Settings → Helpdesk, including any you marked as pausing the SLA clock. |
+| `set_priority` | Sets the ticket's priority. |
+| `add_note` | Adds a note to the ticket. |
+| `send_email` | Sends a templated email. |
+| `send_auto_reply` | Sends an automatic reply to the requester. |
+| `send_webhook` | Posts the event to a URL you configure. |
+| `stop_workflow` | Halts the remaining actions in this workflow. |
+
+<Note>
+  `set_status`, `set_priority`, `set_type`, `set_source` and `add_note` are
+  refused before they write if you leave the value empty. A step reporting
+  `skipped` with reason `no_value` is telling you to fill that value in.
+</Note>
+
+### Business actions
+
+These act on records outside the ticket. Each one scopes itself to the record
+that fired the event.
+
+| Action | What it does |
+| --- | --- |
+| `generate_invoice_from_ticket` | Raises a draft invoice from billable ticket time. |
+| `generate_invoice_from_quote` | Raises a draft invoice from an approved quote. |
+| `generate_invoice_from_contract` | Raises a draft invoice from a contract. |
+| `generate_invoice_from_wo` | Raises a draft invoice when a work order completes. Warranty and internal work orders raise nothing, deliberately. |
+| `create_contract_from_quote` | Creates a contract from an approved quote. |
+| `create_qbo_recurring_template` | Sets up the contract's repeating bill in QuickBooks, which then raises each invoice. Guarded — firing twice cannot give one contract two schedules. |
+| `apply_contract_policies` | Copies the contract's policies onto the client. |
+| `promote_company_to_customer` | Moves a company off prospect status. |
+| `create_quote_from_bid` | Creates a quote from a construction bid. |
+| `create_bid_from_survey` | Creates a bid from a site survey. |
+| `create_survey_from_deal` | Creates a site survey from a deal. |
+| `create_assessment` | Creates an assessment. |
+| `create_project` | Creates a project. |
+| `create_work_order` | Creates a work order. |
+| `advance_deal_stage` | Moves a deal to the next pipeline stage. |
+| `close_deal_won` | Marks a deal closed-won. |
+| `trigger_onboarding` | Starts the client onboarding flow. |
+| `analyze_survey_photos` | Runs AI analysis over a survey's photos. |
+
+### Notification
+
+| Action | What it does |
+| --- | --- |
+| `send_notification` | Writes an in-app notification. On a ticket workflow the recipient is the ticket's **current assignee** — if the ticket is unassigned the action is skipped, because there is no recipient. |
+
+## Triggers
+
+A workflow has exactly one trigger and fires at most once per matching event.
+The trigger list is generated from the events the product actually emits, so
+every option in the picker is one that can fire.
+
+For the ticket triggers and condition fields, see
+[ticket arrival routing](/workflow-studio/ticket-arrival-routing).
+
+Six events became selectable in **v1.60.0** that had always fired but could not
+previously be chosen as a trigger:
+
+- A client replies to a ticket
+- An inbound email opens a ticket
+- The two email-security screening outcomes
+- A note is added to a ticket
+- A ticket is resolved
+
+## Reading what a workflow did
+
+Selecting a workflow shows its trigger and each action in execution order, and —
+where it has run — what each step did last time:
+
+| Outcome | Meaning |
+| --- | --- |
+| **Applied** | The step did what it was configured to do. |
+| **Skipped** | The step correctly decided to do nothing. The `reason` says which case: `no_value` (nothing configured), `no_target` (nothing to act on), `not_wired`. |
+| **Failed** | The step tried and could not complete. |
+
+A run's overall status is rolled up from its steps — `failed` when nothing
+worked, `partial` when some steps did or a matched rule changed nothing at all,
+and `success` only when it earned it.
+
+<Tip>
+  Before **v1.55.0** the run log recorded `success` for all three cases, so a
+  step that had quietly done nothing looked identical to one that worked. If you
+  are reading run history from before then, treat `success` as "the call
+  returned no error" rather than "the step did something."
+</Tip>
+
+## Older workflows
+
+The pickers became catalog-derived in **September 2026**. Before that they read
+from hand-maintained lists that had drifted from the code, so the studio offered
+actions with no implementation and triggers for events nothing emitted. Those
+entries are gone now — which means a workflow saved back then can contain a step
+whose action is no longer in the picker.
+
+Names you may see on an older workflow that are not actions today: `push_to_qbo`,
+`send_invoice`, `void_invoice`, `apply_payment`, `escalate`, `block_ip`,
+`isolate_device`, and the `nexie_*` family.
+
+### Checking one
+
+<Steps>
+  <Step title="Open the workflow">
+    Select it in the studio. It renders as its trigger plus each action in
+    execution order.
+  </Step>
+  <Step title="Check each action is in the tables above">
+    A step whose action is not listed is one to rebuild.
+  </Step>
+  <Step title="Check the trigger">
+    If a workflow has never fired, re-pick its trigger from the current list.
+  </Step>
+  <Step title="Rebuild with a current action">
+    Several older names have direct counterparts — `send_invoice` is not an
+    action, but `generate_invoice_from_ticket`, `_from_quote`, `_from_contract`
+    and `_from_wo` all are.
+  </Step>
+</Steps>
+
+<Note>
+  Four modules — Security, Infrastructure, Nexie and Procurement — now show an
+  empty action list. That is accurate rather than a fault: every action they
+  previously advertised was one of the 113 that did nothing.
+</Note>
+
+### Custom actions were removed
+
+The **Create Custom Action** entry point is gone. Custom actions stored an
+execution type and configuration that no code ever read, so one could be saved,
+added to a workflow, and would never run — the same failure as the 113 phantom
+actions, with you holding the pen. No tenant had any defined, so nothing was
+lost. A secure replacement is planned.
