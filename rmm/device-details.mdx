@@ -1,0 +1,95 @@
+---
+title: "Device details"
+description: "What the agent reports about a managed endpoint — hardware, operating system, pending updates, security posture and command history — and how fresh each piece is"
+---
+
+Every endpoint running the [NexusOS agent](/rmm/deploy-agent) has a device page. Open it from **RMM Agents**
+by clicking the device's hostname. Everything on the page is reported by the agent itself; nothing is typed
+in by hand.
+
+## Where the data comes from
+
+The agent reports on two schedules. Knowing which one a value comes from tells you how fresh it is.
+
+| Report | How often | What it carries |
+| --- | --- | --- |
+| **Heartbeat** | Every check-in (30–60 seconds by default) | Online status, CPU, memory, system-disk usage, and the security-posture checks |
+| **Inventory** | Every 10 minutes, and when you click **Refresh Inventory** | Operating system, hardware, network adapters, installed software and pending updates |
+
+The **System** tab shows **Last inventory** so you can see exactly when the inventory values were collected.
+
+## The metrics bar
+
+Across the top: **CPU**, **RAM** (used / total), **System disk** (used / total) and **Agent uptime**.
+
+<Note>
+  **Agent uptime** is how long the agent service has been running, not how long the machine has been up. For
+  when the machine last started, use **Last boot** on the **System** tab.
+</Note>
+
+## Tabs
+
+### System
+
+- **Operating system**, **version and build** (for example `10.0.26200 · build 26200`), **last boot**, and the
+  **domain** when the agent can read one.
+- **First seen** (when the device enrolled), **last seen**, and **last inventory**.
+- **Company** and **Assigned To**, which you can change here.
+- **Hardware:** make and model, serial number, processor (cores, threads and clock speed), total memory, each
+  physical disk with its capacity and model, display adapters, and each network adapter with its MAC and IP
+  addresses.
+
+### Software and Packages
+
+Installed applications with version and publisher, and packages from package managers (winget, Homebrew,
+apt, dnf and others). Use the search box to filter.
+
+### Updates
+
+Operating-system updates the device reports as **available but not installed**, with when the device last
+checked. On Windows the second column shows Microsoft's **severity** rating; on macOS and Linux it shows the
+version.
+
+<Info>
+  This tab reports updates; it does not install them. Approving and installing updates arrives with patch
+  management.
+</Info>
+
+### Compliance — security posture
+
+Seven checks the agent re-runs and reports with its heartbeat:
+
+| Check | Passes when |
+| --- | --- |
+| Disk encryption | BitLocker protects the system drive |
+| Antivirus | An antivirus product is registered and active |
+| Screen lock | An inactivity screen lock is configured |
+| Firewall | The firewall is on |
+| Automatic updates | Windows Update is not disabled |
+| Secure Boot | Secure Boot is on |
+| Audit logging | Security audit logging is enabled |
+
+The header shows how many pass (for example **5 / 7 passing**) and when the agent last reported. These same
+results feed the CMMC compliance dashboards.
+
+<Note>
+  These checks are Windows-only today. macOS and Linux devices show that they do not report them, rather than
+  showing seven failures.
+</Note>
+
+### Actions
+
+**Ping**, **Remote Shell**, **Remote Desktop** (see [Remote sessions](/rmm/remote-sessions)), **Refresh
+Inventory**, and **Custom Command**.
+
+**Command history** lists the last 25 commands sent to the device. Expand one to see its status and the
+output the device sent back, or the error if it failed. Reload the page to pick up results for commands that
+were still running.
+
+## Troubleshooting
+
+| You see | Meaning |
+| --- | --- |
+| No metrics bar | The device has not sent a heartbeat with metrics yet. Check that it shows **online**. |
+| **Last inventory: Not received yet** | The first inventory has not arrived. It is sent shortly after the agent starts; click **Refresh Inventory** on the **Actions** tab to ask for one now. |
+| Disk listed with no type | The agent does not yet report whether a disk is an SSD or HDD; capacity and model are accurate. |
