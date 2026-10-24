@@ -36,7 +36,7 @@ Conditions match against fields on the ticket that triggered the event. Combine 
 | `company_id` | The company the ticket belongs to. |
 | `priority` | `low`, `medium`, `high`, `urgent`. |
 | `type` | The ticket type (`incident`, `request`, etc.). |
-| `source` | Where the ticket came from (`email`, `portal`, `api`). |
+| `source` | Where the ticket came from. See [Ticket sources](#ticket-sources) for every value. |
 | `subject` | The ticket title. |
 | `team` | The team the ticket is currently routed to. |
 | `contact` / `contact_name` / `contact_email` | The contact record on the ticket. |
@@ -47,6 +47,28 @@ Conditions match against fields on the ticket that triggered the event. Combine 
 
 <Tip>
   `requester`, `requester_name`, and `requester_email` are aliases of the contact fields — they read against the same data, so you can pick whichever phrasing makes the rule clearer. There's no behavioral difference.
+</Tip>
+
+### Ticket sources
+
+A `source` condition compares against the exact value stored on the ticket, so use these spellings:
+
+| Value | The ticket was raised by |
+| --- | --- |
+| `manual` | A technician, at the desk. The default for a ticket created in NexOS. |
+| `portal` | The client, through the client portal or Nexie in the portal. |
+| `email` | The client, by email to your service desk mailbox. |
+| `phone` | The client, by phone. |
+| `api` | An integration, through the API. |
+| `rmm` | An RMM alert on a managed device. |
+| `m365` | A Microsoft 365 event. |
+| `entra` | A Microsoft Entra ID event. |
+| `email_security` | [Email security](/emailsec/index), when it escalates or blocks a message. |
+| `system` | NexOS itself, for example an onboarding phase ticket. |
+
+<Tip>
+  To route every security escalation to your security team, match `source` equals `email_security` on the
+  `ticket_created` trigger and add an `assign_team` action.
 </Tip>
 
 ## Actions
