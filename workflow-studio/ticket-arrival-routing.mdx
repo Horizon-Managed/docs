@@ -51,20 +51,20 @@ Conditions match against fields on the ticket that triggered the event. Combine 
 
 ### Ticket sources
 
-A `source` condition compares against the exact value stored on the ticket, so use these spellings:
+A `source` condition compares against the exact value stored on the ticket, so use these spellings. The ticket list and the ticket page show a shorter label, given in the second column.
 
-| Value | The ticket was raised by |
-| --- | --- |
-| `manual` | A technician, at the desk. The default for a ticket created in NexOS. |
-| `portal` | The client, through the client portal or Nexie in the portal. |
-| `email` | The client, by email to your service desk mailbox. |
-| `phone` | The client, by phone. |
-| `api` | An integration, through the API. |
-| `rmm` | An RMM alert on a managed device. |
-| `m365` | A Microsoft 365 event. |
-| `entra` | A Microsoft Entra ID event. |
-| `email_security` | [Email security](/emailsec/index), when it escalates or blocks a message. |
-| `system` | NexOS itself, for example an onboarding phase ticket. |
+| Value | Shown as | The ticket was raised by |
+| --- | --- | --- |
+| `manual` | TECH | A technician, inside NexOS. The default for a ticket created in NexOS. |
+| `portal` | PORTAL | The client, through the client portal or Nexie in the portal. |
+| `email` | EMAIL | The client, by email to your service desk mailbox. |
+| `phone` | PHONE | The client, by phone. |
+| `api` | API | An integration, through the API. |
+| `rmm` | RMM | An RMM alert on a managed device. |
+| `m365` | M365 | A Microsoft 365 event. Reserved: nothing raises these automatically yet, so a ticket has this source only when a technician sets it. |
+| `entra` | ENTRA | A Microsoft Entra ID event. Reserved, like `m365`. |
+| `email_security` | SECURITY | [Email security](/emailsec/index), when it escalates or blocks a message. |
+| `system` | SYSTEM | NexOS itself, for example an onboarding phase ticket. |
 
 <Tip>
   To route every security escalation to your security team, match `source` equals `email_security` on the
