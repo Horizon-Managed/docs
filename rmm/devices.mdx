@@ -1,0 +1,157 @@
+---
+title: "Devices"
+description: "The fleet list at RMM → Devices: find, filter, sort and act on managed endpoints, save your own views, and work on many devices at once"
+---
+
+**RMM → Devices** lists every endpoint running the [NexusOS agent](/rmm/deploy-agent). A device appears here the
+first time its agent checks in. Use the list to see the health of the whole fleet, narrow it down to the devices you
+care about, peek at one without leaving the page, and act on several at once.
+
+Click a device's name, or choose **Open** in its side drawer, to go to its own page. See
+[Device details](/rmm/device-details).
+
+The page title shows how many devices and clients you have, for example **12 devices · 3 clients**. **Deploy agent**
+in the top right opens the [deploy page](/rmm/deploy-agent). Until the first device checks in, the list says
+**No devices yet**.
+
+<Note>
+  The whole state of the list (search, filters, columns, sort and page) is kept in the page address. Refresh the page
+  and you land where you were, and you can send the link to a teammate.
+</Note>
+
+## Fleet health strip
+
+The strip across the top counts your whole fleet, whatever is filtered below. Each figure is also a shortcut: click
+it to filter the list, and click **Devices** to clear the filter again. The figure you are viewing is highlighted.
+
+| Figure | Counts | Small print under it |
+| --- | --- | --- |
+| **Devices** | Every device | How many clients they belong to |
+| **Online** | Devices checking in on time | **checking in on time** |
+| **Offline** | Devices that are not online, including **Stale** ones | How long the longest-silent device has been quiet, or **never checked in**, or **none** |
+| **Updates pending** | Operating-system updates the devices report as available but not installed, added up | **on** *n* **devices** |
+| **Firewall off** | Devices that report their firewall off | **every profile off** |
+| **Not encrypted** | Devices whose system drive is not encrypted | **system drive** |
+
+A device that has never reported a security check is not counted as having its firewall or encryption off.
+
+## Views row
+
+Under the strip is a row of views. **All**, **Online**, **Offline** and **Needs updates** are built in, each with a
+live count. Your saved views follow, after a divider. See [Saved views](#saved-views).
+
+## Search
+
+The search box finds devices by hostname, client, assigned user, IP address, MAC address, serial number, manufacturer
+and model, operating system, or agent ID. Type several words and a device must match all of them. A MAC address
+matches however it is written, with colons, dashes, dots or none. The list updates as you stop typing.
+
+## Filters
+
+Each filter button shows how many values are selected. Inside a filter, every option shows how many devices it would
+give you with the other filters applied, and options with no devices are dimmed. Choose **Done** to apply, or
+**Clear** to reset that one filter.
+
+| Filter | Options |
+| --- | --- |
+| **Client** | Each client that has devices, most devices first, with **Unassigned** last. Has a search box. |
+| **Status** | **Online**, **Stale**, **Offline** |
+| **OS** | Each operating system in your fleet, most common first, plus **Not reported** |
+| **Type** | **Workstation**, **Server**, **Not reported** |
+
+The **+ Filter** button holds two more:
+
+| Filter | Options |
+| --- | --- |
+| **Protection** | **Antivirus off**, **Firewall off**, **Not encrypted**. Choose several and a device must have all of those gaps. |
+| **Updates** | **Updates pending** |
+
+Selecting several values within **Client**, **Status**, **OS** or **Type** shows devices that match any of them.
+Different filters combine, so choosing **Online** under **Status** and a client under **Client** shows only that
+client's online devices.
+
+Active filters appear as chips under the views row. Remove one with its **×**, or choose **Clear all**. If nothing
+matches, the list says **No devices match these filters** and offers **Clear all filters**.
+
+## Columns
+
+Choose **Columns** to show or hide columns. **Device and status** always show. Your choice is part of the page
+address and is saved with a [saved view](#saved-views).
+
+| Column | Shows |
+| --- | --- |
+| **Device** (always on) | The hostname, linked to the device page, with the client and hardware model underneath. A device with no client says **Unassigned**. |
+| **Status** (always on) | **Online**, **Stale** or **Offline** |
+| **OS** | The operating system, with its build number underneath |
+| **Health** | Three small bars, **CPU**, **RAM** and **Disk** (the system disk), from the last heartbeat. Green is under 70%, amber 70–89%, red 90% and over. |
+| **Protection** | Three badges, **AV** (antivirus), **FW** (firewall) and **ENC** (system-drive encryption). Green is on, red is off, and grey means the device has not reported it. Hover a badge for the detail. |
+| **Updates** | How many updates are pending. **0** if none, and **—** if the device has not sent an inventory yet. |
+| **IP** | The device's main address, IPv4 first, with **+** *n* **more** if it has others. Loopback and link-local addresses are left out. |
+| **Last seen** | How long ago the device last checked in. Underneath: how long the agent has been running (online devices) or the date and time in UTC. **never** if it has not checked in. |
+
+Where the agent has not reported a value, the cell says what is missing (for example **model not reported** or
+**no heartbeat metrics**) rather than showing a blank.
+
+## Sorting
+
+Click the heading of **Device**, **Status**, **OS**, **Updates**, **IP** or **Last seen** to sort by it, and again to
+reverse. **Last seen** and **Updates** start with the newest and the most first. Devices with no value for the
+sorted column always go to the bottom. The sentence above the table, such as **All devices, sorted by name, A–Z**,
+states the current order.
+
+## Paging
+
+The list shows 50 devices a page. Under the table, **Rows per page** switches between 25, 50 and 100. Move with the
+first, previous, next and last buttons or the page numbers, and when there are several pages, **Go to page** jumps
+straight to one.
+
+## Saved views
+
+A saved view keeps the current search, filters, columns and sort under a name, so you can come back to it in one
+click. Each saved view appears in the views row with its live device count.
+
+- A person icon marks **your own** views, which only you see.
+- A team icon marks **shared** views, which every user in your company sees.
+
+To save one, set up the list the way you want it, choose **Save view**, name it (up to 80 characters), pick **Just
+me** or **Everyone**, and choose **Save view** again. Names must be unique. Saving needs permission to change
+devices, and the button is hidden while you are already looking at a saved view.
+
+Open a saved view to see **Delete view**. You can delete your own views. A shared view can be deleted by the person
+who shared it or by an administrator. Deleting a view never changes the devices in it.
+
+## Side drawer
+
+Click a row, or focus it and press **Enter**, to open a drawer beside the list with the device's key facts. Use the
+up and down arrows in the drawer header to step to the previous or next device, and the **×** to close it.
+
+| Part | Shows |
+| --- | --- |
+| Actions | **Remote desktop** and **Shell** (online devices only; an offline device says they open once it checks in again), and **Open** for the full device page |
+| **Create ticket** | A title box and **Create**. Opens a ticket for the device's client, linked to the device. Needs permission to create tickets. |
+| **System** | **Model**, **Serial**, **CPU**, **Memory**, **OS**, **Last boot**, **User** and **Agent** version |
+| **Protection** | Whether each of the seven security checks is on or off, and when they were last checked. Windows only: other devices say the agent has not sent a security snapshot. |
+| **Updates pending** | The first five pending updates, with **and** *n* **more on the device page** if there are more |
+| **Network** | Each network adapter with its addresses and MAC |
+
+## Acting on several devices
+
+When you have permission to change devices or to create tickets, each row has a checkbox, and the checkbox in the
+header selects every device on the current page. Select devices and the filter bar is replaced by the bulk bar,
+which shows how many are selected. **Clear** deselects them all.
+
+| Action | What it does |
+| --- | --- |
+| **Create ticket** | Enter a title and choose **Create tickets**. NexusOS creates one ticket per selected device, each linked to its device and client. If you selected one device you go straight to the ticket. Needs permission to create tickets. |
+| **Assign client** | Choose a client, or **Unassigned**, and choose **Assign** to move every selected device to it. A message confirms how many were moved. Needs permission to change devices. You can move up to 500 devices at once. |
+
+## Troubleshooting
+
+| You see | Meaning |
+| --- | --- |
+| A device is missing from the list | It has not checked in yet, or a filter is hiding it. Choose **Clear all** and search by hostname. |
+| **—** under **Updates** | The device has not sent its first inventory. It arrives shortly after the agent starts. |
+| Grey badges under **Protection** | The device has not reported those checks. The checks are Windows-only today, so macOS and Linux devices show grey. |
+| **Stale** status | The device missed a check-in but has not been quiet long enough to be called offline. |
+| **That device did not load. Try again.** | The drawer could not read the device just now. Click the row again. |
+| No **Save view**, checkboxes or bulk bar | Your role does not include permission to change devices or create tickets. |

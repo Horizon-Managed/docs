@@ -109,6 +109,8 @@
             "pages": [
               "rmm/deploy-agent",
               "rmm/dashboard",
+              "rmm/devices",
+              "rmm/device-details",
               "rmm/remote-sessions",
               "devices/index",
               "infra/index",
