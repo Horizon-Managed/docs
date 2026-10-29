@@ -1,0 +1,132 @@
+---
+title: "RMM dashboard"
+description: "The fleet at a glance: ten widgets showing device status, operating systems, clients, disk space, security checks, alerts, tickets and remote sessions"
+---
+
+**RMM → Dashboard** shows the health of your whole fleet on one page. Each widget loads and refreshes on its own, so
+a slow or failing widget never holds up the others. Widgets that sit below the first screen load when you scroll to
+them, and refresh only while the browser tab is visible.
+
+Click a device name in any widget to open its [device page](/rmm/device-details). To work with devices in a list
+instead, see [Devices](/rmm/devices).
+
+## Header
+
+| Control | What it does |
+| --- | --- |
+| **Client** | Limits the dashboard to one client. **All clients** shows everything. The list holds clients that have at least one device. The choice is kept in the page address, so a link carries it, but it is not saved: the next visit starts on **All clients**. |
+| **Deploy Agent** | Opens the [deploy page](/rmm/deploy-agent). |
+
+<Note>
+  **Devices by client** ignores the **Client** filter, because it compares clients with each other. Every other
+  widget honours it.
+</Note>
+
+## Widgets
+
+Everyone with access to RMM sees the same ten widgets, in this order. A widget that has nothing to show says so
+(for example **No devices enrolled yet.**) rather than showing zeros.
+
+### Fleet status
+
+A strip of counts of your devices.
+
+| Figure | Counts |
+| --- | --- |
+| **Devices** | Every device, or the chosen client's devices |
+| **Online** | Devices checking in on time |
+| **Stale** | Devices that have missed check-ins. Underneath: how many minutes of silence makes a device stale. |
+| **Offline** | Devices that have been silent longer. Underneath: how many minutes of silence makes a device offline. |
+| **Never checked in** | Devices that enrolled but have no recorded status. Only shown when there are some. |
+| **Unassigned** | Devices with no client. Only shown while **All clients** is selected. |
+
+The stale and offline times are the check-in limits set for your company, 2 and 10 minutes unless changed.
+
+### Devices by OS
+
+A ring chart of devices per operating system: **Windows**, **macOS**, **Linux**, and **Not reported** for devices
+that have not said. The total is shown in the centre.
+
+### Devices by client
+
+A bar for each client showing how many devices it has, with how many of them are offline underneath. Clients with
+the most offline devices come first, and **Unassigned** collects devices with no client. Click a client to open it.
+The widget shows the first 10 and says **Showing** *n* **of** *m* **clients** when there are more. Only devices
+that are fully **Offline** count as offline here, not **Stale** ones.
+
+### Low disk
+
+Devices whose **system disk** has less than 10% free space, fewest free first. Each row shows the percentage free and
+the free and total gigabytes, for example **9 of 238 GB free**. The note under the list shows how many devices have
+reported their disk, and only the system disk is checked. If none are low it says **No devices under 10% free on the
+system disk**, and if no device has reported yet it says **No device has reported its disk yet.**
+
+### Security posture
+
+The seven security checks, as bars showing how many devices **fail** each one, most failures first: **BitLocker
+(system drive)**, **Antivirus**, **Screen lock**, **Firewall**, **Automatic updates**, **Secure Boot** and **Audit
+logging**. See [Device details](/rmm/device-details#security) for exactly what each check means.
+
+Only Windows devices that have reported their checks are counted, and the note under the chart says how many. A
+Windows device that has not reported yet is mentioned there but not counted as failing.
+
+### Bridge tickets
+
+Tickets raised automatically from alerts, over the last 7 days.
+
+| Figure | Counts |
+| --- | --- |
+| **Raised** | Tickets created from alerts in the last 7 days |
+| **Auto-resolved** | Of those, tickets closed automatically when the alert cleared |
+| **Left for a tech** | Alerts that cleared but whose ticket is still open |
+| **Still firing** | Alerts that have not cleared |
+
+If no ticket was raised, it says **The ticket bridge raised no tickets in the last 7d.**
+
+### Open conditions
+
+Alerts that are still firing. The top shows **Open**, the total, and a count for each alert rule that has some. Below
+is **Open conditions, oldest first**: the device, the rule and the client, how long the alert has been open, and the
+date it started. Click a row to open the device. The widget shows the first 8 and says how many more there are. If
+none are firing it says **No open conditions.**
+
+### Conditions opened
+
+A line chart of how many alerts opened each day over the last 7 days. Days are in UTC.
+
+### Offline for days
+
+Devices that have not checked in for more than 7 days, longest-silent first. Each row shows the device, its client
+and operating system, how long it has been silent, and the date it was last seen. Devices that have never checked in
+are not listed. If none qualify it says **No devices silent for more than 7 days.**
+
+### Recent remote sessions
+
+A table of remote sessions from the last 30 days, newest first, showing 10.
+
+| Column | Shows |
+| --- | --- |
+| **Device** | The device, with its client underneath |
+| **Technician** | Who started the session |
+| **Started** | Date and time in UTC |
+| **Duration** | How long it ran, or **in progress** |
+| **Ticket** | The linked ticket, as a link, or **—** |
+
+If there were none it says **No remote sessions in the last 30d.** See [Remote sessions](/rmm/remote-sessions).
+
+## When a widget can't load
+
+A widget that fails shows a message in its frame and leaves the rest of the page alone.
+
+| You see | Meaning |
+| --- | --- |
+| **Took too long — retry** | The widget's data took too long. Choose **Retry**. |
+| **Couldn't load this widget** | NexusOS couldn't read it just now. Choose **Retry**. |
+| **You don't have access to this data** | Your role doesn't include access to it. |
+| **This widget is no longer available** | The widget has been removed. |
+
+## Customising the dashboard
+
+Adding, removing, resizing and moving widgets, personal and shared dashboards, and per-widget settings such as the
+disk threshold or the number of days are **planned**. Today the dashboard is fixed, and the figures above (7 days, 10%
+free, the top 10 rows) are its built-in settings.
