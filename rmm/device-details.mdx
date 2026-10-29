@@ -1,11 +1,14 @@
 ---
 title: "Device details"
-description: "What the agent reports about a managed endpoint — hardware, operating system, pending updates, security posture and command history — and how fresh each piece is"
+description: "The page for one managed endpoint: its status at a glance, who it belongs to, what the agent reports about it, and what you can do to it"
 ---
 
-Every endpoint running the [NexusOS agent](/rmm/deploy-agent) has a device page. Open it from **RMM Agents**
-by clicking the device's hostname. Everything on the page is reported by the agent itself; nothing is typed
-in by hand.
+Every endpoint running the [NexusOS agent](/rmm/deploy-agent) has a device page. Open it from **RMM → Devices**
+by clicking a device, or with **Open** in a device's side panel. Everything on the page comes from the agent
+or from the client's records in NexusOS; nothing is typed in by hand except notes and custom fields.
+
+The page uses the same layout as a ticket: a header with the device's identity and actions, a strip of key
+numbers, a side column with business context, and tabs for the detail.
 
 ## Where the data comes from
 
@@ -13,49 +16,90 @@ The agent reports on two schedules. Knowing which one a value comes from tells y
 
 | Report | How often | What it carries |
 | --- | --- | --- |
-| **Heartbeat** | Every check-in (30–60 seconds by default) | Online status, CPU, memory, system-disk usage, and the security-posture checks |
-| **Inventory** | Every 10 minutes, and when you click **Refresh Inventory** | Operating system, hardware, network adapters, installed software and pending updates |
+| **Heartbeat** | Every check-in (30–60 seconds by default) | Online status, CPU, memory, system-disk usage, and the security checks |
+| **Inventory** | Every 10 minutes, and when you choose **More → Refresh inventory** | Operating system, hardware, network adapters, installed software and pending updates |
 
-The **System** tab shows **Last inventory** so you can see exactly when the inventory values were collected.
+**Overview → Last inventory** shows exactly when the inventory values were collected.
 
-## The metrics bar
+A value the agent doesn't report yet says **Not collected yet**, and a value an operating system doesn't have
+says **Not reported on this OS**. The page never shows a blank or a guessed value. Features that are coming
+are shown with a **Planned** badge.
 
-Across the top: **CPU**, **RAM** (used / total), **System disk** (used / total) and **Agent uptime**.
+## Header and actions
 
-<Note>
-  **Agent uptime** is how long the agent service has been running, not how long the machine has been up. For
-  when the machine last started, use **Last boot** on the **System** tab.
-</Note>
+The header shows the device type (server or workstation, from the operating system), whether it is online, its operating
+system, the client it belongs to, the person it is assigned to, and when it last checked in.
+
+| Action | What it does |
+| --- | --- |
+| **Remote** | Opens a remote desktop in a new window. The arrow next to it opens a remote **Terminal**. See [Remote sessions](/rmm/remote-sessions). |
+| **Run script** | Runs a single command on the device. If the device is offline, the command waits until it reconnects. |
+| **Create ticket** | Opens a ticket for this device's client, linked to the device. |
+| **More** | **Ping agent**, **Refresh inventory**, **Update agent**, and, under **Danger zone**, **Uninstall agent** (asks twice). |
+
+**Reboot** and **Maintenance mode** are shown as **Planned**.
+
+## Key numbers
+
+| Cell | Shows |
+| --- | --- |
+| **Status** | Online or offline, and when the device last checked in |
+| **Open alerts** | Alerts on this device that are still firing |
+| **Open tickets** | Open tickets linked to this device |
+| **Patches pending** | Updates the device reported as available but not installed |
+| **Security** | How many of the seven security checks pass, for example **5 / 7** |
+| **Last boot** | When the machine last started |
+
+## Side column
+
+- **Business context:** the client, the contract that applies to the device's tickets, the contact, the SLA
+  policy, and links to its open tickets. Choose **Edit** to move the device to another client or assign it to a
+  contact. Moving it updates the contract and SLA shown.
+- **Notes** and **Custom fields:** planned. Custom fields will be typed (text, number, date, list, yes/no) and
+  fully readable and writable through the API.
+- **Nexie analysis:** planned. Nexie will review the device and propose fixes; it never runs anything without a
+  technician's approval.
 
 ## Tabs
 
-### System
+### Overview
 
-- **Operating system**, **version and build** (for example `10.0.26200 · build 26200`), **last boot**, and the
-  **domain** when the agent can read one.
-- **First seen** (when the device enrolled), **last seen**, and **last inventory**.
-- **Company** and **Assigned To**, which you can change here.
-- **Hardware:** make and model, serial number, processor (cores, threads and clock speed), total memory, each
-  physical disk with its capacity and model, display adapters, and each network adapter with its MAC and IP
-  addresses.
+The device summary (operating system, build, last boot, last seen, first seen, last inventory, agent version,
+manufacturer and model), live **CPU**, **Memory** and **System disk** meters from the heartbeat, a health
+summary, and **Agent features**, the switches that turn agent features on or off for this device only.
 
-### Software and Packages
+<Note>
+  **Agent architecture** is the architecture of the agent program, which can differ from the operating
+  system's. **Agent uptime** is how long the agent service has been running, not how long the machine has been
+  up; for that, use **Last boot**. **Memory** is the memory Windows can use, which can be slightly less than
+  what is installed.
+</Note>
 
-Installed applications with version and publisher, and packages from package managers (winget, Homebrew,
-apt, dnf and others). Use the search box to filter.
+### Alerts and Activity
 
-### Updates
+- **Open alerts:** each alert that is still firing, its state, when it started, where its priority came from
+  (a client override, your tenant setting, or the built-in rule), and the ticket it raised.
+- **Device timeline:** commands sent to the device (expand one to see its output), remote sessions with who ran
+  them and a link to the recording, and alerts raised or cleared in the last 90 days. Filter by **Remote**,
+  **Commands**, **Software**, **Patches**, **Alerts** or **Audit only**. Export to CSV or PDF is planned.
+
+### Software
+
+Installed applications with version and publisher, and packages from package managers (winget, Homebrew, apt,
+dnf and others). Use the search box to filter. **Uninstall** removes an application silently, with no prompt on the
+device; the agent refuses an application that has no silent uninstall path.
+
+### Patches
 
 Operating-system updates the device reports as **available but not installed**, with when the device last
-checked. On Windows the second column shows Microsoft's **severity** rating; on macOS and Linux it shows the
-version.
+checked for updates. Approving and installing updates arrives with patch management.
 
-<Info>
-  This tab reports updates; it does not install them. Approving and installing updates arrives with patch
-  management.
-</Info>
+### Hardware and Network
 
-### Compliance — security posture
+Make and model, processor, memory, each physical disk with its capacity and model, display adapters, and each
+network adapter with its MAC and IP addresses.
+
+### Security
 
 Seven checks the agent re-runs and reports with its heartbeat:
 
@@ -64,32 +108,27 @@ Seven checks the agent re-runs and reports with its heartbeat:
 | Disk encryption | BitLocker protects the system drive |
 | Antivirus | Microsoft Defender is running, or another antivirus product is registered and active |
 | Screen lock | Policy requires the workstation to lock after inactivity |
-| Firewall | At least one Windows Firewall profile (Domain, Private or Public) is on |
+| Firewall (any profile) | At least one Windows Firewall profile (Domain, Private or Public) is on |
 | Automatic updates | Windows Update is not disabled |
 | Secure Boot | Secure Boot is on |
 | Audit logging | Logon and logoff auditing are both enabled |
 
-The header shows how many pass (for example **5 / 7 passing**) and when the agent last reported. These same
-results feed the CMMC compliance dashboards.
+These same results feed the CMMC compliance dashboards.
 
 <Note>
-  These checks are Windows-only today. macOS and Linux devices show that they do not report them, rather than
-  showing seven failures.
+  These checks are Windows-only today. macOS and Linux devices show **Not reported on this OS** rather than
+  seven failures.
 </Note>
 
-### Actions
+### Services and Processes
 
-**Ping**, **Remote Shell**, **Remote Desktop** (see [Remote sessions](/rmm/remote-sessions)), **Refresh
-Inventory**, and **Custom Command**.
-
-**Command history** lists the last 25 commands sent to the device. Expand one to see its status and the
-output the device sent back, or the error if it failed. Reload the page to pick up results for commands that
-were still running.
+Planned: a live view of the device's services and processes, with start, stop and end-process actions.
 
 ## Troubleshooting
 
 | You see | Meaning |
 | --- | --- |
-| No metrics bar | The device has not sent a heartbeat with metrics yet. Check that it shows **online**. |
-| **Last inventory: Not received yet** | The first inventory has not arrived. It is sent shortly after the agent starts; click **Refresh Inventory** on the **Actions** tab to ask for one now. |
-| Disk listed with no type | The agent does not yet report whether a disk is an SSD or HDD; capacity and model are accurate. |
+| Empty meters on Overview | The device has not sent a heartbeat with metrics yet. Check that it shows **Online**. |
+| **Last inventory: Not collected yet** | The first inventory has not arrived. It is sent shortly after the agent starts; choose **More → Refresh inventory** to ask for one now. |
+| **Not collected yet** on a field | The agent doesn't report that value yet. It is not an error on the device. |
+| **could not load** in a section | NexusOS couldn't read that section just now. Reload the page; the rest of the page is unaffected. |
