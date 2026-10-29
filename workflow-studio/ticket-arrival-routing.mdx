@@ -61,7 +61,7 @@ A `source` condition compares against the exact value stored on the ticket, so u
 | `phone` | PHONE | The client, by phone. |
 | `api` | API | An integration, through the API. |
 | `rmm` | RMM | An RMM alert on a managed device. |
-| `m365` | M365 | A Microsoft 365 event. Reserved: nothing raises these automatically yet, so a ticket has this source only when a technician sets it. |
+| `m365` | M365 | A Microsoft 365 event. Reserved: nothing raises these automatically yet, so a ticket has this source only when it is set explicitly, for example by an API call that names it. |
 | `entra` | ENTRA | A Microsoft Entra ID event. Reserved, like `m365`. |
 | `email_security` | SECURITY | [Email security](/emailsec/index), when it escalates or blocks a message. |
 | `system` | SYSTEM | NexOS itself, for example an onboarding phase ticket. |
