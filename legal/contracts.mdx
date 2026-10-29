@@ -77,6 +77,34 @@ explicit step** — use **Generate invoice** on the contract to create a draft
 recurring invoice (monthly or yearly) with the contract's line items, linked back
 to the contract. See [quotes & invoices](/billing).
 
+## Which contract a new ticket bills against
+
+Every new ticket for a client — raised by a technician, by email, through the portal or by Nexie — is
+attached to a contract automatically, in this order:
+
+1. The client's **default service desk contract**, if it is active and in date.
+2. Otherwise, if the client has exactly **one** contract in force, that contract.
+3. Otherwise **no contract**, which means the ticket is **Time & Materials**.
+
+NexOS never picks between several contracts on its own: billing work against the wrong agreement is worse
+than not billing it, because it is silently wrong on an invoice. The same rule applies when you change a
+ticket's client.
+
+### Set a client's default contract
+
+Open an **active** contract that belongs to the client and click **Set as default service desk contract**.
+The button changes to **✓ Default service desk contract**. A client has at most one default; setting a new
+one replaces the old.
+
+<Tip>
+  If a client holds more than one contract — for example a managed-services agreement and a project — set the
+  managed-services one as the default. Otherwise their new tickets are Time & Materials until a technician
+  picks a contract on the ticket.
+</Tip>
+
+A default that is later cancelled or passes its end date stops applying automatically; a contract with no end
+date is treated as open-ended, not expired.
+
 ## Good to know
 
 - **No automatic email** — sending generates the link; you share it manually.
