@@ -92,7 +92,7 @@ The **Download Agent** card on the deploy page lists the current release for eac
 
 An enrollment token is a per-company credential that lets a new endpoint request its certificate. It is what attributes the endpoint to the right client: the server reads the company from the token and assigns the agent accordingly.
 
-**A token is created when the company is created.** Adding a company in CRM, or importing it through the QuickBooks customer sync, issues its token at the same moment, so a new client is deployable straight away. Companies that existed before this behaviour show **Not issued** until you click **Issue token** once.
+**A token is created when the company is created.** Adding a company in CRM issues its token at the same moment, so a new client is deployable straight away. The QuickBooks customer sync does not create companies, so it never issues one. Companies that existed before this behaviour show **Not issued** until you click **Issue token** once.
 
 **Opening the deploy page creates nothing.** Viewing the list or opening a row never issues a token, and no automatic process will ever bring back a token you revoked.
 
@@ -107,10 +107,10 @@ A **Ready** company's ⋯ menu offers three actions:
 | Action | Effect |
 | --- | --- |
 | **Copy enrollment token** | Copies the token to your clipboard. |
-| **Regenerate token** | Issues a new token and immediately stops the old one working. Endpoints already enrolled are unaffected. |
-| **Revoke token** | Deactivates the token. No new endpoint can enroll with it. Endpoints already enrolled are unaffected. |
+| **Regenerate token…** | Issues a new token and immediately stops the old one working. Endpoints already enrolled are unaffected. |
+| **Revoke token…** | Deactivates the token. No new endpoint can enroll with it. Endpoints already enrolled are unaffected. |
 
-After a **Revoke**, the company shows **Revoked** and stays that way. Nothing automatic re-issues it — not reloading the page, not a QuickBooks re-sync. To deploy to that client again, open its row and click **Issue new token**. NexusOS asks you to confirm, because this re-opens enrollment for that client. The revoked token stays dead.
+After a **Revoke**, the company shows **Revoked** and stays that way. Nothing automatic re-issues it — not reloading the page, not a QuickBooks sync. To deploy to that client again, open its row and click **Issue new token**. NexusOS asks you to confirm, because this re-opens enrollment for that client. The revoked token stays dead.
 
 <Note>
   Revoking or regenerating a token never disconnects a working agent. Enrolled endpoints authenticate with their own certificate, not the token. To remove a single endpoint's access, delete that agent from the **RMM Agents** list — its certificate stops being honoured immediately.
