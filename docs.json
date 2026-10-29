@@ -108,6 +108,7 @@
             "group": "RMM & infrastructure",
             "pages": [
               "rmm/deploy-agent",
+              "rmm/dashboard",
               "rmm/remote-sessions",
               "devices/index",
               "infra/index",
