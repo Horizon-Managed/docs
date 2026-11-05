@@ -165,6 +165,7 @@
             "pages": [
               "integrations/quickbooks",
               "integrations/microsoft-365",
+              "integrations/huntress",
               "integrations/hudu"
             ]
           },
