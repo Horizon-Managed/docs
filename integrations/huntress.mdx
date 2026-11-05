@@ -1,0 +1,69 @@
+---
+title: "Huntress"
+description: "Connect Huntress and link each Huntress organization to its client, with one-click suggestions"
+---
+
+NEXOS CORE connects to your Huntress account (managed EDR, ITDR and SIEM) so each
+client's Huntress organization sits on the client's record. You link every
+organization to its client yourself. NEXOS CORE suggests the right client and
+shows why, but nothing links until you click.
+
+## Connecting
+
+1. In Huntress, create a dedicated user for NEXOS CORE and generate an API key
+   and secret as that user. Every call then carries that user's role and nothing
+   more.
+2. In NEXOS CORE, go to **Settings → Integrations → Security tools → Huntress**.
+3. Enter the key and secret, then click **Save & verify**.
+
+The card turns **Verified** only after a real call to Huntress succeeds. It
+shows the Huntress account, the service user, and what kind of key you used.
+
+<Note>
+Huntress's older account-level key is read-only and is being retired. If you
+use one, the card says so. Generate a key as your NEXOS CORE service user
+instead.
+</Note>
+
+Changing the credentials or linking organizations needs the `settings:write`
+permission. Without it, you can see the connection but not change it.
+
+## Linking organizations to clients
+
+Under **Organizations and clients**, every Huntress organization is listed with
+its agent count and its client. One organization belongs to one client, and a
+client has one organization.
+
+For an organization that isn't linked yet:
+
+- **Suggested** names the client NEXOS CORE thinks it belongs to, with the
+  reasons. For example, both use the same Microsoft 365 tenant, the name matches
+  only one client, or the client is already known by that name in QuickBooks or
+  a distributor.
+- A **Strong** badge means the reasons agree with each other and point to one
+  client only.
+- Click **Link to *client*** to accept, or **Or pick another client** to choose
+  one yourself.
+
+When several organizations have strong suggestions, **Review suggestions** lists
+them together with their boxes ticked. Untick any that look wrong, then link the
+rest in one pass.
+
+NEXOS CORE never suggests a match it isn't sure of. If two clients fit equally
+well, the organization shows no suggestion and you pick the client yourself.
+Before linking, the server checks each suggestion again, so a suggestion that
+has gone stale since the page loaded is not used. Every link records who made it
+and the reasons shown.
+
+To undo a link, click **Unlink**. The organization's history stays. Until you
+link it again, its devices match no client and its incidents raise no tickets.
+
+## How NEXOS CORE finds a client's Microsoft 365 tenant
+
+To suggest clients by their Microsoft 365 tenant, NEXOS CORE asks Microsoft's
+public sign-in discovery which tenant each client's domain signs in to, every 15
+minutes. It sends only the domain, with no credentials, and saves the answer as
+a lookup. It never changes the client's record.
+
+You can turn this off under **Settings → Integrations** (**Microsoft 365 tenant
+lookup**). Suggestions then use names and any tenant IDs you've entered by hand.

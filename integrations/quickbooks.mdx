@@ -1,6 +1,6 @@
 ---
 title: "QuickBooks Online"
-description: "Connect QBO as your financial source of truth — sync products, customers, invoices, and payments in; push estimates, invoices, POs, and timesheets out"
+description: "Connect QBO as your financial source of truth — sync products, customers, invoices, and payments in; push estimates, invoices, POs, and timesheets out, with a write lock for your real books"
 ---
 
 NEXOS CORE connects to your QuickBooks Online company so QuickBooks stays the
@@ -14,7 +14,8 @@ Each data type flows in one direction.
 
 - Bill from NEXOS CORE while keeping QuickBooks authoritative for accounting.
 - Push approved quotes to QBO as estimates, and quotes/time/contracts as invoices.
-- Auto-invoice recurring service contracts on schedule.
+- Bill recurring contracts through QuickBooks recurring templates, created from
+  each contract's **QuickBooks Recurrence** card.
 - Push approved timesheets to QBO as time activities.
 - View synced invoices, payments, and products in NEXOS CORE without hitting the
   QBO API on every page.
@@ -22,8 +23,29 @@ Each data type flows in one direction.
 ## Connecting
 
 Connect under **Settings → QuickBooks** — a standard OAuth authorization to Intuit
-(per-tenant client credentials, with a sandbox toggle for testing). Tokens
-refresh automatically; a revoked token marks the connection inactive.
+(per-tenant client credentials, with a switch between your sandbox and production
+company). Tokens refresh automatically; a revoked token marks the connection
+inactive.
+
+## Write lock
+
+When you connect your real (production) QuickBooks company, **writes start
+locked**. NEXOS CORE reads your books and links clients to their QuickBooks
+customers, but writes nothing to them: no invoices, payments, recurring templates,
+customers, estimates, purchase orders or time. Anything that would have written
+says so plainly instead ("QuickBooks is read-only for this company…"), and nothing
+is sent.
+
+To start billing from NEXOS CORE, an admin clicks **Turn on writes** on
+**Settings → QuickBooks**. NEXOS CORE asks first and names the company. **Lock
+writes** turns them off again. Every change is recorded in the security audit
+log with who made it and when, and the card shows the last change.
+
+- The **sandbox** company is writable, so testing keeps working.
+- Switching a company to **production** always locks writes again, even if they
+  were on in the sandbox.
+- Reading is never locked. Refreshing an invoice, looking up a customer and
+  syncing keep working while writes are locked.
 
 ## What syncs which way
 
@@ -32,11 +54,13 @@ companies), employees, invoices with line items, and payments — upserted into 
 local mirror. Invoices and payments pull incrementally after the first full sync.
 
 **Out (NEXOS CORE → QuickBooks):** estimates from quotes; invoices from time
-entries, tickets, quotes, and contracts; purchase orders; and time activities from
-approved timesheets.
+entries, tickets, quotes, and contracts; recurring templates from contracts;
+purchase orders; and time activities from approved timesheets. Nothing goes out
+while writes are locked (see **Write lock**).
 
-**Cadence:** a full sync runs every ~15 minutes and recurring billing scans hourly,
-plus a manual **Sync Now**.
+**Cadence:** a full sync runs every ~15 minutes, plus a manual **Sync Now**.
+Recurring invoices are raised by QuickBooks from each contract's recurring
+template, not by NEXOS CORE.
 
 ## Good to know
 
