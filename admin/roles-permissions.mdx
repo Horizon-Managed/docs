@@ -45,8 +45,8 @@ reaches only your own tenant's devices and clients.
 
 | Permission | Lets you | Built-in roles that have it |
 | --- | --- | --- |
-| **See agents** (`agents:read`) | Read a device's feature switches, a client's feature profile, and the list of remote sessions | Admin, manager, technician, viewer |
-| **Deploy agents** (`agents:deploy`) | Push the latest agent build to a device with **Update agent** | Admin, manager, technician |
+| **See agents** (`agents:read`) | Read a device's feature switches, a client's feature profile and the list of remote sessions; play back recorded session files; see the discovered-devices list and the agent builds available to download | Admin, manager, technician, viewer |
+| **Deploy agents** (`agents:deploy`) | Push the latest agent build to a device with **Update agent**; see, issue, regenerate and revoke a client's enrollment tokens, which the deploy page's **Deploy by company** section needs (see [Who can deploy](/rmm/deploy-agent#who-can-deploy)) | Admin, manager, technician |
 | `agents:write` | Turn a device's features on or off, remove a device, and set a client's feature profile or apply it to the client's devices | Admin, manager |
 | **Remote into devices** (`agents:remote`) | Open a remote desktop or terminal, send a device a command, and force-close a remote session | Admin, manager, technician |
 
