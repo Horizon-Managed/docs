@@ -39,13 +39,19 @@ system, the client it belongs to, the person it is assigned to, and when it last
 
 **Reboot** and **Maintenance mode** are shown as **Planned**.
 
-<Note>
-  Sending a device a command (**Run script**, **Ping agent**, **Refresh inventory**, uninstalling software or
-  **Uninstall agent**) needs the **Remote into devices** permission, the same one that opens the remote desktop
-  and terminal. Admins, managers and technicians have it; viewers don't. Without it the buttons still show, but the command
-  is refused with **You do not have permission to run commands on devices.** See
-  [Roles & permissions](/admin/roles-permissions#remote-into-devices).
-</Note>
+### Who sees which controls
+
+The page shows each control only to people whose role can use it. Someone without the permission doesn't see the
+control at all.
+
+| Control | Shown to people with | Built-in roles that have it |
+| --- | --- | --- |
+| **Remote**, **Run script**, **Ping agent**, **Refresh inventory**, **Uninstall agent**, and **Uninstall** on the Software tab | **Remote into devices** | Admin, manager, technician |
+| **Update agent** | **Deploy agents** | Admin, manager, technician |
+| The **Agent features** switches on the Overview tab | `agents:write` | Admin, manager |
+
+The **More** menu appears when you have **Remote into devices** or **Deploy agents**. See
+[Roles & permissions](/admin/roles-permissions#device-permissions).
 
 ## Command results
 
@@ -97,7 +103,8 @@ tab.
 
 The device summary (operating system, build, last boot, last seen, first seen, last inventory, agent version,
 manufacturer and model), live **CPU**, **Memory** and **System disk** meters from the heartbeat, a health
-summary, and **Agent features**, the switches that turn agent features on or off for this device only.
+summary, and **Agent features**, the switches that turn agent features on or off for this device only. Without
+`agents:write` you still see each feature's name and whether it is on, but not its switch.
 
 <Note>
   **Agent architecture** is the architecture of the agent program, which can differ from the operating
@@ -167,5 +174,5 @@ Planned: a live view of the device's services and processes, with start, stop an
 | **Last inventory: Not collected yet** | The first inventory has not arrived. It is sent shortly after the agent starts; choose **More → Refresh inventory** to ask for one now. |
 | **Not collected yet** on a field | The agent doesn't report that value yet. It is not an error on the device. |
 | A command result card still says it is waiting | The device hasn't collected the command yet, or is still running it. The card shows how often the device checks in and when it last did, and updates by itself. |
-| **You do not have permission to run commands on devices.** | Your role doesn't include **Remote into devices**. Ask an admin. |
+| **Run script**, **More** or a feature switch is missing | Your role doesn't include the permission for it. See [Who sees which controls](#who-sees-which-controls). |
 | **could not load** in a section | NexusOS couldn't read that section just now. Reload the page; the rest of the page is unaffected. |
