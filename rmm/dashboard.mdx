@@ -35,12 +35,16 @@ A strip of counts of your devices.
 | --- | --- |
 | **Devices** | Every device, or the chosen client's devices |
 | **Online** | Devices checking in on time |
-| **Stale** | Devices that have missed check-ins. Underneath: how many minutes of silence makes a device stale. |
-| **Offline** | Devices that have been silent longer. Underneath: how many minutes of silence makes a device offline. |
+| **Stale** | Devices that have missed a check-in. Underneath: **no check-in for** *n* **min, and a missed check-in**. |
+| **Offline** | Devices that have been silent longer. Underneath: **no check-in for** *n* **min, and two missed**. |
 | **Never checked in** | Devices that enrolled but have no recorded status. Only shown when there are some. |
 | **Unassigned** | Devices with no client. Only shown while **All clients** is selected. |
 
-The stale and offline times are the check-in limits set for your company, 2 and 10 minutes unless changed.
+The stale and offline times are the check-in limits set for your company, 2 and 10 minutes unless changed. They are
+the shortest wait, not the whole rule: a device is never marked stale before it has missed one of its own check-ins,
+or offline before it has missed two in a row. So a device that checks in less often than the limits allow turns
+stale after one missed check-in and offline after two. Servers on the default 30-second check-in behave exactly as
+before.
 
 ### Devices by OS
 
