@@ -33,7 +33,8 @@ The agent runs on Windows, macOS, and Linux, but a few capabilities are Windows-
 
 Prerequisites:
 
-- A NexusOS operator account with access to **RMM Agents → Deploy Agent**.
+- A NexusOS operator account with access to **RMM Agents → Deploy Agent**, and a role with the **Deploy agents**
+  permission (admin, manager and technician have it). See [Who can deploy](#who-can-deploy).
 - The client company exists in CRM.
 - Administrator / `sudo` access on the target endpoint.
 
@@ -115,6 +116,17 @@ After a **Revoke**, the company shows **Revoked** and stays that way. Nothing au
 <Note>
   Revoking or regenerating a token never disconnects a working agent. Enrolled endpoints authenticate with their own certificate, not the token. To remove a single endpoint's access, delete that agent from the **RMM Agents** list — its certificate stops being honoured immediately.
 </Note>
+
+## Who can deploy
+
+Everything to do with enrollment tokens (seeing the **Deploy by company** list, copying a token or install command,
+and issuing, regenerating or revoking a token) needs the **Deploy agents** permission. Admin, manager and
+technician have it; viewer doesn't.
+
+Without it, the deploy page doesn't show the **Deploy by company** section at all. Its subtitle reads **Download
+the current agent build below. Deploying it to a company needs the Deploy agents permission.** The agent
+downloads, **How Enrollment Works** and **Configuration Reference** are still shown. A token can be issued only for
+one of your own clients. See [Roles & permissions](/admin/roles-permissions#device-permissions).
 
 ## Enrollment and configuration at a glance
 

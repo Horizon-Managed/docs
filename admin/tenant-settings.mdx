@@ -24,6 +24,14 @@ Open it at `/settings/tenant`.
 Org name and slug, RMM agent poll intervals, staleness/offline thresholds, timer
 warning thresholds, session-timeout, and a **require-MFA** flag.
 
+The stale and offline thresholds are in the **Agent Staleness Detection**
+section. Each is the shortest wait. A device that checks in less often waits
+until it has missed a check-in before it turns stale, and until it has missed two
+check-ins in a row before it turns offline. Servers on the default 30-second
+check-in are unchanged. The same section also holds the two switches for
+[alert tickets](/rmm/alert-tickets): whether RMM alerts raise tickets, and
+whether those tickets may email the client.
+
 ## Integrations
 
 A single page to configure and check: **RMM** (protocol/host/port), the **AI

@@ -1,0 +1,56 @@
+---
+title: "Alert tickets"
+description: "Tickets raised automatically by RMM alerts: when they resolve themselves, when they stay open for a person, and when the client is emailed"
+---
+
+An RMM alert, such as a server going offline, can open a ticket by itself. These **alert tickets** land in the
+[ticket queue](/helpdesk/ticket-queue) like any other ticket, linked to the device and its client. A device's alerts
+and the tickets they raised are listed on the [device page](/rmm/device-details#alerts-and-activity), and the
+**Bridge tickets** widget on the [RMM dashboard](/rmm/dashboard#bridge-tickets) counts them.
+
+## Turning it on
+
+Both switches are in tenant settings, in the **Agent Staleness Detection** section. Both are off until you turn
+them on.
+
+| Switch | What it does |
+| --- | --- |
+| **Raise tickets from RMM alerts** | An RMM alert opens a ticket, and the ticket resolves itself when the alert clears and no one has worked it. |
+| **Email the client about tickets raised by RMM alerts** | Lets workflow emails reach the client about alert tickets. See [Emails to the client](#emails-to-the-client). |
+
+## When the alert clears
+
+When the device recovers and the alert clears, NexusOS adds a note to the ticket saying so, followed by what
+happens to the ticket and why. If someone has already resolved or closed the ticket, nothing more is added.
+
+| The ticket | What happens | The note ends with |
+| --- | --- | --- |
+| Has not been worked | It resolves itself. | No one had worked this ticket, so it was resolved automatically. |
+| Has been worked | It stays open. | This ticket stays open because it has been worked. |
+| Has fired 3 or more times in the last 24 hours | It stays open for a person to look at. | It has fired *n* times in the last 24 hours, so this ticket stays open for a person to look at. |
+| Its alert rule has automatic resolution switched off | It stays open. | Automatic resolution is switched off for this rule, so this ticket stays open. |
+
+A ticket counts as **worked** once it has left **New**, has someone assigned, has time logged against it, has a
+note written by a person, or has been made a child of another ticket. Notes NexusOS adds itself don't count.
+
+### Repeated alerts
+
+An alert that keeps coming back is a real problem, so the third alert ticket on the same check for the same device
+within 24 hours, and any after it, stays open for a technician instead of resolving itself.
+
+Only alerts that actually raised a ticket count toward the three. A short blip that cleared before it raised a
+ticket isn't counted, so one blip earlier in the day no longer keeps the next genuine outage's ticket open after
+the device comes back.
+
+## Emails to the client
+
+An alert ticket carries the device's contact for context. While **Email the client about tickets raised by RMM
+alerts** is off:
+
+- workflow emails to the ticket's contact or to the client's company address skip alert tickets;
+- technicians are still notified as usual;
+- a reply you write to the contact yourself still sends.
+
+A ticket stays marked as an alert ticket for good, even after the device that raised it is uninstalled. So
+uninstalling a device doesn't start emailing the client about its old alert tickets; they keep following this
+setting.

@@ -38,6 +38,47 @@ Each user has exactly one role, set when you create, edit, or invite them from
 **Settings → Users**. Role and permission changes take effect at the user's next
 sign-in (permissions are baked into the session at login).
 
+## Device permissions
+
+Four permissions control what someone can do with your managed devices. Each
+reaches only your own tenant's devices and clients.
+
+| Permission | Lets you | Built-in roles that have it |
+| --- | --- | --- |
+| **See agents** (`agents:read`) | Read a device's feature switches, a client's feature profile and the list of remote sessions; play back recorded session files; see the discovered-devices list and the agent builds available to download | Admin, manager, technician, viewer |
+| **Deploy agents** (`agents:deploy`) | Push the latest agent build to a device with **Update agent**; see, issue, regenerate and revoke a client's enrollment tokens, which the deploy page's **Deploy by company** section needs (see [Who can deploy](/rmm/deploy-agent#who-can-deploy)) | Admin, manager, technician |
+| `agents:write` | Turn a device's features on or off, remove a device, and set a client's feature profile or apply it to the client's devices | Admin, manager |
+| **Remote into devices** (`agents:remote`) | Open a remote desktop or terminal, send a device a command, and force-close a remote session | Admin, manager, technician |
+
+A custom role has a permission only if you add it.
+
+The [device page](/rmm/device-details#who-sees-which-controls) shows each
+control only to people who can use it, so someone without a permission doesn't
+see its button.
+
+<Note>
+  Technicians don't have `agents:write`, so they can't turn a device's agent
+  features on or off. They can still update the agent, remote in and send
+  commands.
+</Note>
+
+Setting a client's feature profile, which is done through the API today, now
+stores it. Before, it reported success without saving anything.
+
+### Remote into devices
+
+**Remote into devices** (`agents:remote`) is the permission for hands-on access
+to a managed device. It covers:
+
+- opening a [remote desktop or terminal](/rmm/remote-sessions) on a device;
+- sending a device a command from its [device page](/rmm/device-details):
+  **Run script**, **Ping agent**, **Refresh inventory**, uninstalling software,
+  and **Uninstall agent**;
+- force-closing a remote session open on one of your devices.
+
+It does not let the holder change a device's other details, such as moving it
+to another client, which need their own permissions.
+
 ## Enforcement
 
 Protected actions check the user's permissions and return **403 Forbidden** when

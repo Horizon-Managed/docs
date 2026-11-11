@@ -111,6 +111,7 @@
               "rmm/dashboard",
               "rmm/devices",
               "rmm/device-details",
+              "rmm/alert-tickets",
               "rmm/remote-sessions",
               "devices/index",
               "infra/index",
