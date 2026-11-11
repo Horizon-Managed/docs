@@ -72,6 +72,7 @@ The right pane is a scannable stack of cards:
 - `active` — session is recording.
 - `denied` — end user declined.
 - `expired` — consent request timed out.
+- `failed` — the device couldn't start recording. The session is ended and the card shows why, for example *Recording didn't start: the agent couldn't find a signed-in user on this computer to record.* Polling stops. See [Session recording](/rmm/remote-sessions#session-recording).
 
 The status polls in the background. If you dismiss the Peek mid-consent (including by clicking the backdrop scrim), the polling interval is torn down so it does not orphan a timer.
 

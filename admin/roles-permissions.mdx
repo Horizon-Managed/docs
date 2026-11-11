@@ -38,6 +38,24 @@ Each user has exactly one role, set when you create, edit, or invite them from
 **Settings → Users**. Role and permission changes take effect at the user's next
 sign-in (permissions are baked into the session at login).
 
+## Remote into devices
+
+**Remote into devices** (`agents:remote`) is the permission for hands-on access
+to a managed device. It covers:
+
+- opening a [remote desktop or terminal](/rmm/remote-sessions) on a device;
+- sending a device a command from its [device page](/rmm/device-details):
+  **Run script**, **Ping agent**, **Refresh inventory**, uninstalling software,
+  and **Uninstall agent**.
+
+It does not let the holder change a device's other details, such as moving it
+to another client, which need their own permissions. It reaches only your own
+tenant's devices.
+
+**Admin**, **manager** and **technician** have it. **Viewer** doesn't, and a
+custom role has it only if you add it. A user without it who tries to send a
+command sees **You do not have permission to run commands on devices.**
+
 ## Enforcement
 
 Protected actions check the user's permissions and return **403 Forbidden** when

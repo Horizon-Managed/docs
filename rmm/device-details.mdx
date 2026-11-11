@@ -39,6 +39,34 @@ system, the client it belongs to, the person it is assigned to, and when it last
 
 **Reboot** and **Maintenance mode** are shown as **Planned**.
 
+<Note>
+  Sending a device a command (**Run script**, **Ping agent**, **Refresh inventory**, uninstalling software or
+  **Uninstall agent**) needs the **Remote into devices** permission, the same one that opens the remote desktop
+  and terminal. Admins, managers and technicians have it; viewers don't. Without it the buttons still show, but the command
+  is refused with **You do not have permission to run commands on devices.** See
+  [Roles & permissions](/admin/roles-permissions#remote-into-devices).
+</Note>
+
+## Command results
+
+When you choose **Run script**, **Ping agent** or **Refresh inventory**, a result card appears under the device
+header. You don't need to reload the page or look for the result elsewhere: the card fills in by itself.
+
+The device collects commands when it next checks in, so a result can take as long as the device's check-in
+interval. While it waits, the card says when the command was sent, how often the device checks in and when it last
+did, so a wait reads as expected rather than broken. It then shows when the device collected the command, and
+finally the result:
+
+| Command | The card shows |
+| --- | --- |
+| **Run script** | The command's output. Very long output is cut, and the card says how much of it is shown. |
+| **Ping agent** | The agent's reply, the round trip from sending to the reply, and how long the device took to answer after collecting the ping |
+| **Refresh inventory** | How many applications and packages the device reported, and when it collected them. The Software, Hardware and Patches tabs show the new inventory after a reload. |
+| A command that failed | The error the device reported. If the device's agent doesn't know the command, the card says to update the agent from **More**. |
+
+Choose **×** to dismiss a card. Every command also stays in the **Device timeline** on the **Alerts and Activity**
+tab.
+
 ## Key numbers
 
 | Cell | Shows |
@@ -53,8 +81,11 @@ system, the client it belongs to, the person it is assigned to, and when it last
 ## Side column
 
 - **Business context:** the client, the contract that applies to the device's tickets, the contact, the SLA
-  policy, and links to its open tickets. Choose **Edit** to move the device to another client or assign it to a
-  contact. Moving it updates the contract and SLA shown.
+  policy, and links to its open tickets. Long values such as the contract name wrap rather than being cut off.
+  The first three open tickets are listed; when there are more, the **+** *n* **more** link opens the ticket
+  queue filtered to this device, and the queue lists the same tickets the device page counts, whatever open status each is in.
+  Choose **Edit** to move the device to another client or assign it to a contact. Moving it updates the contract
+  and SLA shown.
 - **Notes** and **Custom fields:** planned. Custom fields will be typed (text, number, date, list, yes/no) and
   fully readable and writable through the API.
 - **Nexie analysis:** planned. Nexie will review the device and propose fixes; it never runs anything without a
@@ -79,6 +110,10 @@ summary, and **Agent features**, the switches that turn agent features on or off
 
 - **Open alerts:** each alert that is still firing, its state, when it started, where its priority came from
   (a client override, your tenant setting, or the built-in rule), and the ticket it raised.
+- **Cleared in the last 90 days:** alerts that have cleared, with the same columns and when each cleared. An
+  alert usually clears when the device recovers while its ticket stays open, so this is where you see that
+  ticket. The priority shown is the ticket's current priority; if someone changed it on the ticket, **Defined
+  in** says **Changed on the ticket**. See [Alert tickets](/rmm/alert-tickets).
 - **Device timeline:** commands sent to the device (expand one to see its output), remote sessions with who ran
   them and a link to the recording, and alerts raised or cleared in the last 90 days. Filter by **Remote**,
   **Commands**, **Software**, **Patches**, **Alerts** or **Audit only**. Export to CSV or PDF is planned.
@@ -131,4 +166,6 @@ Planned: a live view of the device's services and processes, with start, stop an
 | Empty meters on Overview | The device has not sent a heartbeat with metrics yet. Check that it shows **Online**. |
 | **Last inventory: Not collected yet** | The first inventory has not arrived. It is sent shortly after the agent starts; choose **More → Refresh inventory** to ask for one now. |
 | **Not collected yet** on a field | The agent doesn't report that value yet. It is not an error on the device. |
+| A command result card still says it is waiting | The device hasn't collected the command yet, or is still running it. The card shows how often the device checks in and when it last did, and updates by itself. |
+| **You do not have permission to run commands on devices.** | Your role doesn't include **Remote into devices**. Ask an admin. |
 | **could not load** in a section | NexusOS couldn't read that section just now. Reload the page; the rest of the page is unaffected. |

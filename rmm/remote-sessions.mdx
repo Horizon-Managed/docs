@@ -18,21 +18,48 @@ recording is written to the security audit log.
 - Reach a service behind the endpoint (a LAN device, internal web UI) via tunnel.
 - Capture an auditable, replayable record of a support session for compliance/QA.
 
+## Who can use it
+
+Remote desktop, the terminal, and sending a device a command from its
+[device page](/rmm/device-details#command-results) all need the **Remote into
+devices** permission. Admins, managers and technicians have it; viewers don't.
+See [Roles & permissions](/admin/roles-permissions#remote-into-devices).
+
 ## Remote terminal
 
 An interactive shell in the browser (xterm.js) relayed to a PTY on the endpoint
-over a secure WebSocket. Open it from an agent at `/rmm/agents/{id}/terminal`.
+over a secure WebSocket. Open it from a device at `/rmm/devices/{id}/terminal`.
 
 ## Remote desktop
 
-Live screen with input control, at `/rmm/agents/{id}/desktop`. The default
+Live screen with input control, at `/rmm/devices/{id}/desktop`. The default
 transport is **WebRTC** (with a legacy JPEG-over-WebSocket fallback).
 
 <Note>
-  Cross-network remote desktop (technician and customer on different networks)
-  needs a TURN server configured (`RMM_TURN_*`). With STUN only, it falls back to
-  same-LAN connections.
+  Remote desktop connects the browser and the device directly when they can reach
+  each other. A session between different networks that can't connect directly
+  needs a relay. Where a relay is set up, every session gets its **own relay
+  credential, valid for 10 minutes**, and no relay login is written into the
+  page. There is nothing for you to configure.
 </Note>
+
+### When a session can't start
+
+If the desktop can't start, the page says why in plain language and offers the
+next step, instead of showing the device's raw error:
+
+| The page says | Buttons |
+| --- | --- |
+| Nobody is signed in on this computer, so the desktop isn't available. You can still use the terminal. | **Open terminal**, **Try again** |
+| This device isn't connected right now. (The page adds when the device was last seen.) | **Back to device** |
+| This device's agent is too old for this kind of session. Update the agent from the device page, then try again. | **Back to device** |
+| The device couldn't capture its screen. Restarting the agent usually fixes this. | **Try again** |
+| Someone is already connected to this device. | **Back to device** |
+| Something went wrong starting the session. | **Try again** |
+
+Expand **Details for support** to see the reason code, the agent version (when
+the agent has reported one) and the time. Give these to support if the problem
+persists.
 
 ## Tunnels
 
@@ -45,6 +72,13 @@ Recorded sessions are captured as short WebM segments the agent uploads over
 one-shot, expiring upload tokens; each segment is checksummed and stored
 server-side. A consent prompt can gate capture, and finalizing a recording posts
 a note linking it to the originating ticket.
+
+If the device can't start recording, the session ends rather than appearing to
+record, and the ticket says why. For example: *Recording didn't start: the agent
+couldn't find a signed-in user on this computer to record.* Other reasons are an
+agent too old to record (update it from the device page), a recording already
+running on the device, or the device failing to capture its screen (restarting
+the agent usually fixes this).
 
 **Playback** is available from the Recordings dashboard (`/rmm/recordings`) or
 the ticket's Recordings panel, which seals the segments into a single playable
