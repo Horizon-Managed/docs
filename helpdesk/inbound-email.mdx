@@ -52,6 +52,7 @@ A message with no recognisable ticket number creates a ticket with:
 | Type | `incident` |
 | Source | `email` |
 | Contact | The sender's email address |
+| Client | The client whose active contact has the sender's exact email address, when exactly one client matches. The contact is set too when exactly one contact matches. Otherwise the ticket arrives with no client, for the desk to assign. |
 
 Adjust priority and type after arrival with an arrival-routing rule — for example, route by `sender_domain` or `requester_email`.
 
