@@ -1,0 +1,134 @@
+---
+title: "Ticket timer"
+description: "One running clock per technician: the timer bar across the top of every page, the chip in the ticket header, auto-start when you open a ticket, and why a timer under a minute is discarded."
+---
+
+Every technician has **one running timer at a time**. While it runs, a bar
+across the top of every page shows which ticket you're on, how long you've
+been on it, and the controls to pause, stop or discard it. When you open that
+ticket, the bar steps aside and the same clock sits in the ticket's header
+instead.
+
+By default, opening a ticket starts its timer for you. You can turn that off
+per user.
+
+## When to use it
+
+- Track time on a ticket without remembering to press start.
+- See at a glance, from any page, which ticket your clock is on.
+- Jump back to the ticket you're timing with one click.
+- Switch tickets without leaving two clocks running.
+- Know when a ticket is running past its escalation time.
+
+## The timer bar
+
+The bar sits under the app header on every page except the ticket it's timing.
+From left to right it shows:
+
+| Part | What it shows |
+|---|---|
+| Status dot | A live dot while running; a pause icon while paused. |
+| Ticket | The ticket number, title and client. Click it to open the ticket. |
+| Note | A short note about what you're doing. Click **Add a note** (or the note itself) to edit it. The clock keeps running while you type; **Enter** saves, **Esc** cancels. |
+| State | **Running**, **Paused**, or **Past _N_ min** once it crosses a threshold (see [colours](#how-the-bar-changes-colour)). |
+| Elapsed | Hours, minutes and seconds on this timer. |
+
+And the actions:
+
+- **Pause** / **Resume**.
+- **Stop & log** — stops the clock and opens the log form, where you confirm
+  the work type, billing role and contract. See
+  [Time tracking](/time/index#from-timer-to-bill).
+- **Escalate** — appears once a running timer goes past the critical threshold.
+  It lists the ticket's SLA escalation tiers; pick one to escalate to it. With
+  no tiers configured, it offers **Mark as escalated**.
+- **Discard** (bin icon) — throws the timer away and logs nothing. You get a
+  few seconds to **Undo**.
+- **+_N_ paused** — appears when you have paused timers on other tickets. It
+  opens a list where you can open, resume, stop or discard each one.
+
+## On the ticket itself
+
+When you open the ticket your timer is on, the bar hides and a **timer chip**
+appears in the ticket header in place of the **Start timer** button. The chip
+shows the elapsed time with pause/resume and stop buttons, and changes colour
+the same way the bar does. Leave the ticket and the bar comes back.
+
+On a ticket with no timer, the header shows **Start timer**.
+
+## One timer runs at a time
+
+Starting or resuming a timer **pauses whichever one was running**. Paused timers
+keep their elapsed time and wait in the **+_N_ paused** list until you resume,
+stop or discard them. Timers are kept on the server, so the same timer follows
+you between desktop and the [mobile app](/mobile/index).
+
+## Auto-start when you open a ticket
+
+With auto-start on, opening a ticket in **full view** starts its timer (or
+resumes its paused one), and pauses the timer you were running before.
+
+Auto-start does **not** fire when:
+
+- you open the ticket in the [Peek](/helpdesk/ticket-peek) — peeking at a
+  ticket never starts a clock;
+- the ticket is closed — reading a closed ticket's history doesn't start
+  billing;
+- that ticket's timer is already running.
+
+### Turn it on or off
+
+The switch is in the ticket's full view, under the header:
+**Start a timer when I open a ticket**. It's per user, on by default, and
+applies everywhere you sign in.
+
+If you untick it while this ticket's timer is running, that timer is
+**discarded** — you've just said you didn't want it. The usual **Undo** brings
+it back. With auto-start off, press **Start timer** when you begin work.
+
+## Under a minute is discarded
+
+A timer that has run **less than one minute in total** is treated as a glance,
+not work, so it is thrown away instead of being kept when:
+
+- you **pause** it;
+- you **switch** to another ticket, which would otherwise pause it;
+- you **close** its ticket.
+
+A notice reads **Under a minute — timer discarded. Nothing was logged.** For a
+pause or a switch you get a few seconds to **Undo**; undoing a pause keeps the
+timer, paused. Closing a ticket reloads the page, so that notice appears after
+the reload with no Undo.
+
+A timer that ran a minute or more is never discarded automatically. On a closed
+ticket it stays until you stop and log it, or discard it yourself. **Stop &
+log** always logs, however short the timer.
+
+<Note>
+The under-a-minute discard happens in the web app. Pausing or switching on the
+[mobile app](/mobile/index) keeps short timers.
+</Note>
+
+## How the bar changes colour
+
+The bar and the chip change colour as the timer runs:
+
+| State | When |
+|---|---|
+| Normal | Under the warning threshold. |
+| Warning (orange) | Past the warning threshold. |
+| Danger (red) | Past the danger threshold. |
+| Critical | Past the critical threshold. **Escalate** appears. |
+
+The thresholds come from the ticket's SLA escalation tiers: tier 1 sets warning,
+tier 2 danger and tier 3 critical. A ticket with fewer tiers fills the gaps 5
+and 10 minutes after its highest tier. A ticket with no escalation tiers uses
+your organisation's **Timer Escalation Thresholds** in
+[tenant settings](/admin/tenant-settings), which default to 20, 25 and 30
+minutes.
+
+## Good to know
+
+- **Discard logs nothing.** Use **Stop & log** for any time you want billed.
+- **Undo only lasts a few seconds.** Once the notice goes, the discard is final.
+- The bar shows your own timers only.

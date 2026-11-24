@@ -1,12 +1,13 @@
 ---
 title: "Time tracking"
-description: "Live multi-timers that capture billable time, and weekly timesheets with approval, QuickBooks push, and CSV export"
+description: "Live timers that capture billable time, and weekly timesheets with approval, QuickBooks push, and CSV export"
 ---
 
 Time tracking has two connected layers. **Live timers** are running stopwatches
-you start against a ticket, a project task, or a site survey — several can run
-at once, with one "focused" in the header and the rest ticking in the
-background. Stopping a timer writes a time entry. **Timesheets** are the weekly
+you start against a ticket, a project task, or a site survey — you can have
+several, but only one runs at a time and the rest wait paused. The running one
+shows in the [timer bar](/helpdesk/ticket-timer) at the top of every page.
+Stopping a timer writes a time entry. **Timesheets** are the weekly
 rollup of those entries: review the week, submit it, a manager approves, and
 approved sheets push to QuickBooks or export to CSV.
 
@@ -17,8 +18,8 @@ below.
 ## When to use it
 
 - Track live hours against a ticket, project task, or survey while you work.
-- Run several jobs at once and switch which is focused, without losing the
-  others' elapsed time.
+- Switch between jobs without losing the others' elapsed time — switching
+  pauses the one you leave.
 - Start on your phone and keep going on your desktop, or the other way around.
 - Capture billable time — with a work type, billing role, contract, and
   effective rate when the timer is on a ticket.
@@ -31,11 +32,11 @@ below.
   <Step title="Start a timer">
     Start against a ticket, task, or survey. Timers are **server-side and
     follow you across devices** — one started on your phone shows up on your
-    desktop, focused the same way, and vice versa. If that item already has a
-    timer running, starting it again just **resumes** the existing one instead
-    of creating a second timer for the same job. Starting a new timer unfocuses
-    whichever one was focused before; the others keep accumulating time in the
-    background.
+    desktop, and vice versa. If that item already has a timer, starting it
+    again just **resumes** the existing one instead of creating a second timer
+    for the same job. Starting or resuming a timer **pauses** whichever one was
+    running, so only one clock runs at a time. Opening a ticket can start its
+    timer for you — see [auto-start](/helpdesk/ticket-timer#auto-start-when-you-open-a-ticket).
   </Step>
   <Step title="Stop and capture billing context">
     On a **ticket**, stop asks you to confirm the work type, billing role,
@@ -84,5 +85,7 @@ with the right permission.
 - **QuickBooks push is optional and best-effort** — if it isn't configured or a
   push fails, the timesheet stays **Approved** (not Pushed) and never blocks
   approval; the error is recorded for retry.
-- Captured time is floored to a small minimum (a fraction of an hour), so very
-  short timers still record.
+- Captured time is floored to a small minimum (a fraction of an hour), so a
+  short timer you **Stop & log** still records. A ticket timer under a minute
+  that you pause, switch away from, or whose ticket you close is
+  [discarded instead](/helpdesk/ticket-timer#under-a-minute-is-discarded).
