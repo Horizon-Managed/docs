@@ -1,0 +1,93 @@
+---
+title: "Sync Log"
+description: "Every integration outcome — QuickBooks, recurring billing, distributor catalogues and Hudu — in one time-ordered list, opening on failures."
+---
+
+The Sync Log at **Operations → Sync Log** shows every integration outcome across
+the product in one place: QuickBooks pushes, recurring contract billing,
+distributor catalogue syncs, and Hudu. Successes and failures both, ordered by
+time.
+
+Before it, those four lived in four separate tables and only one of them had a
+page at all.
+
+## Why it opens on failures
+
+The list is sorted **failures first**, not newest first. That is deliberate.
+
+An integration that fails every hour produces far more successful rows than
+failed ones, so a list sorted purely by time shows twenty successes on the first
+screen and buries the thing you need to see. The older QuickBooks-only surface
+worked exactly that way, which is how a failure repeating hourly since April
+stayed invisible on the one page built to show it.
+
+<Note>
+  Recurring billing recorded **11,478 failed attempts over four and a half
+  months** that nothing in the product would ever have displayed. The Sync Log
+  exists because of that.
+</Note>
+
+## Repeat attempts collapse
+
+A sync that fails the same way every hour is one problem, not thousands of them.
+Repeated attempts against the same record with the same error group into a
+single row showing:
+
+- what failed
+- when it started
+- when it last happened
+- how many times
+
+Expand the row to see the individual attempts.
+
+## Filtering
+
+| Filter | Use it to |
+| --- | --- |
+| **Source** | Narrow to QuickBooks, recurring billing, distributor catalogue, or Hudu. |
+| **Status** | Switch between failures and successes. |
+| **Date range** | Scope to a billing period or an incident window. |
+| **Error text** | Find every occurrence of a particular error message. |
+
+## It is read-only
+
+There is no retry button and no clear button, on purpose. Re-running a sync
+raises invoices, and that deserves its own decision on the record it affects
+rather than a bulk action from a log. Fix the underlying cause, then re-run from
+the contract, invoice or purchase order itself.
+
+## Relationship to the QuickBooks panel
+
+The QuickBooks panel in **Settings → Integrations** stays where it is and now
+links onward to the Sync Log. Its own history list also shows failures first,
+and if its query fails it says so rather than reporting "No sync history yet" —
+which previously made a broken query and a quiet integration look identical.
+
+## What you can learn from it
+
+<Steps>
+  <Step title="Start with the default view">
+    Failures, most recent first. If this is empty, no integration has failed in
+    the selected range.
+  </Step>
+  <Step title="Expand a collapsed row">
+    A high repeat count means something has been failing unattended. The "when
+    it started" timestamp tells you how long.
+  </Step>
+  <Step title="Read the error text">
+    Integration failures are recorded with the underlying error rather than a
+    generic message. A QuickBooks authentication failure and a missing contract
+    line read differently.
+  </Step>
+  <Step title="Fix and re-run at the source">
+    Correct the cause, then re-run from the record — the contract, invoice or
+    purchase order — not from the log.
+  </Step>
+</Steps>
+
+<Tip>
+  Hours that could not be priced — a ticket time entry with no work type or
+  billing role — are recorded here as a named Integration Failure when a
+  QuickBooks push leaves them behind, instead of being dropped silently. See
+  [time tracking](/time/index) for how to stop producing them.
+</Tip>
