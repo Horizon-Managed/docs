@@ -81,7 +81,7 @@ Actions run inside the tenant scope of the ticket that fired the rule. A rule ca
 | `assign_team` | Routes the ticket to the given team, picked from your own teams (Service Desk settings → Teams). |
 | `set_priority` | Updates the ticket's priority. |
 | `send_notification` | Writes an in-app notification to the ticket's assigned technician or to every active member of the ticket's team — set **Recipients** to **Assigned Tech** or **Ticket Team**. When a step reaches nobody (no assignee, no team, or a team with no active members), the run detail says which, so you know what to fix. The other recipient options (All Users, Admins Only, Entity Owner, Deal Owner) are not supported on ticket triggers yet; the run detail names the option instead of falling back to someone else. |
-| `send_email` | Sends a templated email. Use this to notify the requester or an external address. **Send from** picks the mailbox the customer sees and replies to; leave it empty to use your helpdesk mailbox. |
+| `send_email` | Sends a templated email — pick an **Email Template**; the step can't be saved without one. Use this to notify the requester or an external address. **Send from** picks the mailbox the customer sees and replies to; leave it empty to use your helpdesk mailbox. |
 
 ## Worked example: route high-priority arrivals to a specialist
 
