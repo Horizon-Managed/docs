@@ -15,12 +15,19 @@ Each rule is made up of three parts:
 
 A trigger is selected from the **Trigger** field picker when you create or edit a rule. A rule has exactly one trigger event and fires at most once per matching event.
 
+<Note>
+Merging tickets does not fire `ticket_closed` or `ticket_resolved` for the ticket merged away. It isn't counted as a closed ticket either: its time, notes and SLA carry on under the ticket it was merged into.
+</Note>
+
 | Trigger | Fires when |
 | --- | --- |
 | `ticket_created` | A new ticket is created (any source — portal, email, API). |
 | `ticket_updated` | Any field on a ticket changes. Use this only when no more specific trigger fits. |
 | `ticket_assigned` | A ticket's assignee changes to a real user. Distinct from `ticket_updated` — it does **not** fire when the assignee is cleared or when other fields change. |
-| `ticket_closed` | A ticket is closed. |
+| `ticket_resolved` | A ticket moves from an open status into your **Resolved** status. It also fires `ticket_closed` (see below), from the same move. |
+| `ticket_closed` | A ticket is finished: it moves from an open status into any status your desk marks as closed (Resolved, Closed, or one you added). It fires **once per close**, however the ticket was finished: the status dropdown, the edit form, **Close & Bill**, **Approve resolution**, a timer stop, or another rule. Moving a finished ticket between two closed statuses (Resolved to Closed, for example) does not fire it again. |
+| `ticket_reopened` | A finished ticket moves back to an open status. Its resolved and closed times are cleared, and the next close fires `ticket_closed` again. |
+| `condition_cleared` | The problem behind an RMM alert ticket (a device offline, for example) cleared before anyone worked the ticket, so the ticket resolved itself. This is the **only** trigger such a ticket fires: an auto-resolved alert ticket does not fire `ticket_resolved` or `ticket_closed`, so rules such as invoicing or surveys don't run on alert blips. |
 | `note_added` | A note is added to a ticket. The orchestrator emits this as both `note_added` (used by studio rules) and `ticket_note_added` (the orchestrator capability vocabulary). Each rule still fires at most once per note. |
 | `sla_breach` | An SLA target is missed. |
 | `sla_warning` | A ticket reaches 75% of its SLA target. |
