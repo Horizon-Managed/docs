@@ -21,7 +21,7 @@ When you scroll, the following stays frozen at the top of the viewport:
 
 - **Decision tiles** — see below.
 - **Toolbar** — view tabs, **Views**, **Filters**, **Columns**, **Density**, search, and **New ticket**.
-- **Action bar** — appears when one or more rows are selected.
+- **Bulk bar** — appears when you tick one or more tickets. See [Acting on several tickets at once](#acting-on-several-tickets-at-once).
 
 ### Decision tiles
 
@@ -66,12 +66,29 @@ Combine a chip with **Filters** for finer-grained queries (status, contract, ass
 - **Density** — switch between Comfortable and Compact row heights.
 - **Search** — full-text search across subject, body, and contact.
 
-Subject, Client, and Technician cells truncate with an ellipsis so the queue can stay within the viewport at any column configuration.
+Subject, Client, and Technician cells truncate with an ellipsis when their text is longer than the column.
 
-**Your column and density choices are remembered.** They persist per user across
-sessions and devices, rather than living only in the browser you set them in — so
-hiding a column and coming back tomorrow, or on another machine, gives you the
-layout you left.
+**Your column and density choices are remembered.** Which columns you show, their
+order, and the density persist per user across sessions and devices, rather than
+living only in the browser you set them in — so hiding a column and coming back
+tomorrow, or on another machine, gives you the layout you left.
+
+### Column widths
+
+Until you resize anything, the queue sizes its columns to fit the window.
+
+Drag the edge of a column header to resize it. It works like a spreadsheet: only
+that column changes width, and every other column keeps its width. When the columns
+add up to more than the window, the queue scrolls sideways inside its card; when
+they add up to less, the spare space stays at the right.
+
+You can still drag a whole column header to move the column, and a resized column
+keeps its width when you move it.
+
+- **Widths are remembered in this browser.** Unlike which columns you show, column
+  widths are kept on the device you set them on.
+- **Columns → Reset** puts the column order, visibility and widths back to the
+  defaults, and the queue fits the window again.
 
 ## Waiting On
 
@@ -138,34 +155,67 @@ A **view** is a named set of filters you can return to — "my breaching critica
 - **A view stores filters, not a frozen list.** It re-runs every time you open it,
   so the counts and rows are always current.
 
-## Lanes
+## Sorting
 
-Rows group into three lanes, in this order:
+The queue is one list in the order the sort asks for. Click any column header to
+sort by it; click again to reverse it. It no longer groups rows into Breaching,
+Unowned and Healthy lanes — the grouping came before the sort, so sorting by
+Client gave client order inside each lane rather than across the queue.
 
-| Lane | Contains |
+## Acting on several tickets at once
+
+Tick the box at the start of a row to select it, or tick the box in the header to
+select every ticket on the page. The bulk bar appears above the list with how many
+you selected and these actions:
+
+| Action | What it does |
 | --- | --- |
-| **Breaching** | SLA runway under 25%, or already breached. |
-| **Unowned** | No assignee, and the clock is running. |
-| **Healthy** | Everything else. |
+| **Assign** | Sets the technician — yourself, a named technician, or Unassigned — and/or the team. Leave either at **Keep as is** to leave it alone. |
+| **Set status** | Moves every selected ticket to one status. |
+| **Set priority** | Sets every selected ticket to one priority. |
+| **Merge** | Merges the selected tickets into one of them, which you choose. Needs at least two tickets. |
 
-Breaching sorts first because it is the lane that costs you something. Resolved and
-closed tickets are excluded from the lanes entirely rather than falling into Healthy.
+The pickers list your own statuses, priorities, teams and technicians — the same
+ones you configure on the **Helpdesk Configuration** settings page. The bar only appears for
+people allowed to change tickets.
 
-## Action-bar keyboard shortcuts
+**Every selected ticket changes, or none does.** If one ticket can't take the
+change, nothing is changed and the bar says which ticket and why. You never end up
+with half a selection updated.
 
-Select one or more rows, then use the action bar at the bottom of the queue. Each action has a single-key shortcut:
+**Each ticket changes exactly as it would one at a time.** A status change still
+stamps resolved and closed times and fires the same workflows and Orchestrator
+triggers; an assignment still fires the ticket-assigned workflows — once per
+ticket.
+
+### Merging from the bulk bar
+
+Choose **Merge into** and pick the ticket to keep. The others move their notes,
+time, charges and attachments onto it and close as merged.
+
+<Warning>
+  **Every ticket in a merge must belong to the same client.** Merging moves
+  billable time, so a merge across clients would bill one client's work on another
+  client's ticket. The bar refuses it and changes nothing. A ticket with no client
+  cannot be merged with one that has a client.
+</Warning>
+
+## Focused-row actions
+
+Click a row, or move to it with `J`/`K` or the arrow keys, to focus it. The
+command pills under the queue act on the focused ticket:
 
 | Key | Action | Notes |
 | --- | --- | --- |
 | `R` | Reply | Opens the customer-facing reply composer in the Peek. |
 | `I` | Internal note | Opens the internal-note composer in the Peek. |
-| `A` | Assign | Opens the assignee picker. Sends the real technician id; **Take ownership** resolves to your authenticated user. |
-| `Ctrl+Enter` | Resolve | Marks the ticket(s) resolved with an optimistic UI update and an **Undo** toast. |
+| `A` | Assign | Opens the assignee picker in the Peek. |
+| — | Resolve | The **Resolve** pill marks the focused ticket resolved. The row updates immediately and reverts if the server refuses the change. |
+| `Enter` | Open | Opens the focused ticket's Peek. |
+| `F` | Follow | Follows or unfollows the focused ticket. |
 
-Resolve is optimistic — the row updates immediately and reverts if the server rejects the change. The undo toast stays visible for a few seconds so you can roll back an accidental resolve.
-
-All lifecycle calls attach the CSRF double-submit header automatically. You do not need to refresh after a mutation; the live ticket Peek re-renders in place when its underlying ticket changes.
+To act on several tickets at once, use the [bulk bar](#acting-on-several-tickets-at-once).
 
 ## Themes and small viewports
 
-The queue tracks the active theme — **dark**, **tinted**, and **parchment** all paint correctly with no hardcoded colors. The layout remains usable down to roughly **680px** viewports, collapsing the toolbar to wrap and stacking the action bar.
+The queue tracks the active theme — **dark**, **tinted**, and **parchment** all paint correctly with no hardcoded colors. The layout remains usable down to roughly **680px** viewports, collapsing the toolbar and the bulk bar to wrap.
