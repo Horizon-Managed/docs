@@ -1,0 +1,50 @@
+---
+title: "Tickets raised by RMM alerts"
+description: "How an RMM alert opens a ticket, resolves it when the alert clears, and what the ticket page shows about the alert."
+---
+
+NexOS can open a ticket when an RMM alert fires on a managed device and resolve that ticket when the alert clears. Today the alert that does this is **Device offline**. By default it raises tickets for servers only, at **high** priority.
+
+## Turn it on
+
+In **Settings → Tenant → Agent Staleness Detection**:
+
+- **Raise tickets from RMM alerts** turns the feature on for the tenant. It is off by default.
+- **Email the client about tickets raised by RMM alerts** decides whether workflow emails reach the device's contact and the client's company address. When it is off, technicians are still notified, and a reply you write to the contact still sends.
+
+A device counts as offline after the tenant's offline threshold, set in the same section. A device that has been silent for more than 7 days is treated as retired and raises nothing.
+
+## What happens to the ticket
+
+- **The alert fires.** A ticket opens for the device's client with the device linked and its assigned contact on the ticket.
+- **The alert clears, and no one has worked the ticket.** The ticket resolves itself. The bridge posts a note saying the device is back and uses it as the resolution.
+- **The alert clears, and someone has worked the ticket.** The ticket stays open, and the bridge posts one note saying the device is back.
+- **The device keeps flapping.** If the alert has fired 3 times in 24 hours, the ticket stays open for a person to look at.
+- **Many devices go down at once.** After 20 alert tickets for one client in an hour, NexOS opens one roll-up ticket for the rest instead of one ticket per device.
+
+## The Raised by alert card
+
+A ticket an alert raised shows a **Raised by alert** card on the ticket page, under **Linked asset**. Tickets made by hand don't have one.
+
+| Row | What it shows |
+|---|---|
+| **Firing / Cleared** | Whether the alert is still firing. |
+| **Alert** | The alert's name, for example *Device offline*. |
+| **Device** | The device it fired on. If you can read devices, it links to the device's **Alerts and Activity** tab. |
+| **First seen** | When the alert started. |
+| **Last seen** | While firing, when it was last reported. |
+| **Cleared** | When it cleared and how long it fired. |
+| **Observations** | How many times the alert was observed while it fired. |
+| **Fired before** | The ticket the same alert raised the previous time it fired on this device. |
+
+When the alert has cleared, the card also says whether the ticket **resolved automatically** or was **left open for a person**. The note posted when it cleared says why it was left open.
+
+A **roll-up** ticket's card says it stands for many devices. Each device lists its own alert on its **Alerts and Activity** tab ([device details](/rmm/device-details)).
+
+If the device has since been uninstalled, its alert history goes with it. The card then just says an RMM alert raised the ticket.
+
+## Related
+
+- [Device details](/rmm/device-details): every device's open alerts and the ones cleared in the last 90 days.
+- [RMM dashboard](/rmm/dashboard): the **Open alerts**, **Alerts opened** and **Bridge tickets** widgets.
+- [Ticket arrival routing](/workflow-studio/ticket-arrival-routing): the `condition_cleared` trigger fires when an alert ticket resolves itself.
