@@ -1,0 +1,194 @@
+---
+title: "Email templates"
+description: "Write the emails your rules send: design or HTML, variables that fill in from the ticket, images, and your brand header and footer."
+---
+
+Email templates are the emails your workflow rules send with the **Send Email** action. You edit them in one editor, which you can open from two places:
+
+- **Helpdesk** → **Email Templates**.
+- **Orchestrator** → open a module → the **Email Templates** tab.
+
+Both places edit the same templates.
+
+## The editor
+
+Each template has a name, a **Subject** and a body. The body has two tabs:
+
+- **Design** shows the email the way your client gets it, and you can type straight into it.
+- **HTML** shows the same email as code.
+
+The two tabs edit the same body. A change in one shows up in the other.
+
+The toolbar works in both tabs: **B**, **I**, **U**, **H2**, **P**, **List**, **Link**, **Divider** and **Image**. In **Design** it formats what you've selected. In **HTML** it wraps what you've selected in the matching tag.
+
+**Link** opens a field for the address. You can put a variable there too, such as `{{ticket_portal_link}}`.
+
+Saving a template changes only what you edited. It stays active, and it keeps its type.
+
+## Variables
+
+A variable is a placeholder, like `{{contact_first_name}}`, that fills in from the ticket when the email goes out.
+
+The **Variables** panel beside the editor lists every variable you can use. Each one shows its code, what it holds, and its value on your most recently updated ticket.
+
+To add a variable:
+
+1. Click where you want it, in **Subject**, **Design** or **HTML**.
+2. Double-click the variable in the panel, or select it and press **Enter**.
+
+Search the panel by name, code or example value.
+
+In **Design**, a variable shows as a highlighted chip with its value filled in from that ticket. You can't type inside a chip, so it can't be broken by accident. A chip with a dashed underline has no value on that ticket. Tick **Show variable codes** to see the codes instead of the values.
+
+<Note>
+A value from a ticket always arrives as plain text. A ticket titled `<b>Urgent</b>`, or one that mentions another variable, appears exactly as typed. It can't change your email's formatting or pull in other values.
+</Note>
+
+How values are filled in:
+
+- **Dates and times** are in your time zone, the one set on your default business calendar.
+- **Status, priority, type, source and team** show their names as you see them in NEXOS CORE (**In Progress**, not `in_progress`).
+- **`{{tech_name}}`** reads **Support Team** when the ticket has no technician.
+- **`{{company_name}}`** falls back to your own company name when the ticket has no client.
+- **`{{note_body}}`** is the newest note the client can see. It is never an internal note.
+- A variable with no value on the ticket is left out of the email.
+- A code that isn't on the list below is left in the email exactly as written, so you can spot the typo.
+
+Templates written with older spellings still work. The **Also accepted** column lists them.
+
+### Ticket
+
+| Variable | What it holds | Also accepted |
+| --- | --- | --- |
+| `{{ticket_number}}` | Ticket number | `{{ticket.number}}`, `{{ticket.id}}` |
+| `{{ticket_title}}` | Title | `{{ticket.title}}` |
+| `{{ticket_description}}` | Description |  |
+| `{{ticket_status}}` | Status | `{{ticket.status}}` |
+| `{{ticket_priority}}` | Priority | `{{ticket.priority}}` |
+| `{{ticket_type}}` | Type |  |
+| `{{ticket_source}}` | Source |  |
+| `{{ticket_team}}` | Team | `{{team}}` |
+| `{{ticket_created}}` | Created (your time zone) | `{{ticket.created_at}}` |
+| `{{ticket_updated}}` | Last updated (your time zone) | `{{ticket.updated_at}}` |
+| `{{ticket_resolve_by}}` | Resolve-by (SLA target) |  |
+| `{{ticket_link}}` | Link to the ticket (technicians) |  |
+| `{{ticket_portal_link}}` | Link in the client portal |  |
+
+### Client
+
+| Variable | What it holds | Also accepted |
+| --- | --- | --- |
+| `{{company_name}}` | Client name | `{{company.name}}` |
+| `{{company_phone}}` | Main phone |  |
+| `{{company_email}}` | Main email |  |
+| `{{company_address}}` | Street address |  |
+| `{{company_city}}` | City |  |
+| `{{company_state}}` | State |  |
+| `{{company_zip}}` | ZIP |  |
+| `{{company_website}}` | Website |  |
+| `{{company_timezone}}` | Time zone |  |
+| `{{company_client_since}}` | Client since |  |
+| `{{company_account_manager}}` | Account manager |  |
+
+### Contact
+
+| Variable | What it holds | Also accepted |
+| --- | --- | --- |
+| `{{contact_first_name}}` | First name |  |
+| `{{contact_last_name}}` | Last name |  |
+| `{{contact_name}}` | Full name | `{{contact.name}}` |
+| `{{contact_email}}` | Email | `{{contact.email}}` |
+| `{{contact_phone}}` | Phone | `{{contact.phone}}` |
+| `{{contact_mobile}}` | Mobile |  |
+| `{{contact_title}}` | Job title |  |
+| `{{contact_department}}` | Department |  |
+
+### Asset
+
+| Variable | What it holds | Also accepted |
+| --- | --- | --- |
+| `{{asset_hostname}}` | Device name |  |
+| `{{asset_os}}` | Operating system |  |
+| `{{asset_status}}` | Status |  |
+| `{{asset_last_seen}}` | Last seen (your time zone) |  |
+| `{{asset_agent_version}}` | Agent version |  |
+| `{{asset_contact}}` | Assigned user |  |
+
+### Technician
+
+| Variable | What it holds | Also accepted |
+| --- | --- | --- |
+| `{{tech_name}}` | Assigned technician | `{{assigned_name}}`, `{{ticket.assigned_to}}`, `{{assigned_user.name}}` |
+| `{{tech_email}}` | Email | `{{assigned_user.email}}` |
+| `{{tech_phone}}` | Phone |  |
+| `{{tech_title}}` | Job title |  |
+| `{{tech_department}}` | Department |  |
+
+### Team
+
+| Variable | What it holds | Also accepted |
+| --- | --- | --- |
+| `{{team_name}}` | Team name |  |
+| `{{team_members}}` | Member names |  |
+
+### Contract
+
+| Variable | What it holds | Also accepted |
+| --- | --- | --- |
+| `{{contract_name}}` | Contract |  |
+| `{{contract_coverage}}` | Coverage (Contract or Time & Materials) |  |
+
+### Note
+
+| Variable | What it holds | Also accepted |
+| --- | --- | --- |
+| `{{note_body}}` | Latest note the client can see |  |
+
+### Your company
+
+| Variable | What it holds | Also accepted |
+| --- | --- | --- |
+| `{{msp_name}}` | Your company name | `{{system.company}}` |
+| `{{msp_support_email}}` | Support email | `{{system.support_email}}` |
+| `{{msp_portal_url}}` | Client portal address | `{{system.portal_url}}` |
+
+### Date and time
+
+| Variable | What it holds | Also accepted |
+| --- | --- | --- |
+| `{{date_today}}` | Today (your time zone) | `{{system.date}}` |
+| `{{date_now}}` | Now (your time zone) |  |
+
+## Images
+
+Click **Image** in the toolbar to add a picture. The image goes in where your cursor is.
+
+- Only `.avif`, `.webp`, `.png` and `.jpg` files can be added.
+- Each image can be **500 KB** at most.
+- A file whose contents don't match its extension is refused, even if it's renamed.
+
+The editor tells you why when it refuses an image.
+
+To change an image in **Design**, click it. Then:
+
+- **Resize it:** drag its corner handle (it keeps its proportions), type a width in pixels, or choose **Small**, **Half** or **Full width**.
+- **Align it:** choose **Left**, **Center** or **Right**.
+- **Remove it:** choose **Remove**.
+
+The size is saved in the form both Outlook and Gmail follow, and an image is never wider than the email.
+
+Your client's email app loads each image from a private link that can't be guessed. Only someone who has the email can see the image. Every company's images are kept separate.
+
+<Note>
+Images can't be deleted once added. An email you've already sent keeps showing them.
+</Note>
+
+## Brand header and footer
+
+Your **Brand Settings** hold one header and footer for all your emails: your logo, company name, colours, support email and footer text. To edit them, open **Orchestrator** → **Email Templates** → **Brand Settings**.
+
+When a template's **Use brand header & footer** switch is on, the email goes out wrapped in your Brand Settings. The switch is in the editor, beside the **Design** and **HTML** tabs, and it's on for new templates.
+
+Turn it off for a template that already has its own full design: its own banner, header or footer. Otherwise that email would show two headers.
+
+If you haven't saved any Brand Settings, emails go out without a header or footer, whichever way the switch is set.
