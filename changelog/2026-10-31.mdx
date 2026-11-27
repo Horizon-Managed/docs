@@ -34,54 +34,40 @@ day to day, so read the warnings below.
   bulk send. See [Quotes & invoices](/billing/index).
 - **QuickBooks' figures win.** An invoice in QuickBooks shows QuickBooks'
   subtotal, tax, total and balance, and can only be edited in QuickBooks.
-  **Record Payment** posts the payment to QuickBooks first. Credit memos are now
-  issued in QuickBooks: they appear on the invoice they were applied to, and
-  **Issue Credit** has been removed.
-- **Voiding undoes the billing.** Voiding an invoice voids it in QuickBooks
-  first and frees the milestone, change order, expenses or hours it billed so
-  they can be billed again. A draft that never reached QuickBooks can be
-  discarded.
+  **Record Payment** posts the payment to QuickBooks first. Credit memos are
+  issued in QuickBooks and appear on the invoice they were applied to, so
+  **Issue Credit** has been removed. Voiding an invoice voids it in QuickBooks
+  and frees the work it billed so it can be billed again.
 - **Ready to bill** (Billing → Ready to bill) is billing's queue across every
   client: completed project milestones, final invoices, signed change orders,
-  approved expenses, time-and-materials hours and drafts that never reached
-  QuickBooks. Rows that can't be billed yet say why and link to the fix. Select
-  rows and press **Create in QuickBooks**, which previews every invoice first.
-  The queue is also on your phone, under More.
+  approved expenses, time-and-materials hours, ticket time and drafts that never
+  reached QuickBooks. Rows that can't be billed yet say why and link to the fix.
+  **Create in QuickBooks** previews every invoice before it is created. The
+  queue is also on your phone, under More.
 - **Ticket time is reviewed before it bills.** A support admin approves each
   closed ticket's billable time. They can trim the hours that bill, exclude an
-  entry with a reason, classify unclassified work, send time back to the
-  technician, and word the line the client will read. Approved time is invoiced
-  from Ready to bill as one line per ticket, with no hours or rates on the
-  client's invoice.
-- **Covered work never bills.** If the client's contract covers a kind of work,
-  that time can't be marked billable from Log Time or the timer, and an invoice
-  that would bill it is refused.
-- **Link clients to QuickBooks customers.** New Client checks QuickBooks for
+  entry with a reason, send time back to the technician, and word the line the
+  client will read. The client's invoice shows one line per ticket, with no
+  hours or rates. Work the client's contract covers can never be marked
+  billable.
+- **Clients and QuickBooks customers.** New Client checks QuickBooks for
   matching customers before the client is created. You can link one, or create
-  the client in both NEXOS CORE and QuickBooks. Every client page shows which
-  QuickBooks customer it bills. A customer that QuickBooks still bills can't be
-  moved or unlinked. See [QuickBooks](/integrations/quickbooks).
-- **A Finance tab on every client** mirrors QuickBooks: open balance, overdue
-  amount, unapplied credit, open invoices, payments and credit memos.
-- **Sandbox or production, per tenant.** Choose your QuickBooks environment
-  under **Settings → QuickBooks**, with a go-live readiness checklist. Switching
-  environments and connecting QuickBooks are admin-only.
+  the client in both places. Every client page shows which QuickBooks customer
+  it bills, and a new **Finance** tab mirrors its balance, invoices, payments
+  and credit memos. Choose sandbox or production per tenant under **Settings →
+  QuickBooks**. See [QuickBooks](/integrations/quickbooks).
 - **Recurring templates bill the right lines.** A contract's QuickBooks template
   bills its recurring lines only, so one-time setup fees are no longer billed
-  every month. A recurring line on a different cadence from the contract is
-  refused when the contract is saved or sent.
-- **Contract versions take over billing.** When a new version is signed after a
-  seat change, it replaces the old version's QuickBooks template instead of
-  billing alongside it, and distributor subscriptions move to the new version.
+  every month. When a new contract version is signed after a seat change, it
+  replaces the old version's template instead of billing alongside it.
 - **Default contracts.** You can mark a client's default service-desk contract
   on the contract page. New tickets use the default. If no default is set and
   the client has exactly one contract in force, they use that contract;
-  otherwise the ticket is Time & Materials. A default that has expired or been
-  cancelled is ignored.
-- **Products and timesheets stay classified.** QuickBooks product sync no longer
-  marks every Service item as a monthly charge. Approved timesheet hours go to
-  QuickBooks as not-billable time, so they can't be invoiced twice. Survey time
-  is never billable.
+  otherwise the ticket is Time & Materials.
+- **Fewer double counts.** QuickBooks product sync no longer marks every Service
+  item as a monthly charge. Approved timesheet hours go to QuickBooks as
+  not-billable time, so they aren't offered for invoicing twice. Survey time is
+  never billable.
 
 ## Projects
 
@@ -97,152 +83,104 @@ day to day, so read the warnings below.
   job?". It shows the contract value, change orders, the amount in QuickBooks,
   the amount ready to bill and the remainder. Below that is one row per billable
   item, with its state and any blocker. A **How this project bills** card on the
-  project page summarises the method and lists what must be in place before
-  billing can reach QuickBooks.
+  project page lists what must be in place before billing can reach QuickBooks.
 - **New projects ask how they bill**: fixed price, milestones,
-  time-and-materials (with an optional not-to-exceed), or not billable. A
-  milestone schedule must add up to the price. You can create a project that
-  delivers a signed contract from the form or from the contract, with a preview
-  of exactly what will be created.
-- **One budget.** Budget lines carry a client price beside their cost, and every
-  tab shows the same two figures. Fixed-price invoices bill the client price,
-  never the cost. Once the final invoice exists, the budget lines lock.
+  time-and-materials (with an optional not-to-exceed), or not billable. Budget
+  lines carry a client price beside their cost, and every tab shows the same
+  figures. A signed contract creates its project from a preview of exactly what
+  will be created. See [Projects](/project/index).
 - **Change orders are priced from lines** (labour, materials and fixed fees),
   with a running price, expected cost and margin. You decide when each one
   bills: on approval, with a milestone, or at completion. The client sees prices
-  only, never your cost. On the signing page clients can approve, decline with a
-  reason, or ask a question. You can edit, withdraw, resend or copy the link for
-  a change order, raise one from your phone, and hand your phone to the client
-  to sign.
-- **Milestones** can be entered as an amount or a percentage of the price, show
-  how many days late they are, and ask you to confirm before completing, showing
-  exactly what becomes ready to bill.
-- **Time-and-materials projects bill month after month.** Each invoice takes the
-  approved hours not yet billed, up to a date you choose, with one line per task
-  and role. No hour is billed twice.
-- **Expenses and materials.** Expenses carry a markup and a receipt photo or PDF,
-  and you can log them from your phone. Materials received on a purchase order
-  marked billable to the client are billed on the project's next charges
-  invoice.
-- **Project margin follows what the project bills.** Job Costing and
-  Profitability now forecast revenue from the fixed price, milestones or priced
-  hours, and show QuickBooks' own invoiced figures.
+  only. On the signing page they can approve, decline with a reason, or ask a
+  question, and you can hand your phone to the client to sign.
+- **Milestones and time-and-materials.** Milestones can be entered as an amount
+  or a percentage, show how many days late they are, and ask you to confirm
+  before completing. Time-and-materials projects bill month after month, and no
+  hour is billed twice.
+- **Expenses and materials.** Expenses carry a markup and a receipt, and you can
+  log them from your phone. Materials received on a billable purchase order are
+  billed on the project's next charges invoice. Job Costing and Profitability
+  forecast revenue from what the project actually bills.
 - **Tasks are an outline.** Drag to reorder and nest tasks, and use Tab and
-  Shift+Tab to indent and outdent. WBS numbers come from each task's position,
-  and parent tasks roll up hours, dates and progress. Tasks can be assigned and
+  Shift+Tab to indent and outdent. WBS numbers follow each task's position.
+  Parent tasks roll up hours, dates and progress. Tasks can be assigned and
   timed from the desktop.
-- Project tabs now save what you enter, including stakeholders, risks and
-  change requests. The sidebar link to the project status board is now labelled
-  **Project Board**.
 
 ## Helpdesk
 
 - **The ticket page is rebuilt.** One chronological stream replaces the
-  Conversation and Activity tabs, with tabs to filter notes, changes, time,
-  automation and sessions. **Actions ▸ Edit ticket** edits the title, status,
-  priority, team, assignee, type, source, contact, contract and company. You can
-  add a contact or link a device after a ticket is created. A brief strip at the
-  top shows both SLA legs, age, effort, value and device posture.
-- **Value tells covered from billable.** A ticket's value shows total labour,
-  with the billable amount and the amount the contract covered beneath it.
+  Conversation and Activity tabs, with tabs to filter it. **Actions ▸ Edit
+  ticket** edits the title, status, priority, team, assignee, type, source,
+  contact, contract and company. A ticket's value shows total labour, with the
+  billable and contract-covered amounts beneath it.
 - **The ticket queue sorts on every column.** Contact has its own column,
   Priority is a column again, the column header stays in place while you scroll,
-  and every column can be resized. The Breaching, Unowned and Healthy lane
-  headings are gone, so your sort applies to the whole list. See
-  [Ticket queue](/helpdesk/ticket-queue).
+  and every column can be resized. The lane headings are gone, so your sort
+  applies to the whole list. See [Ticket queue](/helpdesk/ticket-queue).
 - **An SLA runway** replaces the queue's stat tiles. It places every open ticket
   by the time left until its next deadline, with counts for past due, due within
   the hour, due in one to two hours, paused and no SLA. Each count opens a
   filtered queue.
 - **Pending pauses the SLA clock.** Time a ticket spends in Pending, or in any
   status you've marked as pausing the SLA, is added back to its deadline. Paused
-  tickets show **Paused** with the time left. The SLA clock stops when a ticket
-  is resolved or closed, and a ticket resolved on time shows **✓ Met**.
-- **Honest sources.** Tickets a technician creates are recorded as **Manual**
-  and show **TECH**. Onboarding and email security tickets show **SYSTEM** and
-  **SECURITY** instead of **PORTAL**. The unsupported **Chat** source has been
-  removed. Onboarding phases and email security escalations open their tickets
-  again.
-- **Nexie (Automation)** is now the author shown for notes and changes made by
-  automation, instead of "Unknown" or "System".
-- **Related tickets** say why they're related (same device or similar title)
-  and which device they're on.
-- **Dashboard tiles** for SLA breaches, online agents, companies and security
-  score now show real numbers.
-- Peek's keyboard shortcuts no longer fire while you're typing a reply.
+  tickets show **Paused**. The clock stops when a ticket is resolved or closed,
+  and a ticket resolved on time shows **✓ Met**.
+- **Honest labels.** Tickets a technician creates are recorded as **Manual**,
+  and onboarding and email security tickets no longer show **PORTAL**.
+  Automation is shown as **Nexie (Automation)** instead of "Unknown" or
+  "System". Related tickets say why they're related and which device they're
+  on.
 
 ## RMM
 
-- **The RMM menu is reorganised** into Fleet (Dashboard, Devices, Discovered),
-  Operate (Remote sessions) and Configure (Deploy, Device Registry). Agents is
-  now **Devices**, and Recordings is now **Remote sessions**. Old links still
-  work.
-- **A new Devices list** has a fleet health strip, search by hostname, user, IP,
-  MAC or serial, filters, a column chooser, saved views, a side drawer with
-  remote actions, and bulk ticket creation. See [Devices](/rmm/devices).
-- **The device page is rebuilt.** It has a status header and toolbar, six
-  headline figures, and the business context: company, contract, contact, SLA
-  and open tickets. Eight tabs cover Overview, Alerts and Activity, Software,
-  Patches, Hardware, Network, Security, and Services and Processes. Devices also
-  have **notes** and typed **custom fields**. See
+- **A new Devices list** under a reorganised RMM menu (Fleet, Operate,
+  Configure; old links still work). It has a fleet health strip, search by
+  hostname, user, IP, MAC or serial, filters, saved views, a side drawer and
+  bulk ticket creation. See [Devices](/rmm/devices).
+- **The device page is rebuilt.** It shows the business context (company,
+  contract, contact, SLA and open tickets), eight tabs from Overview to
+  Services, and device **notes** and **custom fields**. See
   [Device details](/rmm/device-details).
-- **The RMM Dashboard shows fleet metrics** in place of the agent table, with a
-  client picker. See [RMM dashboard](/rmm/dashboard).
+- **The RMM Dashboard shows fleet metrics**, with a client picker. See
+  [RMM dashboard](/rmm/dashboard).
 - **Alerts can raise tickets.** Turn on **Raise tickets from RMM alerts** under
   **Settings → General → Agent Staleness Detection**. A server that goes offline
-  then opens a ticket with the right client, priority and team. If the device
-  comes back before anyone works the ticket, the ticket resolves itself with a
-  plain-English note. Outages are capped at 20 tickets per rule per client per
-  hour. See [Alert tickets](/helpdesk/alert-tickets).
+  then opens a ticket for the right client. If the device comes back before
+  anyone works the ticket, the ticket resolves itself with a plain-English
+  note. See [Alert tickets](/helpdesk/alert-tickets).
 - **Deploy by company.** Every company gets its enrolment token when it is
-  created. The Deploy page shows each company's download, share link and install
-  command directly. The Windows install command now installs correctly. See
+  created, and the Deploy page shows each company's download, share link and
+  install command. The Windows install command now works. See
   [Deploy agent](/rmm/deploy-agent).
-- **Better agents.** Agents report their version and real CPU, memory and disk
-  figures, and Windows software inventory lists names, versions and publishers
-  correctly. On Windows, the agent service restarts after a crash. Uninstalling
-  an agent removes it cleanly.
-- **Security hardening.** Each agent can only report for itself, and remote
-  sessions open only on your organization's devices. Remotely uninstalling an
-  application handles application names safely.
+- **Better, safer agents.** Agents report their version and real CPU, memory
+  and disk figures. Windows software inventory is correct, the Windows service
+  restarts after a crash, and uninstalling an agent removes it cleanly. Each
+  agent can only report for itself, and remote sessions open only on your
+  organization's devices.
 
 ## Products, distributors and quotes
 
 - **The product catalog scales.** It pages, sorts and filters on the server,
-  with saved views, a quick look per product, a price-book health strip and bulk
-  edit for vendor, category and active status. A product can be **Priced per
-  quote**, and products can be billed per site, domain or organization. See
-  [Product catalog](/product/index).
-- **Distributors moved to Settings → Integrations.** Each distributor has a card
-  showing what it powers, its sync status and its largest problems. Each sync
-  run has its own page with errors grouped by problem and a CSV download.
-  **Match clients** links Pax8 and Sherweb companies to your clients.
-- **Sherweb connects directly** with your partner API credentials and syncs
-  subscriptions nightly. Distributor catalogs now refresh weekly, and
-  subscriptions still sync every night.
-- **The client Subscriptions tab** groups subscriptions by distributor, with
-  monthly cost, seats, renewals and anything no contract bills. **Link to
-  contract** writes the catalog product and catalog price, never the
-  distributor's cost.
-- **Get approval link** on a draft quote shows a link you can share with the
-  client yourself, without sending an email. Picking a client company fills in
-  its primary contact.
-- **Dictate a quote.** The Nexie Quote Builder has a microphone. In Chrome and
-  Edge, the audio is sent to the browser vendor to be transcribed; Safari
-  transcribes it on the device.
+  with saved views, a quick look per product and bulk edit. A product can be
+  **Priced per quote**. See [Product catalog](/product/index).
+- **Distributors moved to Settings → Integrations.** Each sync run has its own
+  page with errors grouped by problem. **Match clients** links Pax8 and Sherweb
+  companies to your clients, and Sherweb now connects directly. Each client's
+  Subscriptions tab groups subscriptions by distributor, and **Link to
+  contract** bills the catalog price, never the distributor's cost.
+- **Quotes.** **Get approval link** on a draft quote gives you a link to share
+  yourself, without sending an email. The Nexie Quote Builder has a microphone
+  for dictation. In Chrome and Edge the audio is transcribed by the browser
+  vendor; Safari transcribes it on the device.
 
 ## Bug fixes
 
-- Names sort alphabetically regardless of capital letters, in every list and
-  dropdown.
+- Names sort alphabetically regardless of capital letters.
 - Creating and editing contracts works again after the "priced per quote"
   change.
-- Filter menus and the "Save this view" dialog no longer pop open on their own
-  after the page updates.
-- Sheets and dialogs behave as focused modals: Escape closes them, and focus
-  stays inside until they close.
-- After a deploy, a normal reload always loads the new styles.
-- Forms that save in the background no longer also reload the page underneath
-  you.
-- Changing a ticket's customer and choosing the new customer's contact in the
-  same save no longer fails.
+- Dashboard tiles for SLA breaches, online agents and companies show real
+  numbers.
+- Filter menus no longer pop open on their own, and sheets and dialogs keep
+  focus until you close them.
+- Peek's keyboard shortcuts no longer fire while you're typing a reply.
