@@ -1,0 +1,125 @@
+---
+title: "November 2026"
+description: "QuickBooks production companies are write-locked until you allow writes, Huntress connects with suggested client links, invoices show the contract and quote behind them, and RMM gains custom-field management, device-aware tickets and new remote-access permissions."
+---
+
+Releases v1.116.0 to v1.123.0, from November 2 to November 5. This month
+protects your QuickBooks books, adds the first security-tool integration, and
+connects devices and tickets more closely. Three changes alter default behavior,
+so read the warnings below.
+
+## QuickBooks and billing
+
+<Warning>
+  **Production QuickBooks companies are read-only until you allow writes.**
+  Connected to a production QuickBooks company, NEXOS CORE reads it and links
+  clients to its customers, but writes nothing: no invoices, payments, recurring
+  templates, customers, estimates, purchase orders or time. An admin turns
+  writes on under **Settings → QuickBooks**. Until then, anything that would
+  write says that QuickBooks is read-only for this company, and nothing is sent.
+  Sandbox companies stay writable. Switching a company to production always
+  locks it again, and turning writes on or off is recorded in the security audit
+  log.
+</Warning>
+
+- **Invoices show where they came from.** An invoice's page names the
+  **Contract** it bills and the **Quote** that contract was sold on, each as a
+  link. Invoices brought in from QuickBooks list every line, on screen and in
+  the printable copy.
+- **Payments say what they paid.** A client's **Payments** panel has a **For**
+  column listing the contract, project and tickets behind each invoice a payment
+  was applied to. Payments mirrored from QuickBooks carry their reference number
+  and payment method. Refreshing an invoice brings in its QuickBooks payments
+  straight away.
+- **Template invoices link to their contract**, whether QuickBooks' schedule
+  raised them or someone pressed **Use** in QuickBooks. The contract's billing
+  history shows them.
+- **Bill the first month.** QuickBooks never raises a scheduled invoice for a
+  date that has already passed. The **QuickBooks Recurrence** card therefore
+  offers **Bill first month** and holds **Create in QuickBooks** until that
+  month is billed. Billing the first month late keeps the contract's billing
+  day.
+- **Payment terms carry over.** A contract's recurring template uses the
+  contract's payment terms instead of the customer's default. If the QuickBooks
+  company doesn't have the matching term, you're told which term to add.
+- **The QuickBooks Recurrence card** can link the client to a QuickBooks
+  customer right there. It is the contract's only billing action when QuickBooks
+  bills the contract, so **Generate Invoice** no longer appears next to it.
+
+## Security tools
+
+- **Connect Huntress** from **Settings → Integrations → Security tools**. Your
+  API key and secret are stored encrypted. **Save & verify** shows which account
+  the key belongs to and lists your Huntress organizations.
+- **Suggested client links.** Each unlinked Huntress organization shows the
+  client it most likely belongs to, with the reasons: the same Microsoft 365
+  tenant, an unambiguous name, or a name the client already uses in QuickBooks
+  or a distributor. Nothing links until a person clicks **Link**. Ambiguous
+  matches are never suggested, and **Review suggestions** confirms the strong
+  ones in one pass. Every link is audited.
+- **Microsoft 365 tenant lookup.** To find a client's Microsoft 365 tenant from
+  its domains, NEXOS CORE asks Microsoft's public sign-in discovery service. No
+  credentials are involved. You can switch this off per tenant on the
+  Integrations page.
+
+## RMM and devices
+
+<Warning>
+  **Tickets raised by RMM alerts no longer email the device's contact.**
+  Workflow emails to the client (ticket created, updated, resolved, closed, SLA
+  and alert cleared) skip these tickets, and the run log records why.
+  Technicians are still notified, and replies a technician writes still send. To
+  email clients about these tickets, turn on **Email the client about tickets
+  raised by RMM alerts**, next to **Raise tickets from RMM alerts**.
+</Warning>
+
+<Warning>
+  **Remote access has its own permission.** **Remote into devices** now controls
+  remote desktop and terminal from the device page, the Devices drawer, a ticket
+  and Peek, as well as recorded support sessions started from a ticket. Admin,
+  manager and technician roles hold it by default. Other roles no longer have
+  remote access unless you grant it. A second permission, **Edit device notes
+  and custom fields**, is held by admins and managers, and you can grant it to
+  technicians. Moving a device to another client also needs device write
+  permission. See [Roles & permissions](/admin/roles-permissions).
+</Warning>
+
+- **Manage custom fields.** **RMM › Configure › Custom fields** lets you define,
+  rename, change and delete device custom fields. You can see how many devices
+  hold a value for each field and who last changed it. Tenant admins can edit;
+  everyone else can view.
+- **Tickets and devices link both ways.** The device named on a ticket or in
+  Peek opens that device's page. The ticket queue can be filtered to one device.
+  On a device page, the open-ticket count includes every open ticket, and **+N
+  more** opens the queue filtered to that device.
+- **Device tickets get a contact.** A ticket raised for a device with no contact
+  named now takes the device's assigned contact, if that contact belongs to the
+  ticket's client. Moving a device to another client clears a contact who
+  doesn't belong to the new client.
+- **Device counts agree everywhere.** The home Dashboard, the RMM Dashboard and
+  the Devices list count devices the same way. A device that has never checked
+  in is shown as **Never checked in**, not as Offline.
+- **The device page matches the helpdesk.** A device's Contract and SLA now come
+  from the same rules the helpdesk applies to its tickets. An alert with a
+  ticket shows the ticket's priority and where that priority came from.
+- **Your check-in interval reaches devices.** The interval set under **Settings →
+  Tenant** is now sent to each device and applied. A device's feature toggles
+  show what the agent actually applied.
+- **Saved views follow one set of rules** on the Devices list, the product
+  catalog and the ticket queue. Only the person who shared a view, or a tenant
+  admin, can delete it.
+- **More ticket sources in rules.** The Orchestrator's **Source** condition
+  lists every source a ticket can have, including RMM, EPA and SIEM.
+- **Safer device commands.** The device page can queue only actions the agent
+  understands, and an action that needs an agent feature isn't sent to an agent
+  that lacks it. Every queued command records who requested it.
+
+## Bug fixes
+
+- Confirm dialogs work with a mouse again. Since late October, clicking
+  **Confirm** closed the dialog without acting. This affected **Get approval
+  link**, **Send Quote** and every other "Are you sure?" prompt.
+- **Review Document Before Signing** on a contract shows the document again,
+  including PDF previews.
+- The QuickBooks customer picker's search icon no longer fills the whole sheet.
+- Pages no longer log about twenty console errors on load.

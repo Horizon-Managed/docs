@@ -1,0 +1,100 @@
+---
+title: "August 2026 (part 2)"
+description: "The Orchestrator builder offers only actions and triggers that really run, contract signing and QuickBooks recurring billing are more reliable, and timesheet approval needs the right permission."
+---
+
+Releases v1.53.0 to v1.65.2, from August 24 to August 27. Most of the work went
+into the Orchestrator and into contract signing and billing. One change can
+affect workflows you have already built, so read the warning below first.
+
+## Orchestrator
+
+<Warning>
+  The action and trigger lists in the workflow builder used to include more than
+  a hundred actions and triggers that did nothing when a workflow ran. They are
+  gone. If one of your workflows used one, that step was already doing nothing.
+  It now no longer appears. Review your workflows for steps that have
+  disappeared, and rebuild them with an action that runs.
+</Warning>
+
+- **The builder offers only what runs.** Every action and trigger in the
+  dropdowns now has something behind it. Four modules (Security, Infrastructure,
+  Nexie and Procurement) now show an empty action list, because none of the
+  actions they offered ever ran.
+- **New triggers.** Six events that already happened in practice can now start a
+  workflow: a client email reply, an inbound email opening a ticket, the two
+  email-security screening outcomes, a note being added, and a ticket being
+  resolved. **Contract fully signed** is a trigger too.
+- **Actions that were hidden are now selectable**: **Apply Contract Policies**,
+  **Invoice from Contract** and **Promote Company to Customer**. A new **Send
+  Billing Schedule to QuickBooks** action sets up a contract's recurring
+  schedule in QuickBooks. If a workflow fires twice, the contract still gets one
+  schedule.
+- **See what a workflow does.** Selecting a workflow shows its trigger and each
+  action in order, with a plain description of every step. If the workflow has
+  run, you also see what each step did last time: applied, correctly skipped, or
+  failed.
+- **A new layout.** The Workflows tab is now a studio: a workflow list on the
+  left, the flow in the centre, and the workflow's details and last-run results
+  on the right. The Orchestrator hub now uses the same card layout as the IQ launcher.
+- **The run log is honest.** It now tells applied, skipped and failed steps
+  apart instead of recording success for all three.
+- **Custom actions are removed.** The custom-action form saved actions that
+  never ran. No tenant had created one.
+- The builder now displays correctly in the tinted and parchment themes, and the
+  Orchestrator link in the sidebar always opens the hub.
+
+## Contracts and signing
+
+- **Signing a contract no longer bills the client by itself.** Billing is a
+  decision you make with the **Generate Invoice** button on the contract.
+  **Generate Invoice** also no longer double-bills: on a contract that already
+  has an invoice, it opens that invoice instead.
+- **Contracts with several documents attached** now need a signature on every
+  document before they activate.
+- **The public signing page shows the whole contract**: the pricing table, the
+  attached documents and the signatures already collected. If any of these
+  cannot load, the page stops instead of asking the client to sign an
+  incomplete contract.
+- **Signatures are embedded in the signed document.** Previously, signing could
+  report success even though the signature image never reached the file.
+
+## Billing and QuickBooks
+
+- **Create in QuickBooks** on a contract sets up its recurring billing schedule
+  in QuickBooks, and QuickBooks raises each invoice. Pressing it again never
+  creates a second schedule. One-time contracts are told the schedule doesn't
+  apply.
+- **No double billing.** A contract that QuickBooks bills on a schedule refuses
+  **Generate Invoice**. The contract page shows which system owns the schedule.
+- **Invoices from a quote work again.** Generating an invoice from an approved
+  quote failed and copied no lines. It now copies every accepted line, with its
+  product and the quantity the client approved.
+- **Invoices remember their source.** An invoice raised in QuickBooks from a
+  quote, a recurring contract or billable ticket time now links back to that
+  quote, contract or time.
+
+## Sales Workspace
+
+- **Time a deal.** You can start the timer from the deal you're working on.
+  Clicking another deal pauses the first deal's timer and starts or resumes the
+  one you opened, so each deal gets its own time entries.
+- **New Lead** no longer rejects a Next Step you have already typed, and
+  **Analyze with Nexie** no longer clears fields it has no value for.
+
+## Time and timesheets
+
+- **Only one timer runs at a time.** Starting a timer on a ticket that already
+  had one used to leave another timer running, so both were billed.
+- **Timesheet approval needs permission.** Approving or rejecting a timesheet
+  needs the approve-timesheets permission. People without it no longer see the
+  **Approve** and **Reject** buttons.
+- **You submit your own timesheets.** You can submit only your own timesheet,
+  unless you can approve timesheets. That lets payroll close out an absent
+  employee's week.
+
+## Bug fixes
+
+- Confirmation dialogs no longer show a second browser dialog on top of the
+  styled one.
+- The workflow goal strip's figures are centred in their cells.
