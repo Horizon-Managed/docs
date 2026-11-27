@@ -58,6 +58,7 @@
               "helpdesk/alert-tickets",
               "helpdesk/inbound-email",
               "workflow-studio/ticket-arrival-routing",
+              "workflow-studio/email-templates",
               "kb/index",
               "dispatch/index",
               "mobile/index"
