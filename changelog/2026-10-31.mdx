@@ -1,0 +1,186 @@
+---
+title: "October 2026"
+description: "QuickBooks becomes the book of record for invoices and recurring billing, projects gain a Billing tab and priced change orders, the ticket page and queue are rebuilt, Pending pauses the SLA clock, and RMM gets a new Devices list, device page and alert-to-ticket bridge."
+---
+
+Releases v1.102.0 to v1.115.0, from October 12 to October 29. This is the
+biggest month so far. Every invoice your client receives now goes through
+QuickBooks first, project billing was rebuilt from start to finish, and the
+ticket and RMM screens were redesigned. Several changes alter how billing works
+day to day, so read the warnings below.
+
+## Billing and QuickBooks
+
+<Warning>
+  **Recurring billing now comes only from QuickBooks.** NEXOS CORE's own hourly
+  recurring-billing run is gone. QuickBooks recurring templates do all recurring
+  billing. A live contract with no QuickBooks template says **Not billing: no
+  QuickBooks recurring template** on its page. The **Recurring contract
+  billing** switch has been removed from Integrations.
+</Warning>
+
+<Warning>
+  **QuickBooks no longer decides which client a customer belongs to.** The
+  QuickBooks sync used to link customers to clients by name, create a client for
+  every customer it couldn't match, and overwrite clients' email and phone. It
+  now only refreshes the list of QuickBooks customers. A person links each
+  client to its QuickBooks customer, and every link is audited.
+</Warning>
+
+- **QuickBooks sends your invoices.** Push a draft invoice with **Push to
+  QuickBooks**, then use **Send from QuickBooks** to email it. NEXOS CORE no
+  longer emails invoices itself. Invoices show **In QuickBooks — not sent**
+  until QuickBooks sends them. The invoice list adds a **Not sent** filter and
+  bulk send. See [Quotes & invoices](/billing/index).
+- **QuickBooks' figures win.** An invoice in QuickBooks shows QuickBooks'
+  subtotal, tax, total and balance, and can only be edited in QuickBooks.
+  **Record Payment** posts the payment to QuickBooks first. Credit memos are
+  issued in QuickBooks and appear on the invoice they were applied to, so
+  **Issue Credit** has been removed. Voiding an invoice voids it in QuickBooks
+  and frees the work it billed so it can be billed again.
+- **Ready to bill** (Billing → Ready to bill) is billing's queue across every
+  client: completed project milestones, final invoices, signed change orders,
+  approved expenses, time-and-materials hours, ticket time and drafts that never
+  reached QuickBooks. Rows that can't be billed yet say why and link to the fix.
+  **Create in QuickBooks** previews every invoice before it is created. The
+  queue is also on your phone, under More.
+- **Ticket time is reviewed before it bills.** A support admin approves each
+  closed ticket's billable time. They can trim the hours that bill, exclude an
+  entry with a reason, send time back to the technician, and word the line the
+  client will read. The client's invoice shows one line per ticket, with no
+  hours or rates. Work the client's contract covers can never be marked
+  billable.
+- **Clients and QuickBooks customers.** New Client checks QuickBooks for
+  matching customers before the client is created. You can link one, or create
+  the client in both places. Every client page shows which QuickBooks customer
+  it bills, and a new **Finance** tab mirrors its balance, invoices, payments
+  and credit memos. Choose sandbox or production per tenant under **Settings →
+  QuickBooks**. See [QuickBooks](/integrations/quickbooks).
+- **Recurring templates bill the right lines.** A contract's QuickBooks template
+  bills its recurring lines only, so one-time setup fees are no longer billed
+  every month. When a new contract version is signed after a seat change, it
+  replaces the old version's template instead of billing alongside it.
+- **Default contracts.** You can mark a client's default service-desk contract
+  on the contract page. New tickets use the default. If no default is set and
+  the client has exactly one contract in force, they use that contract;
+  otherwise the ticket is Time & Materials.
+- **Fewer double counts.** QuickBooks product sync no longer marks every Service
+  item as a monthly charge. Approved timesheet hours go to QuickBooks as
+  not-billable time, so they aren't offered for invoicing twice. Survey time is
+  never billable.
+
+## Projects
+
+<Warning>
+  **Only people with billing access create project invoices.** Completing a
+  milestone no longer raises an invoice by itself: it marks the milestone
+  **Ready to bill**, and billing raises the invoice. The same applies to change
+  orders, expenses and final invoices. Nobody can approve an expense they
+  entered.
+</Warning>
+
+- **A Billing tab on every project** answers "what is left to bill on this
+  job?". It shows the contract value, change orders, the amount in QuickBooks,
+  the amount ready to bill and the remainder. Below that is one row per billable
+  item, with its state and any blocker. A **How this project bills** card on the
+  project page lists what must be in place before billing can reach QuickBooks.
+- **New projects ask how they bill**: fixed price, milestones,
+  time-and-materials (with an optional not-to-exceed), or not billable. Budget
+  lines carry a client price beside their cost, and every tab shows the same
+  figures. A signed contract creates its project from a preview of exactly what
+  will be created. See [Projects](/project/index).
+- **Change orders are priced from lines** (labour, materials and fixed fees),
+  with a running price, expected cost and margin. You decide when each one
+  bills: on approval, with a milestone, or at completion. The client sees prices
+  only. On the signing page they can approve, decline with a reason, or ask a
+  question, and you can hand your phone to the client to sign.
+- **Milestones and time-and-materials.** Milestones can be entered as an amount
+  or a percentage, show how many days late they are, and ask you to confirm
+  before completing. Time-and-materials projects bill month after month, and no
+  hour is billed twice.
+- **Expenses and materials.** Expenses carry a markup and a receipt, and you can
+  log them from your phone. Materials received on a billable purchase order are
+  billed on the project's next charges invoice. Job Costing and Profitability
+  forecast revenue from what the project actually bills.
+- **Tasks are an outline.** Drag to reorder and nest tasks, and use Tab and
+  Shift+Tab to indent and outdent. WBS numbers follow each task's position.
+  Parent tasks roll up hours, dates and progress. Tasks can be assigned and
+  timed from the desktop.
+
+## Helpdesk
+
+- **The ticket page is rebuilt.** One chronological stream replaces the
+  Conversation and Activity tabs, with tabs to filter it. **Actions ▸ Edit
+  ticket** edits the title, status, priority, team, assignee, type, source,
+  contact, contract and company. A ticket's value shows total labour, with the
+  billable and contract-covered amounts beneath it.
+- **The ticket queue sorts on every column.** Contact has its own column,
+  Priority is a column again, the column header stays in place while you scroll,
+  and every column can be resized. The lane headings are gone, so your sort
+  applies to the whole list. See [Ticket queue](/helpdesk/ticket-queue).
+- **An SLA runway** replaces the queue's stat tiles. It places every open ticket
+  by the time left until its next deadline, with counts for past due, due within
+  the hour, due in one to two hours, paused and no SLA. Each count opens a
+  filtered queue.
+- **Pending pauses the SLA clock.** Time a ticket spends in Pending, or in any
+  status you've marked as pausing the SLA, is added back to its deadline. Paused
+  tickets show **Paused**. The clock stops when a ticket is resolved or closed,
+  and a ticket resolved on time shows **✓ Met**.
+- **Honest labels.** Tickets a technician creates are recorded as **Manual**,
+  and onboarding and email security tickets no longer show **PORTAL**.
+  Automation is shown as **Nexie (Automation)** instead of "Unknown" or
+  "System". Related tickets say why they're related and which device they're
+  on.
+
+## RMM
+
+- **A new Devices list** under a reorganised RMM menu (Fleet, Operate,
+  Configure; old links still work). It has a fleet health strip, search by
+  hostname, user, IP, MAC or serial, filters, saved views, a side drawer and
+  bulk ticket creation. See [Devices](/rmm/devices).
+- **The device page is rebuilt.** It shows the business context (company,
+  contract, contact, SLA and open tickets), eight tabs from Overview to
+  Services, and device **notes** and **custom fields**. See
+  [Device details](/rmm/device-details).
+- **The RMM Dashboard shows fleet metrics**, with a client picker. See
+  [RMM dashboard](/rmm/dashboard).
+- **Alerts can raise tickets.** Turn on **Raise tickets from RMM alerts** under
+  **Settings → General → Agent Staleness Detection**. A server that goes offline
+  then opens a ticket for the right client. If the device comes back before
+  anyone works the ticket, the ticket resolves itself with a plain-English
+  note. See [Alert tickets](/helpdesk/alert-tickets).
+- **Deploy by company.** Every company gets its enrolment token when it is
+  created, and the Deploy page shows each company's download, share link and
+  install command. The Windows install command now works. See
+  [Deploy agent](/rmm/deploy-agent).
+- **Better, safer agents.** Agents report their version and real CPU, memory
+  and disk figures. Windows software inventory is correct, the Windows service
+  restarts after a crash, and uninstalling an agent removes it cleanly. Each
+  agent can only report for itself, and remote sessions open only on your
+  organization's devices.
+
+## Products, distributors and quotes
+
+- **The product catalog scales.** It pages, sorts and filters on the server,
+  with saved views, a quick look per product and bulk edit. A product can be
+  **Priced per quote**. See [Product catalog](/product/index).
+- **Distributors moved to Settings → Integrations.** Each sync run has its own
+  page with errors grouped by problem. **Match clients** links Pax8 and Sherweb
+  companies to your clients, and Sherweb now connects directly. Each client's
+  Subscriptions tab groups subscriptions by distributor, and **Link to
+  contract** bills the catalog price, never the distributor's cost.
+- **Quotes.** **Get approval link** on a draft quote gives you a link to share
+  yourself, without sending an email. The Nexie Quote Builder has a microphone
+  for dictation. In Chrome and Edge the audio is transcribed by the browser
+  vendor; Safari transcribes it on the device.
+
+## Bug fixes
+
+- Names sort alphabetically regardless of capital letters.
+- Creating and editing contracts works again after the "priced per quote"
+  change.
+- Dashboard tiles for SLA breaches, online agents and companies show real
+  numbers.
+- Filter menus no longer pop open on their own, and sheets and dialogs keep
+  focus until you close them.
+- Peek's keyboard shortcuts no longer fire while you're typing a reply.
